@@ -33,7 +33,7 @@ const Header = () => {
             <Link
               key={link.path}
               to={link.path}
-              className={`text-sm uppercase tracking-wide link-underline transition-colors ${
+              className={`text-sm tracking-wide link-underline transition-colors ${
                 isActive(link.path) ? "text-primary" : "text-foreground hover:text-primary"
               }`}
             >
@@ -68,7 +68,7 @@ const Header = () => {
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block text-sm uppercase tracking-wide ${
+                className={`block text-sm tracking-wide ${
                   isActive(link.path) ? "text-primary" : "text-foreground"
                 }`}
               >

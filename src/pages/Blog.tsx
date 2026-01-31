@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import { blogPosts } from "@/data/blogPosts";
 
+const toPascalCase = (str: string) => {
+  return str
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -37,7 +44,7 @@ const Blog = () => {
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => setSelectedTag(null)}
-                className={`px-4 py-2 text-sm uppercase tracking-wide transition-colors ${
+                className={`px-4 py-2 text-sm tracking-wide transition-colors rounded-full ${
                   !selectedTag ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
                 }`}
               >
@@ -47,11 +54,11 @@ const Blog = () => {
                 <button
                   key={tag}
                   onClick={() => setSelectedTag(tag)}
-                  className={`px-4 py-2 text-sm uppercase tracking-wide transition-colors ${
+                  className={`px-4 py-2 text-sm tracking-wide transition-colors rounded-full ${
                     selectedTag === tag ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
                   }`}
                 >
-                  {tag}
+                  {toPascalCase(tag)}
                 </button>
               ))}
             </div>
@@ -75,8 +82,8 @@ const Blog = () => {
                   </p>
                   <div className="flex gap-2">
                     {post.tags.map(tag => (
-                      <span key={tag} className="text-xs uppercase tracking-wide text-primary">
-                        {tag}
+                      <span key={tag} className="text-xs tracking-wide text-primary bg-primary/10 px-3 py-1 rounded-full">
+                        {toPascalCase(tag)}
                       </span>
                     ))}
                   </div>
