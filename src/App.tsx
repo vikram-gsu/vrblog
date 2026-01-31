@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/useTheme";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
-import Photography from "./pages/Photography";
+
 import Series from "./pages/Series";
 import SeriesDetail from "./pages/SeriesDetail";
 import SeriesPost from "./pages/SeriesPost";
@@ -26,7 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/photography" element={<Photography />} />
+            
             <Route path="/series" element={<Series />} />
             <Route path="/series/:seriesId" element={<SeriesDetail />} />
             <Route path="/series/:seriesId/:postSlug" element={<SeriesPost />} />

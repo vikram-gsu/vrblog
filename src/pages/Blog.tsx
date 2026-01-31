@@ -24,7 +24,6 @@ const Blog = () => {
       
       <main className="pt-32 pb-24 px-6">
         <div className="container-narrow">
-          <h1 className="text-display mb-8">Writing</h1>
           
           {/* Search and filters */}
           <div className="mb-16 space-y-6">
