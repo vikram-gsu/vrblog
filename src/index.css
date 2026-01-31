@@ -8,40 +8,40 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 5%;
+    --background: 45 30% 97%;
+    --foreground: 30 10% 12%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 5%;
+    --card: 45 30% 97%;
+    --card-foreground: 30 10% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
+    --popover: 45 30% 97%;
+    --popover-foreground: 30 10% 12%;
 
-    --primary: 12 88% 59%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 24 80% 50%;
+    --primary-foreground: 45 30% 97%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 5%;
+    --secondary: 40 20% 92%;
+    --secondary-foreground: 30 10% 12%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 40 20% 92%;
+    --muted-foreground: 30 10% 40%;
 
-    --accent: 12 88% 59%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 24 80% 50%;
+    --accent-foreground: 45 30% 97%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 45 30% 97%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 12 88% 59%;
+    --border: 40 15% 85%;
+    --input: 40 15% 85%;
+    --ring: 24 80% 50%;
 
-    --radius: 0;
+    --radius: 0.5rem;
 
     /* Editorial design tokens */
-    --hero-text: 0 0% 5%;
-    --subtitle-text: 0 0% 40%;
-    --link-hover: 12 88% 59%;
+    --hero-text: 30 10% 12%;
+    --subtitle-text: 30 10% 40%;
+    --link-hover: 24 80% 50%;
     
     /* Spacing scale */
     --space-xs: 0.5rem;
@@ -66,6 +66,40 @@ All colors MUST be HSL.
     --text-6xl: 5rem;
     --text-hero: 6rem;
   }
+
+  .dark {
+    --background: 30 15% 8%;
+    --foreground: 45 20% 92%;
+
+    --card: 30 15% 10%;
+    --card-foreground: 45 20% 92%;
+
+    --popover: 30 15% 10%;
+    --popover-foreground: 45 20% 92%;
+
+    --primary: 24 85% 55%;
+    --primary-foreground: 30 15% 8%;
+
+    --secondary: 30 12% 18%;
+    --secondary-foreground: 45 20% 92%;
+
+    --muted: 30 12% 18%;
+    --muted-foreground: 40 15% 60%;
+
+    --accent: 24 85% 55%;
+    --accent-foreground: 30 15% 8%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 45 20% 92%;
+
+    --border: 30 10% 20%;
+    --input: 30 10% 20%;
+    --ring: 24 85% 55%;
+
+    --hero-text: 45 20% 92%;
+    --subtitle-text: 40 15% 60%;
+    --link-hover: 24 85% 55%;
+  }
 }
 
 @layer base {
@@ -82,10 +116,15 @@ All colors MUST be HSL.
     -moz-osx-font-smoothing: grayscale;
   }
 
+  .font-heading {
+    font-family: 'Recoleta', Georgia, serif;
+  }
+
   h1, h2, h3, h4, h5, h6 {
+    font-family: 'Recoleta', Georgia, serif;
     font-weight: 700;
     line-height: 1.2;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
 
   h1 {
