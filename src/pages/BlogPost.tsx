@@ -1,21 +1,16 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useMemo } from "react";
+import { useParams, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
-import { blogPosts } from "@/data/blogPosts";
+import { getBlogPosts } from "@/lib/content";
+import { toPascalCase } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-const toPascalCase = (str: string) => {
-  return str
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
-};
-
 const BlogPost = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const post = blogPosts.find(p => p.id === Number(id));
+  const { slug } = useParams();
+  const blogPosts = useMemo(() => getBlogPosts(), []);
+  const post = blogPosts.find(p => p.slug === slug);
   
   if (!post) {
     return (
@@ -28,7 +23,7 @@ const BlogPost = () => {
     );
   }
   
-  const currentIndex = blogPosts.findIndex(p => p.id === Number(id));
+  const currentIndex = blogPosts.findIndex(p => p.slug === slug);
   const nextPost = currentIndex < blogPosts.length - 1 ? blogPosts[currentIndex + 1] : null;
   const prevPost = currentIndex > 0 ? blogPosts[currentIndex - 1] : null;
   
@@ -71,13 +66,13 @@ const BlogPost = () => {
           {/* Navigation */}
           <div className="mt-24 pt-12 border-t border-border flex justify-between">
             {prevPost ? (
-              <Link to={`/blog/${prevPost.id}`} className="link-underline text-sm uppercase tracking-wide">
+              <Link to={`/blog/${prevPost.slug}`} className="link-underline text-sm tracking-wide">
                 ← {prevPost.title}
               </Link>
             ) : <div />}
             
             {nextPost && (
-              <Link to={`/blog/${nextPost.id}`} className="link-underline text-sm uppercase tracking-wide text-right">
+              <Link to={`/blog/${nextPost.slug}`} className="link-underline text-sm tracking-wide text-right">
                 {nextPost.title} →
               </Link>
             )}

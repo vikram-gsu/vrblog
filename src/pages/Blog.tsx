@@ -1,20 +1,15 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
-import { blogPosts } from "@/data/blogPosts";
-
-const toPascalCase = (str: string) => {
-  return str
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
-};
+import { getBlogPosts } from "@/lib/content";
+import { toPascalCase } from "@/lib/utils";
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   
-  const allTags = Array.from(new Set(blogPosts.flatMap(post => post.tags)));
+  const blogPosts = useMemo(() => getBlogPosts(), []);
+  const allTags = useMemo(() => Array.from(new Set(blogPosts.flatMap(post => post.tags))), [blogPosts]);
   
   const filteredPosts = blogPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -67,8 +62,8 @@ const Blog = () => {
           {/* Posts list */}
           <div className="space-y-16">
             {filteredPosts.map((post, index) => (
-              <article key={post.id}>
-                <Link to={`/blog/${post.id}`} className="group block">
+              <article key={post.slug}>
+                <Link to={`/blog/${post.slug}`} className="group block">
                   <h2 className="text-4xl md:text-5xl font-bold mb-4 group-hover:text-primary transition-colors">
                     {post.title}
                   </h2>

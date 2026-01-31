@@ -1,8 +1,31 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
-import { series } from "@/data/series";
+import { getSeries } from "@/lib/content";
 
 const Series = () => {
+  const allSeries = useMemo(() => getSeries(), []);
+  
+  if (allSeries.length === 0) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        
+        <main className="pt-32 pb-24 px-6">
+          <div className="container-wide">
+            <h1 className="text-display mb-8">Series</h1>
+            <div className="text-center py-24">
+              <p className="text-xl text-muted-foreground mb-4">No series yet</p>
+              <p className="text-muted-foreground">
+                Add series to <code className="bg-secondary px-2 py-1 rounded">content/series/</code> folder
+              </p>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+  
   return (
     <div className="min-h-screen">
       <Header />
@@ -16,7 +39,7 @@ const Series = () => {
           </p>
           
           <div className="grid md:grid-cols-2 gap-12">
-            {series.map(s => (
+            {allSeries.map(s => (
               <Link
                 key={s.id}
                 to={`/series/${s.id}`}

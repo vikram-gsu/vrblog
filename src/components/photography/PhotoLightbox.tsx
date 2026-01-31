@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { Photo } from "@/data/photos";
+import { Photo } from "@/lib/content";
 
 interface PhotoLightboxProps {
   photos: Photo[];
