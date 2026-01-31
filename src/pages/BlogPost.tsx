@@ -2,6 +2,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import { blogPosts } from "@/data/blogPosts";
 import { ArrowLeft } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const toPascalCase = (str: string) => {
   return str
@@ -60,10 +62,11 @@ const BlogPost = () => {
             </div>
           </div>
           
-          <div 
-            className="prose prose-lg max-w-none prose-headings:font-bold prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4 prose-p:text-lg prose-p:leading-relaxed prose-code:bg-secondary prose-code:px-2 prose-code:py-1 prose-code:text-sm prose-pre:bg-secondary prose-pre:p-6"
-            dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br/>') }}
-          />
+          <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-heading prose-headings:font-bold prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4 prose-p:text-lg prose-p:leading-relaxed prose-code:bg-secondary prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-secondary prose-pre:p-6 prose-pre:rounded-lg prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-ul:my-6 prose-li:my-2">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {post.content}
+            </ReactMarkdown>
+          </div>
           
           {/* Navigation */}
           <div className="mt-24 pt-12 border-t border-border flex justify-between">
