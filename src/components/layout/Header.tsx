@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
 
 const Header = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   
   const isActive = (path: string) => location.pathname === path;
   
   const navLinks = [
     { path: "/blog", label: "Blog" },
     { path: "/photography", label: "Photography" },
-    { path: "/comedy", label: "Comedy" },
     { path: "/series", label: "Series" },
     { path: "/about", label: "About" },
     { path: "/resume", label: "Resume" }
@@ -22,9 +23,9 @@ const Header = () => {
       <nav className="container-wide px-6 lg:px-12 py-6 flex items-center justify-between">
         <Link 
           to="/" 
-          className="text-xl font-bold tracking-tight hover:text-primary transition-colors"
+          className="text-xl font-bold tracking-tight hover:text-primary transition-colors font-heading"
         >
-          Alex Chen
+          Vikram Pareddy
         </Link>
         
         <div className="hidden md:flex items-center gap-8">
@@ -39,6 +40,13 @@ const Header = () => {
               {link.label}
             </Link>
           ))}
+          <button
+            onClick={toggleTheme}
+            className="p-2 hover:text-primary transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
         </div>
         
         {/* Mobile menu button */}
@@ -67,6 +75,13 @@ const Header = () => {
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={toggleTheme}
+              className="mt-4 p-2 hover:text-primary transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
+            </button>
           </div>
         </div>
       )}
