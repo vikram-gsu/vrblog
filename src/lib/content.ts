@@ -1,4 +1,4 @@
-import matter from "gray-matter";
+import { parse as parseYaml } from "yaml";
 
 export interface BlogPost {
   slug: string;
@@ -34,6 +34,23 @@ export interface Series {
   title: string;
   description: string;
   posts: SeriesPost[];
+}
+
+// Browser-compatible frontmatter parser
+function parseFrontmatter(fileContent: string): { data: Record<string, unknown>; content: string } {
+  const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+  const match = fileContent.match(frontmatterRegex);
+  
+  if (!match) {
+    return { data: {}, content: fileContent };
+  }
+  
+  try {
+    const data = parseYaml(match[1]) || {};
+    return { data, content: match[2] };
+  } catch {
+    return { data: {}, content: fileContent };
+  }
 }
 
 // Import all blog markdown files
@@ -73,18 +90,18 @@ export function getBlogPosts(): BlogPost[] {
 
   for (const [path, content] of Object.entries(blogFiles)) {
     const slug = path.replace("/content/blog/", "").replace(".md", "");
-    const { data, content: markdown } = matter(content as string);
+    const { data, content: markdown } = parseFrontmatter(content as string);
 
     posts.push({
       slug,
-      title: data.title || "Untitled",
-      date: data.date || "",
-      readTime: data.readTime || "5 min",
-      excerpt: data.excerpt || "",
+      title: (data.title as string) || "Untitled",
+      date: (data.date as string) || "",
+      readTime: (data.readTime as string) || "5 min",
+      excerpt: (data.excerpt as string) || "",
       content: markdown,
-      tags: data.tags || [],
-      featured: data.featured || false,
-      image: data.image || undefined,
+      tags: (data.tags as string[]) || [],
+      featured: (data.featured as boolean) || false,
+      image: (data.image as string) || undefined,
     });
   }
 
@@ -134,12 +151,12 @@ export function getSeries(): Series[] {
     if (!match) continue;
 
     const seriesId = match[1];
-    const { data } = matter(content as string);
+    const { data } = parseFrontmatter(content as string);
 
     seriesMap.set(seriesId, {
       id: seriesId,
-      title: data.title || seriesId,
-      description: data.description || "",
+      title: (data.title as string) || seriesId,
+      description: (data.description as string) || "",
       posts: [],
     });
   }
@@ -153,16 +170,16 @@ export function getSeries(): Series[] {
     if (!match) continue;
 
     const [, seriesId, postSlug] = match;
-    const { data, content: markdown } = matter(content as string);
+    const { data, content: markdown } = parseFrontmatter(content as string);
 
     const series = seriesMap.get(seriesId);
     if (series) {
       series.posts.push({
         slug: postSlug,
-        title: data.title || "Untitled",
-        date: data.date || "",
-        readTime: data.readTime || "5 min",
-        excerpt: data.excerpt || "",
+        title: (data.title as string) || "Untitled",
+        date: (data.date as string) || "",
+        readTime: (data.readTime as string) || "5 min",
+        excerpt: (data.excerpt as string) || "",
         content: markdown,
       });
     }
