@@ -3,6 +3,13 @@ import Header from "@/components/layout/Header";
 import PhotoLightbox from "@/components/photography/PhotoLightbox";
 import { photos } from "@/data/photos";
 
+const toPascalCase = (str: string) => {
+  return str
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 const Photography = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -25,7 +32,7 @@ const Photography = () => {
           <div className="mb-12 flex flex-wrap gap-3">
             <button
               onClick={() => setSelectedCategory(null)}
-              className={`px-4 py-2 text-sm uppercase tracking-wide transition-colors ${
+              className={`px-4 py-2 text-sm tracking-wide transition-colors rounded-full ${
                 !selectedCategory ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
               }`}
             >
@@ -35,11 +42,11 @@ const Photography = () => {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 text-sm uppercase tracking-wide transition-colors ${
+                className={`px-4 py-2 text-sm tracking-wide transition-colors rounded-full ${
                   selectedCategory === category ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
                 }`}
               >
-                {category}
+                {toPascalCase(category)}
               </button>
             ))}
           </div>
