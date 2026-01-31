@@ -17,7 +17,7 @@ const BlogPost = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Post not found</h1>
-          <Link to="/blog" className="link-underline">← Back to blog</Link>
+          <Link to="/" className="link-underline">← Back to home</Link>
         </div>
       </div>
     );
@@ -34,11 +34,11 @@ const BlogPost = () => {
       <main className="pt-32 pb-24 px-6">
         <article className="container-narrow">
           <Link 
-            to="/blog" 
+            to="/" 
             className="inline-flex items-center gap-2 text-sm tracking-wide text-muted-foreground hover:text-primary transition-colors mb-12"
           >
             <ArrowLeft size={16} />
-            Back to Blog
+            Back to Home
           </Link>
           
           <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
