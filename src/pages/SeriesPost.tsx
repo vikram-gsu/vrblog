@@ -1,16 +1,16 @@
+import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
-import { series } from "@/data/series";
+import { getSeriesPost } from "@/lib/content";
 import { ArrowLeft } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 const SeriesPost = () => {
-  const { seriesId, postId } = useParams();
-  const currentSeries = series.find(s => s.id === seriesId);
-  const post = currentSeries?.posts.find(p => p.id === Number(postId));
+  const { seriesId, postSlug } = useParams();
+  const result = useMemo(() => getSeriesPost(seriesId || "", postSlug || ""), [seriesId, postSlug]);
   
-  if (!currentSeries || !post) {
+  if (!result) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -21,9 +21,9 @@ const SeriesPost = () => {
     );
   }
   
-  const currentIndex = currentSeries.posts.findIndex(p => p.id === Number(postId));
-  const nextPost = currentIndex < currentSeries.posts.length - 1 ? currentSeries.posts[currentIndex + 1] : null;
-  const prevPost = currentIndex > 0 ? currentSeries.posts[currentIndex - 1] : null;
+  const { series, post, postIndex } = result;
+  const nextPost = postIndex < series.posts.length - 1 ? series.posts[postIndex + 1] : null;
+  const prevPost = postIndex > 0 ? series.posts[postIndex - 1] : null;
   
   return (
     <div className="min-h-screen">
@@ -36,11 +36,11 @@ const SeriesPost = () => {
             className="inline-flex items-center gap-2 text-sm tracking-wide text-muted-foreground hover:text-primary transition-colors mb-12"
           >
             <ArrowLeft size={16} />
-            Back to {currentSeries.title}
+            Back to {series.title}
           </Link>
           
           <div className="mb-6 text-sm uppercase tracking-wide text-primary">
-            Part {currentIndex + 1} of {currentSeries.posts.length}
+            Part {postIndex + 1} of {series.posts.length}
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
@@ -63,19 +63,19 @@ const SeriesPost = () => {
           <div className="mt-24 pt-12 border-t border-border flex justify-between">
             {prevPost ? (
               <Link 
-                to={`/series/${seriesId}/${prevPost.id}`} 
-                className="link-underline text-sm uppercase tracking-wide"
+                to={`/series/${seriesId}/${prevPost.slug}`} 
+                className="link-underline text-sm tracking-wide"
               >
-                ← Part {currentIndex}: {prevPost.title}
+                ← Part {postIndex}: {prevPost.title}
               </Link>
             ) : <div />}
             
             {nextPost && (
               <Link 
-                to={`/series/${seriesId}/${nextPost.id}`}
-                className="link-underline text-sm uppercase tracking-wide text-right"
+                to={`/series/${seriesId}/${nextPost.slug}`}
+                className="link-underline text-sm tracking-wide text-right"
               >
-                Part {currentIndex + 2}: {nextPost.title} →
+                Part {postIndex + 2}: {nextPost.title} →
               </Link>
             )}
           </div>

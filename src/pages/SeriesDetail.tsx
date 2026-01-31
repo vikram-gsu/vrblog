@@ -1,11 +1,12 @@
+import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
-import { series } from "@/data/series";
+import { getSeriesById } from "@/lib/content";
 import { ArrowLeft } from "lucide-react";
 
 const SeriesDetail = () => {
   const { seriesId } = useParams();
-  const currentSeries = series.find(s => s.id === seriesId);
+  const currentSeries = useMemo(() => getSeriesById(seriesId || ""), [seriesId]);
   
   if (!currentSeries) {
     return (
@@ -41,8 +42,8 @@ const SeriesDetail = () => {
           
           <div className="space-y-12">
             {currentSeries.posts.map((post, index) => (
-              <article key={post.id} className="group">
-                <Link to={`/series/${seriesId}/${post.id}`}>
+              <article key={post.slug} className="group">
+                <Link to={`/series/${seriesId}/${post.slug}`}>
                   <div className="flex gap-6 items-start">
                     <div className="text-5xl font-bold text-primary/20 min-w-[60px]">
                       {index + 1}

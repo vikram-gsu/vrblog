@@ -1,24 +1,40 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Header from "@/components/layout/Header";
 import PhotoLightbox from "@/components/photography/PhotoLightbox";
-import { photos } from "@/data/photos";
-
-const toPascalCase = (str: string) => {
-  return str
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
-};
+import { getPhotos } from "@/lib/content";
+import { toPascalCase } from "@/lib/utils";
 
 const Photography = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   
-  const categories = Array.from(new Set(photos.map(p => p.category)));
+  const photos = useMemo(() => getPhotos(), []);
+  const categories = useMemo(() => Array.from(new Set(photos.map(p => p.category))), [photos]);
   
   const filteredPhotos = selectedCategory
     ? photos.filter(p => p.category === selectedCategory)
     : photos;
+
+  // Show placeholder message if no photos
+  if (photos.length === 0) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        
+        <main className="pt-32 pb-24 px-6">
+          <div className="container-wide">
+            <h1 className="text-display mb-8">Photography</h1>
+            <div className="text-center py-24">
+              <p className="text-xl text-muted-foreground mb-4">No photos yet</p>
+              <p className="text-muted-foreground">
+                Add photos to <code className="bg-secondary px-2 py-1 rounded">content/photography/</code> folder
+              </p>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
   
   return (
     <div className="min-h-screen">
