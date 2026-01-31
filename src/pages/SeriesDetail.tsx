@@ -26,7 +26,7 @@ const SeriesDetail = () => {
         <div className="container-narrow">
           <Link 
             to="/series" 
-            className="inline-flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground hover:text-primary transition-colors mb-12"
+            className="inline-flex items-center gap-2 text-sm tracking-wide text-muted-foreground hover:text-primary transition-colors mb-12"
           >
             <ArrowLeft size={16} />
             Back to Series

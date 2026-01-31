@@ -3,6 +3,13 @@ import Header from "@/components/layout/Header";
 import { blogPosts } from "@/data/blogPosts";
 import { ArrowLeft } from "lucide-react";
 
+const toPascalCase = (str: string) => {
+  return str
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 const BlogPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -31,7 +38,7 @@ const BlogPost = () => {
         <article className="container-narrow">
           <Link 
             to="/blog" 
-            className="inline-flex items-center gap-2 text-sm uppercase tracking-wide text-muted-foreground hover:text-primary transition-colors mb-12"
+            className="inline-flex items-center gap-2 text-sm tracking-wide text-muted-foreground hover:text-primary transition-colors mb-12"
           >
             <ArrowLeft size={16} />
             Back to Blog
@@ -48,7 +55,7 @@ const BlogPost = () => {
             <span>•</span>
             <div className="flex gap-2">
               {post.tags.map(tag => (
-                <span key={tag} className="text-primary">{tag}</span>
+                <span key={tag} className="text-primary bg-primary/10 px-3 py-1 rounded-full">{toPascalCase(tag)}</span>
               ))}
             </div>
           </div>
