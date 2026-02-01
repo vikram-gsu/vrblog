@@ -1,0 +1,42 @@
+backend:
+  name: github
+  repo: vikram-gsu/vrblog
+  branch: main
+  auth_type: pkce
+  app_id: "Iv23liakYZFLwllaaFuu"
+
+media_folder: public/assets/blog
+public_folder: /assets/blog
+
+collections:
+  - name: blog
+    label: Blog Posts
+    folder: content/blog
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: yaml-frontmatter
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Read Time, name: readTime, widget: string, default: "5 min" }
+      - { label: Excerpt, name: excerpt, widget: text }
+      - { label: Tags, name: tags, widget: list, field: { label: Tag, name: tag, widget: string } }
+      - { label: Featured, name: featured, widget: boolean, default: false }
+      - { label: Featured Image, name: image, widget: image, required: false, allow_multiple: false }
+      - { label: Body, name: body, widget: markdown }
+
+  - name: series
+    label: Series
+    folder: content/series
+    create: true
+    nested:
+      depth: 2
+    meta: { path: { widget: string, label: Path, index_file: index } }
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { label: Read Time, name: readTime, widget: string, default: "5 min", required: false }
+      - { label: Excerpt, name: excerpt, widget: text, required: false }
+      - { label: Body, name: body, widget: markdown }
