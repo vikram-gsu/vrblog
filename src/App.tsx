@@ -26,12 +26,14 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            
+
             <Route path="/series" element={<Series />} />
             <Route path="/series/:seriesId" element={<SeriesDetail />} />
-            <Route path="/series/:seriesId/:postSlug" element={<SeriesPost />} />
+            <Route
+              path="/series/:seriesId/:postSlug"
+              element={<SeriesPost />}
+            />
             <Route path="/about" element={<About />} />
-            <Route path="/resume" element={<Resume />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
