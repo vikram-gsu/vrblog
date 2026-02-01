@@ -3,7 +3,7 @@ backend:
   repo: vikram-gsu/vrblog
   branch: main
   auth_type: pkce
-  app_id: "2775188"
+  app_id: "Iv23liakYZFLwllaaFuu"
 
 media_folder: public/assets/blog
 public_folder: /assets/blog
@@ -18,12 +18,30 @@ collections:
     format: yaml-frontmatter
     fields:
       - { label: Title, name: title, widget: string }
-      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - {
+          label: Date,
+          name: date,
+          widget: datetime,
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false
+        }
       - { label: Read Time, name: readTime, widget: string, default: "5 min" }
       - { label: Excerpt, name: excerpt, widget: text }
-      - { label: Tags, name: tags, widget: list, field: { label: Tag, name: tag, widget: string } }
+      - {
+          label: Tags,
+          name: tags,
+          widget: list,
+          field: { label: Tag, name: tag, widget: string }
+        }
       - { label: Featured, name: featured, widget: boolean, default: false }
-      - { label: Featured Image, name: image, widget: image, required: false, allow_multiple: false }
+      - {
+          label: Featured Image,
+          name: image,
+          widget: image,
+          required: false,
+          allow_multiple: false
+        }
       - { label: Body, name: body, widget: markdown }
 
   - name: series
@@ -49,8 +67,23 @@ collections:
     fields:
       - { label: Type, name: type, widget: hidden, default: post }
       - { label: Title, name: title, widget: string }
-      - { label: Order, name: order, widget: number, value_type: int, min: 1, max: 99, step: 1 }
-      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - {
+          label: Order,
+          name: order,
+          widget: number,
+          value_type: int,
+          min: 1,
+          max: 99,
+          step: 1
+        }
+      - {
+          label: Date,
+          name: date,
+          widget: datetime,
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false
+        }
       - { label: Read Time, name: readTime, widget: string, default: "5 min" }
       - { label: Excerpt, name: excerpt, widget: text }
       - { label: Body, name: body, widget: markdown }
