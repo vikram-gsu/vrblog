@@ -5,6 +5,8 @@ backend:
   auth_type: pkce
   app_id: "Iv23liakYZFLwllaaFuu"
 
+site_url: https://vikrampareddy.com
+
 media_folder: public/assets/blog
 public_folder: /assets/blog
 
