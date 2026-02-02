@@ -3,7 +3,7 @@ backend:
   repo: vikram-gsu/vrblog
   branch: main
   auth_type: pkce
-  app_id: "Iv23liakYZFLwllaaFuu"
+  app_id: "Ov23ligDyKVyHycatdpP"
 
 site_url: https://vikrampareddy.com
 
