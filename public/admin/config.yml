@@ -17,14 +17,40 @@ collections:
     extension: md
     format: yaml-frontmatter
     fields:
-      - { label: Title, name: title, widget: string }
-      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: Read Time, name: readTime, widget: string, default: "5 min" }
-      - { label: Excerpt, name: excerpt, widget: text }
-      - { label: Tags, name: tags, widget: list, field: { label: Tag, name: tag, widget: string } }
-      - { label: Featured, name: featured, widget: boolean, default: false }
-      - { label: Featured Image, name: image, widget: image, required: false, allow_multiple: false }
-      - { label: Body, name: body, widget: markdown }
+      - label: Title
+        name: title
+        widget: string
+      - label: Date
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+      - label: Read Time
+        name: readTime
+        widget: string
+        default: "5 min"
+      - label: Excerpt
+        name: excerpt
+        widget: text
+      - label: Tags
+        name: tags
+        widget: list
+        field:
+          label: Tag
+          name: tag
+          widget: string
+      - label: Featured
+        name: featured
+        widget: boolean
+        default: false
+      - label: Featured Image
+        name: image
+        widget: image
+        required: false
+      - label: Body
+        name: body
+        widget: markdown
 
   - name: series
     label: Series
@@ -32,11 +58,34 @@ collections:
     create: true
     nested:
       depth: 2
-    meta: { path: { widget: string, label: Path, index_file: index } }
+    meta:
+      path:
+        widget: string
+        label: Path
+        index_file: index
     fields:
-      - { label: Title, name: title, widget: string }
-      - { label: Description, name: description, widget: text }
-      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
-      - { label: Read Time, name: readTime, widget: string, default: "5 min", required: false }
-      - { label: Excerpt, name: excerpt, widget: text, required: false }
-      - { label: Body, name: body, widget: markdown }
+      - label: Title
+        name: title
+        widget: string
+      - label: Description
+        name: description
+        widget: text
+      - label: Date
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        required: false
+      - label: Read Time
+        name: readTime
+        widget: string
+        default: "5 min"
+        required: false
+      - label: Excerpt
+        name: excerpt
+        widget: text
+        required: false
+      - label: Body
+        name: body
+        widget: markdown
