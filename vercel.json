@@ -1,15 +1,9 @@
 {
-  "rewrites": [
-    { "source": "/admin/config.yml", "destination": "/admin/config.yml" },
-    { "source": "/admin", "destination": "/admin/index.html" },
-    { "source": "/((?!admin/).*)", "destination": "/index.html" }
-  ],
-  "headers": [
-    {
-      "source": "/admin/config.yml",
-      "headers": [
-        { "key": "Content-Type", "value": "text/yaml" }
-      ]
-    }
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/admin", "dest": "/admin/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
