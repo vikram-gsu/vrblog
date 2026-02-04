@@ -39,8 +39,12 @@ class Solution:
 ```
 
 Looking at a high level, I assumed the second solution would be faster. However, the first one was considerably faster. Here are the leetcode metrics for the first and second solutions respectively:
-| First Solution | Second Solution |
-|----------------|-----------------|
-| ![First Solution](/assets/blog/leet/contains_duplicates_1.png) | ![Second Solution](/assets/blog/leet/contains_duplicates_2.png) |
+**First Solution:**
+
+![First Solution](/assets/blog/leet/contains_duplicates_1.png)
+
+**Second Solution:**
+
+![Second Solution](/assets/blog/leet/contains_duplicates_2.png)
 
 This is because the standard library is implemented in highly optimized C. Writing it explicitly in Python bytecode causes a delay. Even implementing the same program in C++ is slower than the python one liner version - shows how efficient the standard library is.
