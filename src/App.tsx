@@ -12,6 +12,7 @@ import SeriesDetail from "./pages/SeriesDetail";
 import SeriesPost from "./pages/SeriesPost";
 import About from "./pages/About";
 import Resume from "./pages/Resume";
+import CurrentlyWorkingOn from "./pages/CurrentlyWorkingOn";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,10 @@ const App = () => (
               element={<SeriesPost />}
             />
             <Route path="/about" element={<About />} />
+            <Route
+              path="/currently-working-on"
+              element={<CurrentlyWorkingOn />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

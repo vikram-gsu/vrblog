@@ -91,3 +91,45 @@ collections:
       - label: Body
         name: body
         widget: markdown
+
+  - name: tracker
+    label: Tracker
+    files:
+      - name: log
+        label: Daily log
+        file: content/tracker/log.yaml
+        format: yaml
+        fields:
+          - label: Entries
+            name: entries
+            widget: list
+            add_to_top: false
+            summary: "{{fields.date}} · {{fields.task}} · {{fields.minutes}} min"
+            fields:
+              - label: Date
+                name: date
+                widget: datetime
+                format: "YYYY-MM-DD"
+                date_format: "YYYY-MM-DD"
+                time_format: false
+              - label: Task
+                name: task
+                widget: select
+                options:
+                  - { label: "LLM From Scratch (Raschka)", value: llm-from-scratch }
+                  - { label: "DDIA", value: ddia }
+                  - { label: "System Design Interview (Xu)", value: system-design-xu }
+                  - { label: "Blogs & papers", value: blogs-papers }
+                  - { label: "LeetCode", value: leetcode }
+                  - { label: "Building agents", value: agents }
+                  - { label: "Agent harnesses", value: agent-harnesses }
+                  - { label: "Experiments", value: experiments }
+              - label: Minutes
+                name: minutes
+                widget: number
+                value_type: int
+                required: false
+              - label: Note
+                name: note
+                widget: string
+                required: false
