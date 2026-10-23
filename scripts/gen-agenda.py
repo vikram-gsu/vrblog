@@ -4,7 +4,7 @@ import re
 import sys
 from datetime import date, timedelta
 
-START = date(2026, 10, 26)
+START = date(2026, 10, 23)
 END = date(2026, 12, 20)
 OUT = sys.argv[1]
 
@@ -110,7 +110,7 @@ LC75 = [
     (739, "Daily Temperatures"), (901, "Online Stock Span"),
 ]
 # Harder ones get a day to themselves; everything else is paired.
-SOLO = {399, 72, 2542}
+SOLO = {399, 790, 72}
 
 AGENTS = [
     "Server: inventory the machine (CPU, RAM, disk, GPU?); pick Ubuntu Server 24.04 LTS",
@@ -187,7 +187,15 @@ def main():
         ],
         "agents": [[item(t)] for t in AGENTS],
         "agent-harnesses": [[item(t)] for t in HARNESS],
-        "experiments": [[item("Catch-up buffer: finish anything missed this week, else free experiment")]] * 8,
+        "experiments": [],
+    }
+    # Used once a track's list runs out before the plan ends.
+    fillers = {
+        "llm-from-scratch": "Review: re-run chapter code, redo skipped exercises",
+        "system-design-xu": "Review: redo two designs from memory, timed",
+        "blogs-papers": "Open slot: whatever is worth reading this week",
+        "agent-harnesses": "Polish: fix the rough edges the evals found",
+        "experiments": "Catch-up buffer: finish anything missed this week, else free experiment",
     }
     schedule = {
         "llm-from-scratch": {0, 2, 4}, "ddia": {1, 3}, "system-design-xu": {5},
@@ -201,7 +209,11 @@ def main():
     ]
     d = START
     while d <= END:
-        todays = [(t, queues[t].pop(0)) for t in queues if d.weekday() in schedule[t]]
+        todays = [
+            (t, queues[t].pop(0) if queues[t] else [item(fillers[t])])
+            for t in queues
+            if d.weekday() in schedule[t]
+        ]
         lines.append(f'  "{d.isoformat()}":')
         for task, items in todays:
             lines.append(f"    {task}:")
