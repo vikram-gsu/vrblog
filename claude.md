@@ -109,7 +109,7 @@ image: ""
 4. **/series/:seriesId** - Series detail with all posts
 5. **/series/:seriesId/:postSlug** - Individual series post
 6. **/about** - About page
-7. **/currently-working-on** - GitHub-style daily trackers for an 8-week routine (nav: "Now")
+7. **/currently-working-on** - GitHub-style daily trackers for a two-month routine (nav: "Now")
 
 ## Content Management
 
