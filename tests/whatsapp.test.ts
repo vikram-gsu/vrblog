@@ -85,6 +85,13 @@ test("rejects a bad signature", async () => {
   assert.deepEqual(log(), []);
 });
 
+test("rejects everything while the app secret is unset", async () => {
+  delete process.env.WHATSAPP_APP_SECRET;
+  const res = await POST(webhook("ddia 30", { secret: "" }));
+  assert.equal(res.status, 401);
+  assert.deepEqual(log(), []);
+});
+
 test("ignores numbers other than mine", async () => {
   const res = await POST(webhook("ddia 30", { from: "15550001111" }));
   assert.equal(res.status, 200);

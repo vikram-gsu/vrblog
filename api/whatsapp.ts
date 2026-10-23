@@ -82,7 +82,8 @@ async function updateLog(
 // --- WhatsApp -------------------------------------------------------------
 
 function validSignature(raw: string, header: string | null): boolean {
-  if (!header?.startsWith("sha256=")) return false;
+  // Unconfigured means closed: an empty secret would make signatures forgeable.
+  if (!env("WHATSAPP_APP_SECRET") || !header?.startsWith("sha256=")) return false;
   const expected = createHmac("sha256", env("WHATSAPP_APP_SECRET")).update(raw).digest();
   const given = Buffer.from(header.slice("sha256=".length), "hex");
   return given.length === expected.length && timingSafeEqual(given, expected);
