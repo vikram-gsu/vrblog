@@ -1,0 +1,48 @@
+# The 8-week routine shown on /currently-working-on.
+# `days` is the weekly schedule for each tracker: mon tue wed thu fri sat sun.
+# Logs on unscheduled days still count; scheduled days with no log show as missed.
+title: "8 weeks of showing up"
+start: "2026-10-26"
+end: "2026-12-20"
+
+groups:
+  - id: reading
+    label: Reading
+    tasks:
+      - id: llm-from-scratch
+        label: Build a Large Language Model (From Scratch)
+        detail: Sebastian Raschka · from Ch 1
+        days: [mon, wed, fri]
+      - id: ddia
+        label: Designing Data-Intensive Applications
+        detail: Martin Kleppmann · from Transactions
+        days: [tue, thu]
+      - id: system-design-xu
+        label: System Design Interview
+        detail: Alex Xu · Vol 1, two chapters a week
+        days: [sat]
+      - id: blogs-papers
+        label: Blogs & research papers
+        detail: One a week, swapped as things come up
+        days: [sun]
+
+  - id: execution
+    label: Execution
+    tasks:
+      - id: leetcode
+        label: LeetCode
+        detail: LeetCode 75 · 1–2 problems a day
+        link: https://leetcode.com/studyplan/leetcode-75/
+        days: [mon, tue, wed, thu, fri]
+      - id: agents
+        label: Building agents
+        detail: Home server first, then a movie-ticket agent with WhatsApp approvals
+        days: [tue, thu]
+      - id: agent-harnesses
+        label: Building agent harnesses
+        detail: An agent loop, tools, permissions and evals, from scratch
+        days: [sat]
+      - id: experiments
+        label: Other experiments
+        detail: Catch-up buffer for now
+        days: [sun]

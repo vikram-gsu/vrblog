@@ -1,0 +1,6 @@
+# One entry per task per session. Append new entries at the bottom.
+#   date:    YYYY-MM-DD (required)
+#   task:    a task id from plan.yaml (required)
+#   minutes: how long you spent (optional, sets the square's shade)
+#   note:    what you did, a link, a chapter (optional, shown on hover)
+entries: []
