@@ -2,11 +2,13 @@ import { useMemo } from "react";
 import { differenceInCalendarDays, format, parseISO } from "date-fns";
 import Header from "@/components/layout/Header";
 import Heatmap, { cellClass } from "@/components/tracker/Heatmap";
+import TodayPanel from "@/components/tracker/TodayPanel";
 import { cn } from "@/lib/utils";
 import {
   buildOverallDays,
   buildTaskDays,
   computeStats,
+  getAgenda,
   getLog,
   getPlan,
   todayIso,
@@ -64,7 +66,15 @@ const TaskTracker = ({
   <div className="bg-card border border-border rounded-lg p-6">
     <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
       <div>
-        <h3 className="text-xl font-heading">{task.label}</h3>
+        <h3 className="text-xl font-heading">
+          {task.link ? (
+            <a href={task.link} target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">
+              {task.label}
+            </a>
+          ) : (
+            task.label
+          )}
+        </h3>
         {task.detail && (
           <p className="text-sm text-muted-foreground mt-1">{task.detail}</p>
         )}
@@ -113,12 +123,14 @@ const Legend = () => (
 
 const CurrentlyWorkingOn = () => {
   const today = todayIso();
-  const { plan, overall, overallStats, groups } = useMemo(() => {
+  const { plan, agenda, log, overall, overallStats, groups } = useMemo(() => {
     const plan = getPlan();
     const log = getLog();
     const overall = buildOverallDays(plan, log, today);
     return {
       plan,
+      agenda: getAgenda(),
+      log,
       overall,
       overallStats: computeStats(overall, today),
       groups: plan.groups.map((group) => ({
@@ -156,6 +168,8 @@ const CurrentlyWorkingOn = () => {
               ? `Starts ${format(parseISO(plan.start), "EEEE, MMM d")}`
               : `Day ${elapsed} of ${totalDays}`}
           </p>
+
+          <TodayPanel plan={plan} agenda={agenda} log={log} today={today} />
 
           <section className="bg-card border border-border rounded-lg p-6 md:p-8 mb-16">
             <div className="flex flex-wrap items-baseline justify-between gap-4 mb-6">

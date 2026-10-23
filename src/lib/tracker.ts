@@ -1,6 +1,7 @@
 import { parse as parseYaml } from "yaml";
 import planFile from "/content/tracker/plan.yaml?raw";
 import logFile from "/content/tracker/log.yaml?raw";
+import agendaFile from "/content/tracker/agenda.yaml?raw";
 
 export type Weekday = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 
@@ -8,6 +9,7 @@ export interface TrackerTask {
   id: string;
   label: string;
   detail?: string;
+  link?: string;
   days: Weekday[];
 }
 
@@ -30,6 +32,14 @@ export interface LogEntry {
   minutes?: number;
   note?: string;
 }
+
+export interface AgendaItem {
+  title: string;
+  link?: string;
+}
+
+/** date -> task id -> what to do that day */
+export type Agenda = Record<string, Record<string, AgendaItem[]>>;
 
 export type DayStatus = "done" | "missed" | "upcoming" | "rest";
 
@@ -106,6 +116,11 @@ export function getLog(): LogEntry[] {
   return (data.entries || [])
     .filter((e) => e && e.date && e.task)
     .map((e) => ({ ...e, date: normalizeDate(e.date) }));
+}
+
+export function getAgenda(): Agenda {
+  const data = (parseYaml(agendaFile) || {}) as { days?: Agenda };
+  return data.days || {};
 }
 
 function levelFor(minutes: number, hasEntry: boolean): TrackerDay["level"] {
