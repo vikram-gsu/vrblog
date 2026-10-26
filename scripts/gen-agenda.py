@@ -213,12 +213,13 @@ GENAI_SDI = "https://bytebytego.com/courses/genai-system-design-interview"
 VIDUR = "https://github.com/microsoft/vidur"
 SD_LAB = {
     "2026-10-27": [("Breakscale: rebuild Xu Ch 1 (LB, app, cache, DB + replica); push load until p99 breaks, note the numbers", BREAKSCALE)],
-    "2026-10-28": [("GenAI System Design Interview Ch 1 · the framework", GENAI_SDI),
-                   ("LLM Inference Handbook · foundations: prefill vs decode, TTFT, tokens/sec, KV cache", HANDBOOK)],
+    "2026-10-28": [("LLM Inference Handbook · foundations: prefill vs decode, TTFT, tokens/sec, KV cache", HANDBOOK)],
     "2026-10-29": [("Lab: llama.cpp/Ollama server on the box; load test at 1, 4, 16 concurrent users; chart TTFT and tokens/sec", None)],
     "2026-10-30": [("LLM Inference Handbook · batching (static vs continuous), PagedAttention", HANDBOOK),
                    ("Design: an LLM inference API (streaming, rate limits, multi-tenant)", None)],
-    "2026-10-31": [("Breakscale: retry storms, circuit breakers, backpressure, applied to an LLM gateway", BREAKSCALE)],
+    # The GenAI SDI book arrives Fri 10/30.
+    "2026-10-31": [("GenAI System Design Interview Ch 1 · the framework", GENAI_SDI),
+                   ("Breakscale: retry storms, circuit breakers, backpressure, applied to an LLM gateway", BREAKSCALE)],
     "2026-11-01": [("GenAI System Design Interview · the chatbot chapter; then design it yourself in 45 min", GENAI_SDI)],
     "2026-11-02": [("GenAI System Design Interview · the RAG chapter", GENAI_SDI),
                    ("Lab: small RAG service on the server with pgvector; retrieval vs generation latency", None)],
