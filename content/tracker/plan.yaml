@@ -12,7 +12,7 @@ groups:
     tasks:
       - id: llm-from-scratch
         label: Build a Large Language Model (From Scratch)
-        detail: Sebastian Raschka · two to three sections a session, Mon/Wed/Fri
+        detail: Sebastian Raschka · read, run the code, do the exercises · Mon/Wed/Fri
         link: https://github.com/rasbt/LLMs-from-scratch
       - id: ddia
         label: Designing Data-Intensive Applications

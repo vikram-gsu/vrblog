@@ -21,7 +21,7 @@ days:
       - {"title": "Catch-up buffer: finish anything missed this week, else free experiment"}
   "2026-10-26":
     llm-from-scratch:
-      - {"title": "Appendix A · Skim A.1–A.9: tensors, autograd, training loop, GPU"}
+      - {"title": "Appendix A · A.1–A.4 PyTorch tensors and autograd"}
     leetcode:
       - {"title": "1431. Kids With the Greatest Number of Candies", "link": "https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/"}
       - {"title": "605. Can Place Flowers", "link": "https://leetcode.com/problems/can-place-flowers/"}
@@ -52,7 +52,7 @@ days:
       - {"title": "Server: inventory the machine (CPU, RAM, disk, GPU?); install Ubuntu Server 24.04 LTS, SSH keys only"}
   "2026-10-28":
     llm-from-scratch:
-      - {"title": "Ch 2 · 2.1–2.6 Embeddings, tokenizing, BPE, sliding-window sampling"}
+      - {"title": "Appendix A · A.5–A.9 Multilayer nets, data loaders, training loop, GPU"}
     algorithms-lectures:
       - {"title": "Sec 4 · The master method", "link": "https://www.youtube.com/watch?v=6dGDcszz2DM&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
       - {"title": "Sec 5 · QuickSort", "link": "https://www.youtube.com/watch?v=ETo1cpLN7kk&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
@@ -96,7 +96,7 @@ days:
       - {"title": "Server: Docker + compose; Ollama + a small model (today's lab uses it)"}
   "2026-10-30":
     llm-from-scratch:
-      - {"title": "Ch 2 · 2.7–2.8 Token + positional embeddings; Ch 3 · 3.1–3.3 Simple self-attention"}
+      - {"title": "Ch 2 · 2.1–2.4 Word embeddings, tokenizing, token IDs, special tokens"}
     blogs-papers:
       - {"title": "Carried over from Sun: Attention Is All You Need (Vaswani et al., 2017)", "link": "https://arxiv.org/abs/1706.03762"}
     algorithms-lectures:
@@ -159,7 +159,7 @@ days:
       - {"title": "WhatsApp: run scripts/setup-whatsapp.sh so the tracker bot is live"}
   "2026-11-02":
     llm-from-scratch:
-      - {"title": "Ch 3 · 3.4–3.6 Trainable, causal and multi-head attention"}
+      - {"title": "Ch 2 · 2.5–2.8 Byte pair encoding, sliding-window sampling, token + positional embeddings"}
     algorithms-lectures:
       - {"title": "Sec 14 · Hash tables", "link": "https://www.youtube.com/watch?v=Qu183GFHbZQ&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
       - {"title": "Sec 15 · Universal hashing", "link": "https://www.youtube.com/watch?v=MWq8BvRR950&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
@@ -199,7 +199,7 @@ days:
       - {"title": "Approvals: agent asks yes/no on WhatsApp before a gated tool call"}
   "2026-11-04":
     llm-from-scratch:
-      - {"title": "Ch 4 · Build the GPT model end to end and generate text"}
+      - {"title": "Ch 3 · 3.1–3.4 Why attention; simple self-attention; trainable weights"}
     leetcode:
       - {"title": "Redo the problems you starred (stuck past 25 min)"}
       - {"title": "23. Merge k Sorted Lists", "link": "https://leetcode.com/problems/merge-k-sorted-lists/"}
@@ -237,7 +237,7 @@ days:
       - {"title": "Movie agent v0: find showtimes for a movie + theater (read-only)"}
   "2026-11-06":
     llm-from-scratch:
-      - {"title": "Bonus · Add a KV cache to your GPT model", "link": "https://github.com/rasbt/LLMs-from-scratch/tree/main/ch04/03_kv-cache"}
+      - {"title": "Ch 3 · 3.5–3.6 Causal attention, dropout, multi-head attention"}
     leetcode:
       - {"title": "121. Best Time to Buy and Sell Stock", "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"}
     agent-harnesses:
@@ -255,7 +255,7 @@ days:
       - {"title": "Catch-up buffer: finish anything missed this week, else free experiment"}
   "2026-11-09":
     llm-from-scratch:
-      - {"title": "Ch 5 · 5.1 Evaluating generative models (loss, perplexity)"}
+      - {"title": "Ch 4 · 4.1–4.3 GPT architecture, layer norm, GELU feed-forward"}
     leetcode:
       - {"title": "152. Maximum Product Subarray", "link": "https://leetcode.com/problems/maximum-product-subarray/"}
   "2026-11-10":
@@ -267,7 +267,7 @@ days:
       - {"title": "Movie agent: look up coupons and card offers, compare total price"}
   "2026-11-11":
     llm-from-scratch:
-      - {"title": "Ch 5 · 5.2 Training the LLM"}
+      - {"title": "Ch 4 · 4.4–4.7 Shortcut connections, transformer block, assemble GPT, generate text"}
     leetcode:
       - {"title": "55. Jump Game", "link": "https://leetcode.com/problems/jump-game/"}
   "2026-11-12":
@@ -279,7 +279,7 @@ days:
       - {"title": "Movie agent: propose a booking plan and ask for approval on WhatsApp"}
   "2026-11-13":
     llm-from-scratch:
-      - {"title": "Ch 5 · 5.3 Decoding: temperature and top-k sampling"}
+      - {"title": "Bonus · Add a KV cache to your GPT model", "link": "https://github.com/rasbt/LLMs-from-scratch/tree/main/ch04/03_kv-cache"}
     leetcode:
       - {"title": "54. Spiral Matrix", "link": "https://leetcode.com/problems/spiral-matrix/"}
   "2026-11-14":
@@ -295,7 +295,7 @@ days:
       - {"title": "Catch-up buffer: finish anything missed this week, else free experiment"}
   "2026-11-16":
     llm-from-scratch:
-      - {"title": "Ch 5 · 5.4–5.5 Save/load weights, load OpenAI GPT-2 weights"}
+      - {"title": "Ch 5 · 5.1 Evaluating generative models (loss, perplexity)"}
     leetcode:
       - {"title": "48. Rotate Image", "link": "https://leetcode.com/problems/rotate-image/"}
   "2026-11-17":
@@ -308,7 +308,7 @@ days:
       - {"title": "Movie agent: drive checkout up to the payment page, stop there (dry run)"}
   "2026-11-18":
     llm-from-scratch:
-      - {"title": "Ch 6 · 6.1–6.4 Classification fine-tuning: dataset, loaders, init"}
+      - {"title": "Ch 5 · 5.2 Training the LLM"}
     leetcode:
       - {"title": "125. Valid Palindrome", "link": "https://leetcode.com/problems/valid-palindrome/"}
   "2026-11-19":
@@ -320,7 +320,7 @@ days:
       - {"title": "Reliability: retries, timeouts, structured logs for every run"}
   "2026-11-20":
     llm-from-scratch:
-      - {"title": "Ch 6 · 6.5–6.8 Classification head, loss/accuracy, train, spam classifier"}
+      - {"title": "Ch 5 · 5.3 Decoding: temperature and top-k sampling"}
     leetcode:
       - {"title": "5. Longest Palindromic Substring", "link": "https://leetcode.com/problems/longest-palindromic-substring/"}
   "2026-11-21":
@@ -336,7 +336,7 @@ days:
       - {"title": "Catch-up buffer: finish anything missed this week, else free experiment"}
   "2026-11-23":
     llm-from-scratch:
-      - {"title": "Ch 7 · 7.1–7.4 Instruction data, batching, data loaders"}
+      - {"title": "Ch 5 · 5.4–5.5 Save/load weights, load OpenAI GPT-2 weights"}
     leetcode:
       - {"title": "647. Palindromic Substrings", "link": "https://leetcode.com/problems/palindromic-substrings/"}
   "2026-11-24":
@@ -349,7 +349,7 @@ days:
       - {"title": "Demo + write-up: blog post on what worked and what didn't"}
   "2026-11-25":
     llm-from-scratch:
-      - {"title": "Ch 7 · 7.5–7.6 Load pretrained model, instruction fine-tune"}
+      - {"title": "Ch 6 · 6.1–6.4 Classification fine-tuning: dataset, loaders, init"}
     leetcode:
       - {"title": "268. Missing Number", "link": "https://leetcode.com/problems/missing-number/"}
       - {"title": "371. Sum of Two Integers", "link": "https://leetcode.com/problems/sum-of-two-integers/"}
@@ -362,7 +362,7 @@ days:
       - {"title": "Extend the movie agent, or start the next agent idea"}
   "2026-11-27":
     llm-from-scratch:
-      - {"title": "Ch 7 · 7.7–7.9 Extract responses, evaluate with an LLM judge"}
+      - {"title": "Ch 6 · 6.5–6.8 Classification head, loss/accuracy, train, spam classifier"}
     leetcode:
       - {"title": "213. House Robber II", "link": "https://leetcode.com/problems/house-robber-ii/"}
   "2026-11-28":
@@ -378,7 +378,7 @@ days:
       - {"title": "Catch-up buffer: finish anything missed this week, else free experiment"}
   "2026-11-30":
     llm-from-scratch:
-      - {"title": "Appendix D · LR warmup, cosine decay, gradient clipping"}
+      - {"title": "Ch 7 · 7.1–7.4 Instruction data, batching, data loaders"}
     leetcode:
       - {"title": "91. Decode Ways", "link": "https://leetcode.com/problems/decode-ways/"}
   "2026-12-01":
@@ -390,7 +390,7 @@ days:
       - {"title": "Extend the movie agent, or start the next agent idea"}
   "2026-12-02":
     llm-from-scratch:
-      - {"title": "Appendix E · Parameter-efficient fine-tuning with LoRA"}
+      - {"title": "Ch 7 · 7.5–7.6 Load pretrained model, instruction fine-tune"}
     leetcode:
       - {"title": "141. Linked List Cycle", "link": "https://leetcode.com/problems/linked-list-cycle/"}
       - {"title": "21. Merge Two Sorted Lists", "link": "https://leetcode.com/problems/merge-two-sorted-lists/"}
@@ -403,7 +403,7 @@ days:
       - {"title": "Extend the movie agent, or start the next agent idea"}
   "2026-12-04":
     llm-from-scratch:
-      - {"title": "Review: re-run chapter code, redo skipped exercises"}
+      - {"title": "Ch 7 · 7.7–7.9 Extract responses, evaluate with an LLM judge"}
     leetcode:
       - {"title": "143. Reorder List", "link": "https://leetcode.com/problems/reorder-list/"}
   "2026-12-05":
@@ -419,7 +419,7 @@ days:
       - {"title": "Catch-up buffer: finish anything missed this week, else free experiment"}
   "2026-12-07":
     llm-from-scratch:
-      - {"title": "Review: re-run chapter code, redo skipped exercises"}
+      - {"title": "Appendix D · LR warmup, cosine decay, gradient clipping"}
     leetcode:
       - {"title": "100. Same Tree", "link": "https://leetcode.com/problems/same-tree/"}
       - {"title": "226. Invert Binary Tree", "link": "https://leetcode.com/problems/invert-binary-tree/"}
@@ -432,7 +432,7 @@ days:
       - {"title": "Extend the movie agent, or start the next agent idea"}
   "2026-12-09":
     llm-from-scratch:
-      - {"title": "Review: re-run chapter code, redo skipped exercises"}
+      - {"title": "Appendix E · Parameter-efficient fine-tuning with LoRA"}
     leetcode:
       - {"title": "572. Subtree of Another Tree", "link": "https://leetcode.com/problems/subtree-of-another-tree/"}
   "2026-12-10":
