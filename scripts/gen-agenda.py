@@ -16,13 +16,17 @@ SPRINT_END = date(2026, 11, 5)
 OUT = sys.argv[1]
 
 RASBT = "https://github.com/rasbt/LLMs-from-scratch/tree/main"
+# Paced for understanding: read, type out and run the code, do the exercises. No skimming.
 LLM = [
     ("Ch 1 · Understanding large language models", None),
-    ("Appendix A · Skim A.1–A.9: tensors, autograd, training loop, GPU", None),
-    ("Ch 2 · 2.1–2.6 Embeddings, tokenizing, BPE, sliding-window sampling", None),
-    ("Ch 2 · 2.7–2.8 Token + positional embeddings; Ch 3 · 3.1–3.3 Simple self-attention", None),
-    ("Ch 3 · 3.4–3.6 Trainable, causal and multi-head attention", None),
-    ("Ch 4 · Build the GPT model end to end and generate text", None),
+    ("Appendix A · A.1–A.4 PyTorch tensors and autograd", None),
+    ("Appendix A · A.5–A.9 Multilayer nets, data loaders, training loop, GPU", None),
+    ("Ch 2 · 2.1–2.4 Word embeddings, tokenizing, token IDs, special tokens", None),
+    ("Ch 2 · 2.5–2.8 Byte pair encoding, sliding-window sampling, token + positional embeddings", None),
+    ("Ch 3 · 3.1–3.4 Why attention; simple self-attention; trainable weights", None),
+    ("Ch 3 · 3.5–3.6 Causal attention, dropout, multi-head attention", None),
+    ("Ch 4 · 4.1–4.3 GPT architecture, layer norm, GELU feed-forward", None),
+    ("Ch 4 · 4.4–4.7 Shortcut connections, transformer block, assemble GPT, generate text", None),
     ("Bonus · Add a KV cache to your GPT model", f"{RASBT}/ch04/03_kv-cache"),
     ("Ch 5 · 5.1 Evaluating generative models (loss, perplexity)", None),
     ("Ch 5 · 5.2 Training the LLM", None),
