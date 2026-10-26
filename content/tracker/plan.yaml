@@ -19,7 +19,7 @@ groups:
         detail: Martin Kleppmann · from Transactions, Tue/Thu
       - id: system-design-xu
         label: System Design Interview
-        detail: Alex Xu · Vol 1, two chapters every Saturday
+        detail: Alex Xu · Vol 1, a chapter a day until Nov 7, then Saturday reviews
       - id: blogs-papers
         label: Blogs & research papers
         detail: One a week, swapped as things come up

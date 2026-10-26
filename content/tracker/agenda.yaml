@@ -30,6 +30,8 @@ days:
   "2026-10-27":
     ddia:
       - {"title": "Transactions · ACID; single- vs multi-object operations"}
+    system-design-xu:
+      - {"title": "Ch 3 · A framework for system design interviews"}
     algorithms-lectures:
       - {"title": "Sec 1 · Introduction, merge sort", "link": "https://www.youtube.com/watch?v=yRM3sc57q0c&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
       - {"title": "Sec 2 · Asymptotic analysis", "link": "https://www.youtube.com/watch?v=l-cNaKGc-yY&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
@@ -53,6 +55,8 @@ days:
   "2026-10-28":
     llm-from-scratch:
       - {"title": "Appendix A · A.5–A.9 Multilayer nets, data loaders, training loop, GPU"}
+    system-design-xu:
+      - {"title": "Ch 4 · Design a rate limiter"}
     algorithms-lectures:
       - {"title": "Sec 4 · The master method", "link": "https://www.youtube.com/watch?v=6dGDcszz2DM&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
       - {"title": "Sec 5 · QuickSort", "link": "https://www.youtube.com/watch?v=ETo1cpLN7kk&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
@@ -75,6 +79,8 @@ days:
   "2026-10-29":
     ddia:
       - {"title": "Transactions · Weak isolation: read committed, snapshot isolation, lost updates"}
+    system-design-xu:
+      - {"title": "Ch 5 · Design consistent hashing"}
     algorithms-lectures:
       - {"title": "Sec 8 · Linear-time selection", "link": "https://www.youtube.com/watch?v=nFw6x7DoYbs&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
       - {"title": "Sec 9 · Graphs and minimum cuts", "link": "https://www.youtube.com/watch?v=4Ih3UhVuEtw&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
@@ -96,6 +102,8 @@ days:
   "2026-10-30":
     llm-from-scratch:
       - {"title": "Ch 2 · 2.1–2.4 Word embeddings, tokenizing, token IDs, special tokens"}
+    system-design-xu:
+      - {"title": "Ch 6 · Design a key-value store"}
     blogs-papers:
       - {"title": "Carried over from Sun: Attention Is All You Need (Vaswani et al., 2017)", "link": "https://arxiv.org/abs/1706.03762"}
     algorithms-lectures:
@@ -118,8 +126,8 @@ days:
       - {"title": "Server: a hello service you can reach from your phone over Tailscale; Claude API key in place"}
   "2026-10-31":
     system-design-xu:
-      - {"title": "Ch 3 · A framework for system design interviews"}
-      - {"title": "Ch 4 · Design a rate limiter"}
+      - {"title": "Ch 7 · Design a unique ID generator"}
+      - {"title": "Ch 8 · Design a URL shortener"}
     algorithms-lectures:
       - {"title": "Sec 11 · Dijkstra's shortest paths", "link": "https://www.youtube.com/watch?v=jRlNVmRjdRk&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
       - {"title": "Sec 12 · Heaps", "link": "https://www.youtube.com/watch?v=cMrQxxrKg8I&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
@@ -140,6 +148,8 @@ days:
     agents:
       - {"title": "Agent: a minimal agent loop on the server against the Claude API, one tool"}
   "2026-11-01":
+    system-design-xu:
+      - {"title": "Ch 9 · Design a web crawler"}
     blogs-papers:
       - {"title": "Building effective agents (Anthropic, 2024)", "link": "https://www.anthropic.com/engineering/building-effective-agents"}
     algorithms-lectures:
@@ -160,6 +170,8 @@ days:
   "2026-11-02":
     llm-from-scratch:
       - {"title": "Ch 2 · 2.5–2.8 Byte pair encoding, sliding-window sampling, token + positional embeddings"}
+    system-design-xu:
+      - {"title": "Ch 10 · Design a notification system"}
     algorithms-lectures:
       - {"title": "Sec 14 · Hash tables", "link": "https://www.youtube.com/watch?v=Qu183GFHbZQ&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
       - {"title": "Sec 15 · Universal hashing", "link": "https://www.youtube.com/watch?v=MWq8BvRR950&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
@@ -182,6 +194,8 @@ days:
   "2026-11-03":
     ddia:
       - {"title": "Transactions · Write skew, phantoms; serializability (serial, 2PL, SSI)"}
+    system-design-xu:
+      - {"title": "Ch 11 · Design a news feed system"}
     leetcode:
       - {"title": "Redo the problems you starred (stuck past 25 min)"}
       - {"title": "1. Two Sum", "link": "https://leetcode.com/problems/two-sum/"}
@@ -200,6 +214,8 @@ days:
   "2026-11-04":
     llm-from-scratch:
       - {"title": "Ch 3 · 3.1–3.4 Why attention; simple self-attention; trainable weights"}
+    system-design-xu:
+      - {"title": "Ch 12 · Design a chat system"}
     leetcode:
       - {"title": "Redo the problems you starred (stuck past 25 min)"}
       - {"title": "23. Merge k Sorted Lists", "link": "https://leetcode.com/problems/merge-k-sorted-lists/"}
@@ -219,6 +235,8 @@ days:
   "2026-11-05":
     ddia:
       - {"title": "Trouble with Distributed Systems · Faults, partial failures, unreliable networks"}
+    system-design-xu:
+      - {"title": "Ch 13 · Design a search autocomplete system"}
     leetcode:
       - {"title": "Redo the problems you starred (stuck past 25 min)"}
       - {"title": "322. Coin Change", "link": "https://leetcode.com/problems/coin-change/"}
@@ -238,14 +256,16 @@ days:
   "2026-11-06":
     llm-from-scratch:
       - {"title": "Ch 3 · 3.5–3.6 Causal attention, dropout, multi-head attention"}
+    system-design-xu:
+      - {"title": "Ch 14 · Design YouTube"}
     leetcode:
       - {"title": "121. Best Time to Buy and Sell Stock", "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"}
     agent-harnesses:
       - {"title": "Carried over from Sat 10/24: Study how agent harnesses work (agent loop, tools, permissions); sketch your design"}
   "2026-11-07":
     system-design-xu:
-      - {"title": "Ch 5 · Design consistent hashing"}
-      - {"title": "Ch 6 · Design a key-value store"}
+      - {"title": "Ch 15 · Design Google Drive"}
+      - {"title": "Ch 16 · The learning continues"}
     agent-harnesses:
       - {"title": "Agent loop from scratch: messages, tool calls, stop conditions, no framework"}
   "2026-11-08":
@@ -284,8 +304,7 @@ days:
       - {"title": "54. Spiral Matrix", "link": "https://leetcode.com/problems/spiral-matrix/"}
   "2026-11-14":
     system-design-xu:
-      - {"title": "Ch 7 · Design a unique ID generator"}
-      - {"title": "Ch 8 · Design a URL shortener"}
+      - {"title": "Review: redo two designs from memory, timed"}
     agent-harnesses:
       - {"title": "Tool registry: JSON schemas, validation, sandboxed execution in Docker"}
   "2026-11-15":
@@ -325,8 +344,7 @@ days:
       - {"title": "5. Longest Palindromic Substring", "link": "https://leetcode.com/problems/longest-palindromic-substring/"}
   "2026-11-21":
     system-design-xu:
-      - {"title": "Ch 9 · Design a web crawler"}
-      - {"title": "Ch 10 · Design a notification system"}
+      - {"title": "Review: redo two designs from memory, timed"}
     agent-harnesses:
       - {"title": "Permission layer: allow / deny / ask, with 'ask' routed to WhatsApp"}
   "2026-11-22":
@@ -367,8 +385,7 @@ days:
       - {"title": "213. House Robber II", "link": "https://leetcode.com/problems/house-robber-ii/"}
   "2026-11-28":
     system-design-xu:
-      - {"title": "Ch 11 · Design a news feed system"}
-      - {"title": "Ch 12 · Design a chat system"}
+      - {"title": "Review: redo two designs from memory, timed"}
     agent-harnesses:
       - {"title": "Memory and context: persist conversations, compact when long"}
   "2026-11-29":
@@ -408,8 +425,7 @@ days:
       - {"title": "143. Reorder List", "link": "https://leetcode.com/problems/reorder-list/"}
   "2026-12-05":
     system-design-xu:
-      - {"title": "Ch 13 · Design a search autocomplete system"}
-      - {"title": "Ch 14 · Design YouTube"}
+      - {"title": "Review: redo two designs from memory, timed"}
     agent-harnesses:
       - {"title": "Observability: trace every step to JSONL, a tiny viewer page"}
   "2026-12-06":
@@ -449,8 +465,7 @@ days:
       - {"title": "230. Kth Smallest Element in a BST", "link": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/"}
   "2026-12-12":
     system-design-xu:
-      - {"title": "Ch 15 · Design Google Drive"}
-      - {"title": "Ch 16 · The learning continues (review weak spots)"}
+      - {"title": "Review: redo two designs from memory, timed"}
     agent-harnesses:
       - {"title": "Evals: a handful of scripted tasks, run and score them"}
   "2026-12-13":
