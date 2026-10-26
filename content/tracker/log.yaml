@@ -3,4 +3,7 @@
 #   task:    a task id from plan.yaml (required)
 #   minutes: how long you spent (optional, sets the square's shade)
 #   note:    what you did, a link, a chapter (optional, shown on hover)
-entries: []
+entries:
+  - { date: 2026-10-23, task: llm-from-scratch, note: Ch 1 · Understanding large language models }
+  - { date: 2026-10-23, task: leetcode, note: "1768 Merge Strings Alternately, 1071 GCD of Strings" }
+  - { date: 2026-10-24, task: system-design-xu, note: "Ch 1 Scale from zero to millions, Ch 2 Back-of-the-envelope estimation" }

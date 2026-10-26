@@ -1,6 +1,5 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import {
   appendEntries,
   parseMessage,
@@ -62,8 +61,8 @@ test("a lone date word is not swallowed as a date", () => {
   assert.deepEqual(parseMessage("today", TODAY, IDS), [{ kind: "today", date: TODAY }]);
 });
 
-test("append to the real empty log keeps comments and parses back", () => {
-  const original = readFileSync(new URL("../content/tracker/log.yaml", import.meta.url), "utf8");
+test("append to an empty log keeps comments and parses back", () => {
+  const original = "# One entry per task per session. Append new entries at the bottom.\n#   date: YYYY-MM-DD\nentries: []\n";
   const out = appendEntries(original, [
     { date: TODAY, task: "ddia", minutes: 45, note: 'ch8: "quotes" & colons' },
     { date: TODAY, task: "leetcode" },
