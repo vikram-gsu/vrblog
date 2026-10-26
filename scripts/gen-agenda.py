@@ -61,16 +61,23 @@ DDIA = [
     "Future of Data Systems · Aiming for correctness, doing the right thing",
 ]
 
+# One session per item. A chapter a day from Oct 27 to Nov 7 (short ones paired), then done.
 XU = [
     ["Ch 1 · Scale from zero to millions of users", "Ch 2 · Back-of-the-envelope estimation"],
-    ["Ch 3 · A framework for system design interviews", "Ch 4 · Design a rate limiter"],
-    ["Ch 5 · Design consistent hashing", "Ch 6 · Design a key-value store"],
+    ["Ch 3 · A framework for system design interviews"],
+    ["Ch 4 · Design a rate limiter"],
+    ["Ch 5 · Design consistent hashing"],
+    ["Ch 6 · Design a key-value store"],
     ["Ch 7 · Design a unique ID generator", "Ch 8 · Design a URL shortener"],
-    ["Ch 9 · Design a web crawler", "Ch 10 · Design a notification system"],
-    ["Ch 11 · Design a news feed system", "Ch 12 · Design a chat system"],
-    ["Ch 13 · Design a search autocomplete system", "Ch 14 · Design YouTube"],
-    ["Ch 15 · Design Google Drive", "Ch 16 · The learning continues (review weak spots)"],
+    ["Ch 9 · Design a web crawler"],
+    ["Ch 10 · Design a notification system"],
+    ["Ch 11 · Design a news feed system"],
+    ["Ch 12 · Design a chat system"],
+    ["Ch 13 · Design a search autocomplete system"],
+    ["Ch 14 · Design YouTube"],
+    ["Ch 15 · Design Google Drive", "Ch 16 · The learning continues"],
 ]
+XU_DAILY = (date(2026, 10, 27), date(2026, 11, 7))
 
 # LeetCode 75 study plan, in its topic order.
 LC75 = [
@@ -328,6 +335,8 @@ def main():
     }
 
     def scheduled(task, d):
+        if task == "system-design-xu" and XU_DAILY[0] <= d <= XU_DAILY[1]:
+            return True
         if in_sprint(d) and task in SPRINT_DAILY:
             return True
         if in_sprint(d) and task in SPRINT_PAUSED:
