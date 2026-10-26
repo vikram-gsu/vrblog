@@ -71,7 +71,7 @@ undo                     remove the last entry
 help
 ```
 
-Short names: `llm`, `ddia`, `xu`, `papers`, `lc`, `agents`, `harness`, `exp` (full task ids from `plan.yaml` work too).
+Short names: `llm`, `ddia`, `xu`, `papers`, `algo`, `lc`, `sd`, `agents` (or `server`), `harness`, `exp` (full task ids from `plan.yaml` work too).
 
 ## Troubleshooting (Vercel → Logs → `/api/whatsapp`)
 

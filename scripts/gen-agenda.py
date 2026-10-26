@@ -1,4 +1,9 @@
-"""Generates content/tracker/agenda.yaml: what to do on each day of the 8-week plan."""
+"""Generates content/tracker/agenda.yaml: what to do on each day of the 8-week plan.
+
+Most tracks follow a weekly rhythm. The 10-day sprint (Oct 27 to Nov 5) overrides it:
+LeetCode 75 in a week, the Stanford Algorithms lectures, a daily system design lab,
+daily server work, and harness/experiments paused.
+"""
 import json
 import re
 import sys
@@ -6,33 +11,30 @@ from datetime import date, timedelta
 
 START = date(2026, 10, 23)
 END = date(2026, 12, 20)
+SPRINT_START = date(2026, 10, 27)
+SPRINT_END = date(2026, 11, 5)
 OUT = sys.argv[1]
 
+RASBT = "https://github.com/rasbt/LLMs-from-scratch/tree/main"
 LLM = [
-    "Ch 1 · Understanding large language models",
-    "Appendix A · A.1–A.4 PyTorch tensors and autograd",
-    "Appendix A · A.5–A.9 Multilayer nets, data loaders, training loop, GPU",
-    "Ch 2 · 2.1–2.4 Word embeddings, tokenizing, token IDs, special tokens",
-    "Ch 2 · 2.5–2.6 Byte pair encoding, sliding-window data sampling",
-    "Ch 2 · 2.7–2.8 Token embeddings and positional encodings",
-    "Ch 3 · 3.1–3.3 Why attention; simple self-attention",
-    "Ch 3 · 3.4 Self-attention with trainable weights",
-    "Ch 3 · 3.5 Causal attention and dropout",
-    "Ch 3 · 3.6 Multi-head attention",
-    "Ch 4 · 4.1–4.3 GPT architecture, layer norm, GELU feed-forward",
-    "Ch 4 · 4.4–4.5 Shortcut connections, the transformer block",
-    "Ch 4 · 4.6–4.7 Assemble the GPT model, generate text",
-    "Ch 5 · 5.1 Evaluating generative models (loss, perplexity)",
-    "Ch 5 · 5.2 Training the LLM",
-    "Ch 5 · 5.3 Decoding: temperature and top-k sampling",
-    "Ch 5 · 5.4–5.5 Save/load weights, load OpenAI GPT-2 weights",
-    "Ch 6 · 6.1–6.4 Classification fine-tuning: dataset, loaders, init",
-    "Ch 6 · 6.5–6.8 Classification head, loss/accuracy, train, spam classifier",
-    "Ch 7 · 7.1–7.4 Instruction data, batching, data loaders",
-    "Ch 7 · 7.5–7.6 Load pretrained model, instruction fine-tune",
-    "Ch 7 · 7.7–7.9 Extract responses, evaluate with an LLM judge",
-    "Appendix D · LR warmup, cosine decay, gradient clipping",
-    "Appendix E · Parameter-efficient fine-tuning with LoRA",
+    ("Ch 1 · Understanding large language models", None),
+    ("Appendix A · Skim A.1–A.9: tensors, autograd, training loop, GPU", None),
+    ("Ch 2 · 2.1–2.6 Embeddings, tokenizing, BPE, sliding-window sampling", None),
+    ("Ch 2 · 2.7–2.8 Token + positional embeddings; Ch 3 · 3.1–3.3 Simple self-attention", None),
+    ("Ch 3 · 3.4–3.6 Trainable, causal and multi-head attention", None),
+    ("Ch 4 · Build the GPT model end to end and generate text", None),
+    ("Bonus · Add a KV cache to your GPT model", f"{RASBT}/ch04/03_kv-cache"),
+    ("Ch 5 · 5.1 Evaluating generative models (loss, perplexity)", None),
+    ("Ch 5 · 5.2 Training the LLM", None),
+    ("Ch 5 · 5.3 Decoding: temperature and top-k sampling", None),
+    ("Ch 5 · 5.4–5.5 Save/load weights, load OpenAI GPT-2 weights", None),
+    ("Ch 6 · 6.1–6.4 Classification fine-tuning: dataset, loaders, init", None),
+    ("Ch 6 · 6.5–6.8 Classification head, loss/accuracy, train, spam classifier", None),
+    ("Ch 7 · 7.1–7.4 Instruction data, batching, data loaders", None),
+    ("Ch 7 · 7.5–7.6 Load pretrained model, instruction fine-tune", None),
+    ("Ch 7 · 7.7–7.9 Extract responses, evaluate with an LLM judge", None),
+    ("Appendix D · LR warmup, cosine decay, gradient clipping", None),
+    ("Appendix E · Parameter-efficient fine-tuning with LoRA", None),
 ]
 
 # Section names follow the 1st edition; you're already into Transactions.
@@ -109,27 +111,6 @@ LC75 = [
     (435, "Non-overlapping Intervals"), (452, "Minimum Number of Arrows to Burst Balloons"),
     (739, "Daily Temperatures"), (901, "Online Stock Span"),
 ]
-# Harder ones get a day to themselves; everything else is paired.
-SOLO = {399, 790, 72}
-
-AGENTS = [
-    "Server: inventory the machine (CPU, RAM, disk, GPU?); pick Ubuntu Server 24.04 LTS",
-    "Server: install Ubuntu, SSH keys only, DHCP reservation on the router",
-    "Server: harden it (ufw, unattended-upgrades, no password SSH); add Tailscale",
-    "Server: Docker + compose; run a hello service you can reach from your phone",
-    "Server: Ollama + a small model on CPU; benchmark tokens/sec; set up Claude API key",
-    "Agent: run your harness loop on the server against the Claude API, one tool",
-    "WhatsApp: Cloud API test number (or Twilio sandbox); receive a webhook via Tailscale Funnel",
-    "WhatsApp: tracker bot, 'ddia 45 ch8' commits a line to log.yaml",
-    "Approvals: agent asks yes/no on WhatsApp before a gated tool call",
-    "Browser: Playwright on the server; headless navigate a showtimes page",
-    "Movie agent v0: find showtimes for a movie + theater (read-only)",
-    "Movie agent: look up coupons and card offers, compare total price",
-    "Movie agent: propose a booking plan and ask for approval on WhatsApp",
-    "Movie agent: drive checkout up to the payment page, stop there (dry run)",
-    "Reliability: retries, timeouts, structured logs for every run",
-    "Demo + write-up: blog post on what worked and what didn't",
-]
 
 HARNESS = [
     "Study: how agent harnesses work (agent loop, tools, permissions); sketch your design",
@@ -154,37 +135,173 @@ PAPERS = [
 ]
 
 
+
+
+# How many LeetCode 75 problems each day gets, in order. The rest of the plan is the sprint.
+LC75_DAYS = {
+    "2026-10-23": 2, "2026-10-26": 4,
+    "2026-10-27": 11,  # array/string, two pointers, sliding window
+    "2026-10-28": 11,  # prefix sum, hash map/set, stack, queue
+    "2026-10-29": 10,  # linked list, binary tree DFS
+    "2026-10-30": 10,  # tree BFS, BST, graph DFS/BFS
+    "2026-10-31": 10,  # heap, binary search, backtracking
+    "2026-11-01": 8,   # DP
+    "2026-11-02": 9,   # bits, trie, intervals, monotonic stack
+}
+REDO = ("Redo the problems you starred (stuck past 25 min)", None)
+MOCK = ("Timed mock: 2 unseen mediums in 45 min", None)
+# Blind 75 problems that LeetCode 75 skips.
+BLIND_SPRINT = {
+    "2026-11-03": [(1, "Two Sum"), (217, "Contains Duplicate"), (347, "Top K Frequent Elements"),
+                   (128, "Longest Consecutive Sequence"), (15, "3Sum"),
+                   (3, "Longest Substring Without Repeating Characters"),
+                   (76, "Minimum Window Substring"), (20, "Valid Parentheses")],
+    "2026-11-04": [(23, "Merge k Sorted Lists"), (146, "LRU Cache"),
+                   (297, "Serialize and Deserialize Binary Tree"), (98, "Validate Binary Search Tree"),
+                   (200, "Number of Islands"), (207, "Course Schedule"), (133, "Clone Graph"),
+                   (417, "Pacific Atlantic Water Flow")],
+    "2026-11-05": [(322, "Coin Change"), (300, "Longest Increasing Subsequence"), (139, "Word Break"),
+                   (33, "Search in Rotated Sorted Array"), (56, "Merge Intervals"),
+                   (57, "Insert Interval"), (295, "Find Median from Data Stream"),
+                   (53, "Maximum Subarray")],
+}
+# The rest of Blind 75 (premium-only ones left out), 1–2 per weekday after the sprint.
+BLIND_AFTER = [
+    [(121, "Best Time to Buy and Sell Stock")], [(152, "Maximum Product Subarray")],
+    [(153, "Find Minimum in Rotated Sorted Array")], [(55, "Jump Game")],
+    [(73, "Set Matrix Zeroes")], [(54, "Spiral Matrix")], [(48, "Rotate Image")],
+    [(242, "Valid Anagram"), (49, "Group Anagrams")], [(125, "Valid Palindrome")],
+    [(424, "Longest Repeating Character Replacement")], [(5, "Longest Palindromic Substring")],
+    [(647, "Palindromic Substrings")],
+    [(191, "Number of 1 Bits"), (190, "Reverse Bits")], [(268, "Missing Number"), (371, "Sum of Two Integers")],
+    [(70, "Climbing Stairs")], [(213, "House Robber II")], [(91, "Decode Ways")], [(377, "Combination Sum IV")],
+    [(141, "Linked List Cycle"), (21, "Merge Two Sorted Lists")], [(19, "Remove Nth Node From End of List")],
+    [(143, "Reorder List")],
+    [(100, "Same Tree"), (226, "Invert Binary Tree")], [(102, "Binary Tree Level Order Traversal")],
+    [(572, "Subtree of Another Tree")], [(105, "Construct Binary Tree from Preorder and Inorder Traversal")],
+    [(230, "Kth Smallest Element in a BST")], [(235, "Lowest Common Ancestor of a Binary Search Tree")],
+    [(124, "Binary Tree Maximum Path Sum")],
+    [(211, "Design Add and Search Words Data Structure")], [(79, "Word Search")], [(212, "Word Search II")],
+]
+
+# Stanford Algorithms 1 (Roughgarden), first video of each section. Optional/Advanced videos skipped.
+PLAYLIST = "PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"
+LECTURES = {
+    "2026-10-27": [("Sec 1 · Introduction, merge sort", "yRM3sc57q0c"),
+                   ("Sec 2 · Asymptotic analysis", "l-cNaKGc-yY"),
+                   ("Sec 3 · Divide and conquer: inversions, Strassen", "7_AJfusC6UQ")],
+    "2026-10-28": [("Sec 4 · The master method", "6dGDcszz2DM"),
+                   ("Sec 5 · QuickSort", "ETo1cpLN7kk")],
+    "2026-10-29": [("Sec 8 · Linear-time selection", "nFw6x7DoYbs"),
+                   ("Sec 9 · Graphs and minimum cuts", "4Ih3UhVuEtw")],
+    "2026-10-30": [("Sec 10 · Graph search: BFS, DFS, topological sort, SCCs", "SW6jwg7WS48")],
+    "2026-10-31": [("Sec 11 · Dijkstra's shortest paths", "jRlNVmRjdRk"),
+                   ("Sec 12 · Heaps", "cMrQxxrKg8I")],
+    "2026-11-01": [("Sec 13 · Balanced search trees", "IbNZ-x1I2IM")],
+    "2026-11-02": [("Sec 14 · Hash tables", "Qu183GFHbZQ"),
+                   ("Sec 15 · Universal hashing", "MWq8BvRR950"),
+                   ("Sec 16 · Bloom filters", "zYlxP7F3Z3c")],
+}
+
+BREAKSCALE = "https://breakscale.tech"
+HANDBOOK = "https://handbook.modular.com"
+GENAI_SDI = "https://bytebytego.com/courses/genai-system-design-interview"
+VIDUR = "https://github.com/microsoft/vidur"
+SD_LAB = {
+    "2026-10-27": [("Breakscale: rebuild Xu Ch 1 (LB, app, cache, DB + replica); push load until p99 breaks, note the numbers", BREAKSCALE)],
+    "2026-10-28": [("GenAI System Design Interview Ch 1 · the framework", GENAI_SDI),
+                   ("LLM Inference Handbook · foundations: prefill vs decode, TTFT, tokens/sec, KV cache", HANDBOOK)],
+    "2026-10-29": [("Lab: llama.cpp/Ollama server on the box; load test at 1, 4, 16 concurrent users; chart TTFT and tokens/sec", None)],
+    "2026-10-30": [("LLM Inference Handbook · batching (static vs continuous), PagedAttention", HANDBOOK),
+                   ("Design: an LLM inference API (streaming, rate limits, multi-tenant)", None)],
+    "2026-10-31": [("Breakscale: retry storms, circuit breakers, backpressure, applied to an LLM gateway", BREAKSCALE)],
+    "2026-11-01": [("GenAI System Design Interview · the chatbot chapter; then design it yourself in 45 min", GENAI_SDI)],
+    "2026-11-02": [("GenAI System Design Interview · the RAG chapter", GENAI_SDI),
+                   ("Lab: small RAG service on the server with pgvector; retrieval vs generation latency", None)],
+    "2026-11-03": [("Vidur: estimate a serving setup by hand, then find the cheapest config that meets a latency SLO", VIDUR)],
+    "2026-11-04": [("Mock: URL shortener, 45 min, written up", None),
+                   ("Mock: an LLM-powered support agent, 45 min, written up", None)],
+    "2026-11-05": [("Mock: RAG over company docs, 45 min", None),
+                   ("Mock: an inference batching system for a single GPU, 45 min", None)],
+}
+
+# Daily during the sprint, then back to Tue/Thu.
+AGENTS = [
+    "Server: inventory the machine (CPU, RAM, disk, GPU?); install Ubuntu Server 24.04 LTS, SSH keys only",
+    "Server: DHCP reservation; harden it (ufw, unattended-upgrades, no password SSH); add Tailscale",
+    "Server: Docker + compose; Ollama + a small model (today's lab uses it)",
+    "Server: a hello service you can reach from your phone over Tailscale; Claude API key in place",
+    "Agent: a minimal agent loop on the server against the Claude API, one tool",
+    "WhatsApp: run scripts/setup-whatsapp.sh so the tracker bot is live",
+    "WhatsApp: receive webhooks on the server via Tailscale Funnel",
+    "Approvals: agent asks yes/no on WhatsApp before a gated tool call",
+    "Browser: Playwright on the server; headless navigate a showtimes page",
+    "Movie agent v0: find showtimes for a movie + theater (read-only)",
+    "Movie agent: look up coupons and card offers, compare total price",
+    "Movie agent: propose a booking plan and ask for approval on WhatsApp",
+    "Movie agent: drive checkout up to the payment page, stop there (dry run)",
+    "Reliability: retries, timeouts, structured logs for every run",
+    "Demo + write-up: blog post on what worked and what didn't",
+]
+
+# One-off additions on top of the generated days.
+EXTRA = {
+    "2026-10-30": {"blogs-papers": [("Carried over from Sun: Attention Is All You Need (Vaswani et al., 2017)",
+                                     "https://arxiv.org/abs/1706.03762")]},
+    "2026-11-06": {"agent-harnesses": [("Carried over from Sat 10/24: Study how agent harnesses work "
+                                        "(agent loop, tools, permissions); sketch your design", None)]},
+}
+
+# Weekly rhythm outside the sprint (0 = Monday).
+WEEKLY = {
+    "llm-from-scratch": {0, 2, 4}, "ddia": {1, 3}, "system-design-xu": {5}, "blogs-papers": {6},
+    "agents": {1, 3}, "agent-harnesses": {5}, "experiments": {6},
+}
+# Reading keeps its rhythm through the sprint; these change during it.
+SPRINT_DAILY = {"agents"}
+SPRINT_PAUSED = {"agent-harnesses", "experiments"}
+
+
 def slug(title: str) -> str:
     s = title.lower().replace("'", "")
     return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
-
-
-def leetcode_days():
-    days, i = [], 0
-    while i < len(LC75):
-        cur = LC75[i]
-        nxt = LC75[i + 1] if i + 1 < len(LC75) else None
-        if cur[0] in SOLO or nxt is None or nxt[0] in SOLO:
-            days.append([cur]); i += 1
-        else:
-            days.append([cur, nxt]); i += 2
-    return days
 
 
 def item(title, link=None):
     return {"title": title, **({"link": link} if link else {})}
 
 
+def problem(n, title):
+    return item(f"{n}. {title}", f"https://leetcode.com/problems/{slug(title)}/")
+
+
+def leetcode_plan():
+    """date -> items. LC75 by LC75_DAYS, Blind 75 in the sprint's last days, then 1–2 a weekday."""
+    days, i = {}, 0
+    for d, count in LC75_DAYS.items():
+        days[d] = [problem(*p) for p in LC75[i:i + count]]
+        i += count
+    assert i == len(LC75), f"LC75_DAYS covers {i} of {len(LC75)}"
+    for d, problems in BLIND_SPRINT.items():
+        days[d] = [item(*REDO)] + [problem(*p) for p in problems] + [item(*MOCK)]
+    rest = list(BLIND_AFTER)
+    d = SPRINT_END + timedelta(days=1)
+    while d <= END:
+        if d.weekday() < 5:
+            days[d.isoformat()] = [problem(*p) for p in rest.pop(0)] if rest else [
+                item("Review: redo two starred problems, timed")]
+        d += timedelta(days=1)
+    assert not rest, f"{len(rest)} Blind 75 days unscheduled"
+    return days
+
+
 def main():
+    in_sprint = lambda d: SPRINT_START <= d <= SPRINT_END
     queues = {
-        "llm-from-scratch": [[item(t)] for t in LLM],
+        "llm-from-scratch": [[item(t, l)] for t, l in LLM],
         "ddia": [[item(t)] for t in DDIA],
         "system-design-xu": [[item(t) for t in pair] for pair in XU],
         "blogs-papers": [[item(t, l)] for t, l in PAPERS],
-        "leetcode": [
-            [item(f"{n}. {t}", f"https://leetcode.com/problems/{slug(t)}/") for n, t in day]
-            for day in leetcode_days()
-        ],
         "agents": [[item(t)] for t in AGENTS],
         "agent-harnesses": [[item(t)] for t in HARNESS],
         "experiments": [],
@@ -194,28 +311,49 @@ def main():
         "llm-from-scratch": "Review: re-run chapter code, redo skipped exercises",
         "system-design-xu": "Review: redo two designs from memory, timed",
         "blogs-papers": "Open slot: whatever is worth reading this week",
+        "agents": "Extend the movie agent, or start the next agent idea",
         "agent-harnesses": "Polish: fix the rough edges the evals found",
         "experiments": "Catch-up buffer: finish anything missed this week, else free experiment",
     }
-    schedule = {
-        "llm-from-scratch": {0, 2, 4}, "ddia": {1, 3}, "system-design-xu": {5},
-        "blogs-papers": {6}, "leetcode": {0, 1, 2, 3, 4}, "agents": {1, 3},
-        "agent-harnesses": {5}, "experiments": {6},
+    dated = {
+        "algorithms-lectures": {d: [item(t, f"https://www.youtube.com/watch?v={v}&list={PLAYLIST}") for t, v in vs]
+                                for d, vs in LECTURES.items()},
+        "leetcode": leetcode_plan(),
+        "system-design-lab": {d: [item(t, l) for t, l in vs] for d, vs in SD_LAB.items()},
     }
+
+    def scheduled(task, d):
+        if in_sprint(d) and task in SPRINT_DAILY:
+            return True
+        if in_sprint(d) and task in SPRINT_PAUSED:
+            return False
+        return d.weekday() in WEEKLY[task]
+
+    order = ["llm-from-scratch", "ddia", "system-design-xu", "blogs-papers", "algorithms-lectures",
+             "leetcode", "system-design-lab", "agents", "agent-harnesses", "experiments"]
     lines = [
-        "# What to do on each day of the plan, generated from the study lists.",
-        "# Edit freely: each date maps task ids (from plan.yaml) to a list of {title, link?}.",
+        "# What to do on each day of the plan, generated by scripts/gen-agenda.py.",
+        "# Each date maps task ids (from plan.yaml) to a list of {title, link?}.",
+        "# A task is scheduled on a day exactly when it has items here.",
         "days:",
     ]
     d = START
     while d <= END:
-        todays = [
-            (t, queues[t].pop(0) if queues[t] else [item(fillers[t])])
-            for t in queues
-            if d.weekday() in schedule[t]
-        ]
-        lines.append(f'  "{d.isoformat()}":')
-        for task, items in todays:
+        iso = d.isoformat()
+        todays = {}
+        for task in order:
+            if task in dated:
+                items = dated[task].get(iso, [])
+            elif scheduled(task, d):
+                q = queues[task]
+                items = q.pop(0) if q else [item(fillers[task])]
+            else:
+                items = []
+            items = items + [item(t, l) for t, l in EXTRA.get(iso, {}).get(task, [])]
+            if items:
+                todays[task] = items
+        lines.append(f'  "{iso}":' + ("" if todays else " {}"))
+        for task, items in todays.items():
             lines.append(f"    {task}:")
             for it in items:
                 lines.append(f"      - {json.dumps(it, ensure_ascii=False)}")
@@ -223,7 +361,6 @@ def main():
     leftovers = {t: len(q) for t, q in queues.items() if q}
     assert not leftovers, f"unscheduled items: {leftovers}"
     open(OUT, "w").write("\n".join(lines) + "\n")
-    print(f"{len(LC75)} LeetCode problems over {len(leetcode_days())} days")
 
 
 main()

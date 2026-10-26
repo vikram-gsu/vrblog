@@ -10,7 +10,6 @@ export interface TrackerTask {
   label: string;
   detail?: string;
   link?: string;
-  days: Weekday[];
 }
 
 export interface TrackerGroup {
@@ -106,7 +105,7 @@ export function getPlan(): TrackerPlan {
     end: normalizeDate(data.end),
     groups: (data.groups || []).map((g) => ({
       ...g,
-      tasks: (g.tasks || []).map((t) => ({ ...t, days: t.days || [] })),
+      tasks: g.tasks || [],
     })),
   };
 }
@@ -143,9 +142,15 @@ function statusFor(
   return date < today ? "missed" : "upcoming";
 }
 
+/** A task is scheduled on a day exactly when the agenda gives it something to do. */
+export function isScheduled(agenda: Agenda, taskId: string, date: string): boolean {
+  return (agenda[date]?.[taskId]?.length ?? 0) > 0;
+}
+
 /** Builds the per-day cells for one task across the plan window. */
 export function buildTaskDays(
   plan: TrackerPlan,
+  agenda: Agenda,
   task: TrackerTask,
   log: LogEntry[],
   today: string
@@ -159,7 +164,7 @@ export function buildTaskDays(
   return dateRange(plan.start, plan.end).map((date) => {
     const entries = byDate.get(date) || [];
     const minutes = entries.reduce((sum, e) => sum + (Number(e.minutes) || 0), 0);
-    const scheduled = task.days.includes(weekdayOf(date));
+    const scheduled = isScheduled(agenda, task.id, date);
     return {
       date,
       level: levelFor(minutes, entries.length > 0),
@@ -173,6 +178,7 @@ export function buildTaskDays(
 /** Builds the combined "did I show up at all" cells: shade = number of tasks done that day. */
 export function buildOverallDays(
   plan: TrackerPlan,
+  agenda: Agenda,
   log: LogEntry[],
   today: string
 ): TrackerDay[] {
@@ -187,7 +193,7 @@ export function buildOverallDays(
   return dateRange(plan.start, plan.end).map((date) => {
     const entries = byDate.get(date) || [];
     const distinct = new Set(entries.map((e) => e.task)).size;
-    const scheduled = tasks.some((t) => t.days.includes(weekdayOf(date)));
+    const scheduled = tasks.some((t) => isScheduled(agenda, t.id, date));
     const level = Math.min(distinct, 4) as TrackerDay["level"];
     return {
       date,
