@@ -38,6 +38,8 @@ days:
     leetcode:
       - {"title": "238. Product of Array Except Self", "link": "https://leetcode.com/problems/product-of-array-except-self/"}
       - {"title": "334. Increasing Triplet Subsequence", "link": "https://leetcode.com/problems/increasing-triplet-subsequence/"}
+    agent-harnesses:
+      - {"title": "Carried over from Sat: Study how agent harnesses work (agent loop, tools, permissions); sketch your design"}
   "2026-10-29":
     ddia:
       - {"title": "Transactions · Weak isolation: read committed, snapshot isolation, lost updates"}
@@ -52,6 +54,8 @@ days:
     leetcode:
       - {"title": "392. Is Subsequence", "link": "https://leetcode.com/problems/is-subsequence/"}
       - {"title": "11. Container With Most Water", "link": "https://leetcode.com/problems/container-with-most-water/"}
+    blogs-papers:
+      - {"title": "Carried over from Sun: Attention Is All You Need (Vaswani et al., 2017)", "link": "https://arxiv.org/abs/1706.03762"}
   "2026-10-31":
     system-design-xu:
       - {"title": "Ch 3 · A framework for system design interviews"}

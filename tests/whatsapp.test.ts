@@ -18,7 +18,8 @@ beforeEach(() => {
   files = {
     "content/tracker/plan.yaml": read("content/tracker/plan.yaml"),
     "content/tracker/agenda.yaml": read("content/tracker/agenda.yaml"),
-    "content/tracker/log.yaml": read("content/tracker/log.yaml"),
+    // A fresh empty log, so real entries in the repo don't leak into tests.
+    "content/tracker/log.yaml": "# One entry per task per session.\nentries: []\n",
   };
   commits = [];
   replies = [];
