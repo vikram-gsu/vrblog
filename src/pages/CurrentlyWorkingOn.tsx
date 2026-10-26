@@ -5,13 +5,17 @@ import Heatmap, { cellClass } from "@/components/tracker/Heatmap";
 import TodayPanel from "@/components/tracker/TodayPanel";
 import { cn } from "@/lib/utils";
 import {
+  addDays,
   buildOverallDays,
   buildTaskDays,
   computeStats,
   getAgenda,
   getLog,
   getPlan,
+  isScheduled,
   todayIso,
+  weekdayOf,
+  type Agenda,
   type TrackerStats,
   type TrackerTask,
   type Weekday,
@@ -36,8 +40,18 @@ const Stat = ({ label, value }: { label: string; value: string | number }) => (
   </div>
 );
 
+/** Which days of the current Mon–Sun week the agenda schedules this task. */
+function thisWeek(agenda: Agenda, taskId: string, today: string): Weekday[] {
+  const monday = addDays(today, -DAY_ORDER.indexOf(weekdayOf(today)));
+  return DAY_ORDER.filter((_, i) => isScheduled(agenda, taskId, addDays(monday, i)));
+}
+
 const Schedule = ({ days }: { days: Weekday[] }) => (
-  <div className="flex gap-1" aria-label={`Scheduled on ${days.join(", ")}`}>
+  <div
+    className="flex gap-1"
+    title="This week"
+    aria-label={days.length ? `This week: ${days.join(", ")}` : "Nothing this week"}
+  >
     {DAY_ORDER.map((d, i) => (
       <span
         key={i}
@@ -57,10 +71,12 @@ const Schedule = ({ days }: { days: Weekday[] }) => (
 const TaskTracker = ({
   task,
   days,
+  week,
   stats,
 }: {
   task: TrackerTask;
   days: ReturnType<typeof buildTaskDays>;
+  week: Weekday[];
   stats: TrackerStats;
 }) => (
   <div className="bg-card border border-border rounded-lg p-6">
@@ -79,7 +95,7 @@ const TaskTracker = ({
           <p className="text-sm text-muted-foreground mt-1">{task.detail}</p>
         )}
       </div>
-      <Schedule days={task.days} />
+      <Schedule days={week} />
     </div>
     <Heatmap days={days} size="sm" />
     <div className="grid grid-cols-4 gap-4 mt-5">
@@ -125,19 +141,25 @@ const CurrentlyWorkingOn = () => {
   const today = todayIso();
   const { plan, agenda, log, overall, overallStats, groups } = useMemo(() => {
     const plan = getPlan();
+    const agenda = getAgenda();
     const log = getLog();
-    const overall = buildOverallDays(plan, log, today);
+    const overall = buildOverallDays(plan, agenda, log, today);
     return {
       plan,
-      agenda: getAgenda(),
+      agenda,
       log,
       overall,
       overallStats: computeStats(overall, today),
       groups: plan.groups.map((group) => ({
         ...group,
         trackers: group.tasks.map((task) => {
-          const days = buildTaskDays(plan, task, log, today);
-          return { task, days, stats: computeStats(days, today) };
+          const days = buildTaskDays(plan, agenda, task, log, today);
+          return {
+            task,
+            days,
+            week: thisWeek(agenda, task.id, today),
+            stats: computeStats(days, today),
+          };
         }),
       })),
     };
@@ -192,8 +214,8 @@ const CurrentlyWorkingOn = () => {
             <section key={group.id} className="mb-16">
               <h2 className="text-3xl md:text-4xl font-heading mb-8">{group.label}</h2>
               <div className="grid lg:grid-cols-2 gap-6">
-                {group.trackers.map(({ task, days, stats }) => (
-                  <TaskTracker key={task.id} task={task} days={days} stats={stats} />
+                {group.trackers.map(({ task, days, week, stats }) => (
+                  <TaskTracker key={task.id} task={task} days={days} week={week} stats={stats} />
                 ))}
               </div>
             </section>

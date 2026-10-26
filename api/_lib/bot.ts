@@ -46,6 +46,16 @@ const ALIASES: Record<string, string> = {
   experiment: "experiments",
   experiments: "experiments",
   buffer: "experiments",
+  algo: "algorithms-lectures",
+  algos: "algorithms-lectures",
+  lecture: "algorithms-lectures",
+  lectures: "algorithms-lectures",
+  video: "algorithms-lectures",
+  videos: "algorithms-lectures",
+  sd: "system-design-lab",
+  lab: "system-design-lab",
+  sdlab: "system-design-lab",
+  server: "agents",
 };
 
 export const HELP = [
@@ -55,7 +65,7 @@ export const HELP = [
   "  yesterday llm 90 ch2",
   "  10/22 xu 2h",
   "",
-  "Tasks: llm, ddia, xu, papers, lc, agents, harness, exp",
+  "Tasks: llm, ddia, xu, papers, algo, lc, sd, agents (or server), harness, exp",
   "Time: 45, 45m, 1h, 1h30, 1.5h (optional)",
   "",
   "Other: today (or ?), yesterday?, undo, help",

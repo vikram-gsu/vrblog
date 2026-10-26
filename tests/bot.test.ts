@@ -13,6 +13,7 @@ import {
 const IDS = new Set([
   "llm-from-scratch", "ddia", "system-design-xu", "blogs-papers",
   "leetcode", "agents", "agent-harnesses", "experiments",
+  "algorithms-lectures", "system-design-lab",
 ]);
 const TODAY = "2026-10-23";
 
@@ -38,6 +39,13 @@ test("time and note are optional; aliases are case-insensitive", () => {
   ]);
   assert.deepEqual(parseMessage("harness two tools wired", TODAY, IDS), [
     { kind: "log", entry: { date: TODAY, task: "agent-harnesses", note: "two tools wired" } },
+  ]);
+});
+
+test("sprint tracks have short names", () => {
+  const tasks = (body: string) => parseMessage(body, TODAY, IDS).map((c) => c.kind === "log" && c.entry.task);
+  assert.deepEqual(tasks("algo 1h sec 1-3\nsd 90 breakscale\nserver tailscale"), [
+    "algorithms-lectures", "system-design-lab", "agents",
   ]);
 });
 
