@@ -69,7 +69,6 @@ days:
       - {"title": "933. Number of Recent Calls", "link": "https://leetcode.com/problems/number-of-recent-calls/"}
       - {"title": "649. Dota2 Senate", "link": "https://leetcode.com/problems/dota2-senate/"}
     system-design-lab:
-      - {"title": "GenAI System Design Interview Ch 1 · the framework", "link": "https://bytebytego.com/courses/genai-system-design-interview"}
       - {"title": "LLM Inference Handbook · foundations: prefill vs decode, TTFT, tokens/sec, KV cache", "link": "https://handbook.modular.com"}
     agents:
       - {"title": "Server: DHCP reservation; harden it (ufw, unattended-upgrades, no password SSH); add Tailscale"}
@@ -136,6 +135,7 @@ days:
       - {"title": "17. Letter Combinations of a Phone Number", "link": "https://leetcode.com/problems/letter-combinations-of-a-phone-number/"}
       - {"title": "216. Combination Sum III", "link": "https://leetcode.com/problems/combination-sum-iii/"}
     system-design-lab:
+      - {"title": "GenAI System Design Interview Ch 1 · the framework", "link": "https://bytebytego.com/courses/genai-system-design-interview"}
       - {"title": "Breakscale: retry storms, circuit breakers, backpressure, applied to an LLM gateway", "link": "https://breakscale.tech"}
     agents:
       - {"title": "Agent: a minimal agent loop on the server against the Claude API, one tool"}
