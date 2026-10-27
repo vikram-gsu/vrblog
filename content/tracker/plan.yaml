@@ -25,7 +25,7 @@ groups:
         detail: One a week, swapped as things come up
       - id: algorithms-lectures
         label: Stanford Algorithms 1 (lectures)
-        detail: Tim Roughgarden · a re-watch at 2×, Optional videos skipped, Oct 27–Nov 2
+        detail: Tim Roughgarden · a re-watch at 2×, Optional videos skipped, done by Oct 31
         link: https://www.youtube.com/playlist?list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V
 
   - id: execution

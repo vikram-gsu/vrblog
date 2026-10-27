@@ -33,9 +33,8 @@ days:
     system-design-xu:
       - {"title": "Ch 3 · A framework for system design interviews"}
     algorithms-lectures:
-      - {"title": "Sec 1 · Introduction, merge sort", "link": "https://www.youtube.com/watch?v=yRM3sc57q0c&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"title": "Sec 2 · Asymptotic analysis", "link": "https://www.youtube.com/watch?v=l-cNaKGc-yY&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"title": "Sec 3 · Divide and conquer: inversions, Strassen", "link": "https://www.youtube.com/watch?v=7_AJfusC6UQ&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"title": "Sec 8 · Linear-time selection", "link": "https://www.youtube.com/watch?v=nFw6x7DoYbs&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"title": "Sec 9 · Graphs and minimum cuts", "link": "https://www.youtube.com/watch?v=4Ih3UhVuEtw&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
     leetcode:
       - {"title": "238. Product of Array Except Self", "link": "https://leetcode.com/problems/product-of-array-except-self/"}
       - {"title": "334. Increasing Triplet Subsequence", "link": "https://leetcode.com/problems/increasing-triplet-subsequence/"}
@@ -58,8 +57,7 @@ days:
     system-design-xu:
       - {"title": "Ch 4 · Design a rate limiter"}
     algorithms-lectures:
-      - {"title": "Sec 4 · The master method", "link": "https://www.youtube.com/watch?v=6dGDcszz2DM&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"title": "Sec 5 · QuickSort", "link": "https://www.youtube.com/watch?v=ETo1cpLN7kk&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"title": "Sec 10 · Graph search: BFS, DFS, topological sort, SCCs", "link": "https://www.youtube.com/watch?v=SW6jwg7WS48&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
     leetcode:
       - {"title": "1732. Find the Highest Altitude", "link": "https://leetcode.com/problems/find-the-highest-altitude/"}
       - {"title": "724. Find Pivot Index", "link": "https://leetcode.com/problems/find-pivot-index/"}
@@ -82,8 +80,8 @@ days:
     system-design-xu:
       - {"title": "Ch 5 · Design consistent hashing"}
     algorithms-lectures:
-      - {"title": "Sec 8 · Linear-time selection", "link": "https://www.youtube.com/watch?v=nFw6x7DoYbs&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"title": "Sec 9 · Graphs and minimum cuts", "link": "https://www.youtube.com/watch?v=4Ih3UhVuEtw&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"title": "Sec 11 · Dijkstra's shortest paths", "link": "https://www.youtube.com/watch?v=jRlNVmRjdRk&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"title": "Sec 12 · Heaps", "link": "https://www.youtube.com/watch?v=cMrQxxrKg8I&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
     leetcode:
       - {"title": "2095. Delete the Middle Node of a Linked List", "link": "https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/"}
       - {"title": "328. Odd Even Linked List", "link": "https://leetcode.com/problems/odd-even-linked-list/"}
@@ -107,7 +105,7 @@ days:
     blogs-papers:
       - {"title": "Carried over from Sun: Attention Is All You Need (Vaswani et al., 2017)", "link": "https://arxiv.org/abs/1706.03762"}
     algorithms-lectures:
-      - {"title": "Sec 10 · Graph search: BFS, DFS, topological sort, SCCs", "link": "https://www.youtube.com/watch?v=SW6jwg7WS48&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"title": "Sec 13 · Balanced search trees", "link": "https://www.youtube.com/watch?v=IbNZ-x1I2IM&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
     leetcode:
       - {"title": "199. Binary Tree Right Side View", "link": "https://leetcode.com/problems/binary-tree-right-side-view/"}
       - {"title": "1161. Maximum Level Sum of a Binary Tree", "link": "https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/"}
@@ -129,8 +127,9 @@ days:
       - {"title": "Ch 7 · Design a unique ID generator"}
       - {"title": "Ch 8 · Design a URL shortener"}
     algorithms-lectures:
-      - {"title": "Sec 11 · Dijkstra's shortest paths", "link": "https://www.youtube.com/watch?v=jRlNVmRjdRk&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"title": "Sec 12 · Heaps", "link": "https://www.youtube.com/watch?v=cMrQxxrKg8I&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"title": "Sec 14 · Hash tables", "link": "https://www.youtube.com/watch?v=Qu183GFHbZQ&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"title": "Sec 15 · Universal hashing", "link": "https://www.youtube.com/watch?v=MWq8BvRR950&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"title": "Sec 16 · Bloom filters", "link": "https://www.youtube.com/watch?v=zYlxP7F3Z3c&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
     leetcode:
       - {"title": "215. Kth Largest Element in an Array", "link": "https://leetcode.com/problems/kth-largest-element-in-an-array/"}
       - {"title": "2336. Smallest Number in Infinite Set", "link": "https://leetcode.com/problems/smallest-number-in-infinite-set/"}
@@ -152,8 +151,6 @@ days:
       - {"title": "Ch 9 · Design a web crawler"}
     blogs-papers:
       - {"title": "Building effective agents (Anthropic, 2024)", "link": "https://www.anthropic.com/engineering/building-effective-agents"}
-    algorithms-lectures:
-      - {"title": "Sec 13 · Balanced search trees", "link": "https://www.youtube.com/watch?v=IbNZ-x1I2IM&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
     leetcode:
       - {"title": "1137. N-th Tribonacci Number", "link": "https://leetcode.com/problems/n-th-tribonacci-number/"}
       - {"title": "746. Min Cost Climbing Stairs", "link": "https://leetcode.com/problems/min-cost-climbing-stairs/"}
@@ -172,10 +169,6 @@ days:
       - {"title": "Ch 2 · 2.5–2.8 Byte pair encoding, sliding-window sampling, token + positional embeddings"}
     system-design-xu:
       - {"title": "Ch 10 · Design a notification system"}
-    algorithms-lectures:
-      - {"title": "Sec 14 · Hash tables", "link": "https://www.youtube.com/watch?v=Qu183GFHbZQ&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"title": "Sec 15 · Universal hashing", "link": "https://www.youtube.com/watch?v=MWq8BvRR950&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"title": "Sec 16 · Bloom filters", "link": "https://www.youtube.com/watch?v=zYlxP7F3Z3c&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
     leetcode:
       - {"title": "338. Counting Bits", "link": "https://leetcode.com/problems/counting-bits/"}
       - {"title": "136. Single Number", "link": "https://leetcode.com/problems/single-number/"}

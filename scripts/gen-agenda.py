@@ -198,18 +198,14 @@ BLIND_AFTER = [
 # Stanford Algorithms 1 (Roughgarden), first video of each section. Optional/Advanced videos skipped.
 PLAYLIST = "PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"
 LECTURES = {
-    "2026-10-27": [("Sec 1 · Introduction, merge sort", "yRM3sc57q0c"),
-                   ("Sec 2 · Asymptotic analysis", "l-cNaKGc-yY"),
-                   ("Sec 3 · Divide and conquer: inversions, Strassen", "7_AJfusC6UQ")],
-    "2026-10-28": [("Sec 4 · The master method", "6dGDcszz2DM"),
-                   ("Sec 5 · QuickSort", "ETo1cpLN7kk")],
-    "2026-10-29": [("Sec 8 · Linear-time selection", "nFw6x7DoYbs"),
+    # Sections 1–5 were done early, on Oct 26 (see log.yaml).
+    "2026-10-27": [("Sec 8 · Linear-time selection", "nFw6x7DoYbs"),
                    ("Sec 9 · Graphs and minimum cuts", "4Ih3UhVuEtw")],
-    "2026-10-30": [("Sec 10 · Graph search: BFS, DFS, topological sort, SCCs", "SW6jwg7WS48")],
-    "2026-10-31": [("Sec 11 · Dijkstra's shortest paths", "jRlNVmRjdRk"),
+    "2026-10-28": [("Sec 10 · Graph search: BFS, DFS, topological sort, SCCs", "SW6jwg7WS48")],
+    "2026-10-29": [("Sec 11 · Dijkstra's shortest paths", "jRlNVmRjdRk"),
                    ("Sec 12 · Heaps", "cMrQxxrKg8I")],
-    "2026-11-01": [("Sec 13 · Balanced search trees", "IbNZ-x1I2IM")],
-    "2026-11-02": [("Sec 14 · Hash tables", "Qu183GFHbZQ"),
+    "2026-10-30": [("Sec 13 · Balanced search trees", "IbNZ-x1I2IM")],
+    "2026-10-31": [("Sec 14 · Hash tables", "Qu183GFHbZQ"),
                    ("Sec 15 · Universal hashing", "MWq8BvRR950"),
                    ("Sec 16 · Bloom filters", "zYlxP7F3Z3c")],
 }
