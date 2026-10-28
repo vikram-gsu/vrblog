@@ -10,3 +10,6 @@ entries:
   - { date: 2026-10-26, task: llm-from-scratch, note: "Appendix A.1–A.4 · PyTorch tensors and autograd" }
   - { date: 2026-10-26, task: leetcode, note: "1431 Kids With the Greatest Number of Candies, 605 Can Place Flowers, 345 Reverse Vowels of a String, 151 Reverse Words in a String" }
   - { date: 2026-10-26, task: algorithms-lectures, note: "Sec 1–5 · intro, merge sort, asymptotics, divide and conquer, master method, quicksort" }
+  - { date: 2026-10-27, task: system-design-xu, note: "Ch 3 · A framework for system design interviews" }
+  - { date: 2026-10-27, task: ddia, note: "Transactions · atomicity, consistency" }
+  - { date: 2026-10-27, task: leetcode, note: "238 Product of Array Except Self, 283 Move Zeroes, 392 Is Subsequence" }

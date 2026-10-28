@@ -1,8 +1,8 @@
 """Generates content/tracker/agenda.yaml: what to do on each day of the 8-week plan.
 
-Most tracks follow a weekly rhythm. The 10-day sprint (Oct 27 to Nov 5) overrides it:
-LeetCode 75 in a week, the Stanford Algorithms lectures, a daily system design lab,
-daily server work, and harness/experiments paused.
+Most tracks follow a weekly rhythm. The 15-day sprint (Oct 27 to Nov 10) overrides it:
+LeetCode 75 by Nov 6, the Stanford Algorithms lectures, a system design lab and server work
+(Sundays off), Xu's book a chapter a day, and harness/experiments paused.
 """
 import json
 import re
@@ -12,7 +12,7 @@ from datetime import date, timedelta
 START = date(2026, 10, 23)
 END = date(2026, 12, 20)
 SPRINT_START = date(2026, 10, 27)
-SPRINT_END = date(2026, 11, 5)
+SPRINT_END = date(2026, 11, 10)
 OUT = sys.argv[1]
 
 RASBT = "https://github.com/rasbt/LLMs-from-scratch/tree/main"
@@ -61,7 +61,7 @@ DDIA = [
     "Future of Data Systems · Aiming for correctness, doing the right thing",
 ]
 
-# One session per item. A chapter a day from Oct 27 to Nov 7 (short ones paired), then done.
+# One session per item. A chapter a day (Sundays off) from Oct 27 to Nov 10, then done.
 XU = [
     ["Ch 1 · Scale from zero to millions of users", "Ch 2 · Back-of-the-envelope estimation"],
     ["Ch 3 · A framework for system design interviews"],
@@ -77,7 +77,7 @@ XU = [
     ["Ch 14 · Design YouTube"],
     ["Ch 15 · Design Google Drive", "Ch 16 · The learning continues"],
 ]
-XU_DAILY = (date(2026, 10, 27), date(2026, 11, 7))
+XU_DAILY = (date(2026, 10, 27), date(2026, 11, 10))
 
 # LeetCode 75 study plan, in its topic order.
 LC75 = [
@@ -130,8 +130,7 @@ HARNESS = [
     "Permission layer: allow / deny / ask, with 'ask' routed to WhatsApp",
     "Memory and context: persist conversations, compact when long",
     "Observability: trace every step to JSONL, a tiny viewer page",
-    "Evals: a handful of scripted tasks, run and score them",
-    "Refactor + publish the harness repo",
+    "Evals: a handful of scripted tasks, run and score them; refactor and publish the repo",
 ]
 
 PAPERS = [
@@ -148,49 +147,56 @@ PAPERS = [
 
 
 
-# How many LeetCode 75 problems each day gets, in order. The rest of the plan is the sprint.
+# LeetCode 75: what was actually done on past days, then how many problems each later day gets
+# (in study-plan order, skipping ones already done).
+LC75_DONE = {
+    "2026-10-23": [1768, 1071],
+    "2026-10-26": [1431, 605, 345, 151],
+    "2026-10-27": [238, 283, 392],
+}
 LC75_DAYS = {
-    "2026-10-23": 2, "2026-10-26": 4,
-    "2026-10-27": 11,  # array/string, two pointers, sliding window
-    "2026-10-28": 11,  # prefix sum, hash map/set, stack, queue
-    "2026-10-29": 10,  # linked list, binary tree DFS
-    "2026-10-30": 10,  # tree BFS, BST, graph DFS/BFS
-    "2026-10-31": 10,  # heap, binary search, backtracking
-    "2026-11-01": 8,   # DP
-    "2026-11-02": 9,   # bits, trie, intervals, monotonic stack
+    "2026-10-28": 8,  # rest of array/string, two pointers, sliding window
+    "2026-10-29": 6,  # prefix sum, hash map/set
+    "2026-10-30": 7,  # stack, queue, linked list
+    "2026-10-31": 6,  # linked list, binary tree DFS
+    "2026-11-01": 6,  # binary tree DFS/BFS, BST
+    "2026-11-02": 6,  # graph DFS/BFS
+    "2026-11-03": 6,  # heap, binary search
+    "2026-11-04": 7,  # binary search, backtracking, 1D DP
+    "2026-11-05": 6,  # DP, counting bits
+    "2026-11-06": 8,  # bits, trie, intervals, monotonic stack
 }
 REDO = ("Redo the problems you starred (stuck past 25 min)", None)
 MOCK = ("Timed mock: 2 unseen mediums in 45 min", None)
 # Blind 75 problems that LeetCode 75 skips.
 BLIND_SPRINT = {
-    "2026-11-03": [(1, "Two Sum"), (217, "Contains Duplicate"), (347, "Top K Frequent Elements"),
+    "2026-11-07": [(1, "Two Sum"), (217, "Contains Duplicate"), (347, "Top K Frequent Elements"),
                    (128, "Longest Consecutive Sequence"), (15, "3Sum"),
-                   (3, "Longest Substring Without Repeating Characters"),
-                   (76, "Minimum Window Substring"), (20, "Valid Parentheses")],
-    "2026-11-04": [(23, "Merge k Sorted Lists"), (146, "LRU Cache"),
-                   (297, "Serialize and Deserialize Binary Tree"), (98, "Validate Binary Search Tree"),
-                   (200, "Number of Islands"), (207, "Course Schedule"), (133, "Clone Graph"),
-                   (417, "Pacific Atlantic Water Flow")],
-    "2026-11-05": [(322, "Coin Change"), (300, "Longest Increasing Subsequence"), (139, "Word Break"),
-                   (33, "Search in Rotated Sorted Array"), (56, "Merge Intervals"),
-                   (57, "Insert Interval"), (295, "Find Median from Data Stream"),
-                   (53, "Maximum Subarray")],
+                   (3, "Longest Substring Without Repeating Characters")],
+    "2026-11-08": [(76, "Minimum Window Substring"), (20, "Valid Parentheses"), (23, "Merge k Sorted Lists"),
+                   (146, "LRU Cache"), (297, "Serialize and Deserialize Binary Tree"),
+                   (98, "Validate Binary Search Tree")],
+    "2026-11-09": [(200, "Number of Islands"), (207, "Course Schedule"), (133, "Clone Graph"),
+                   (417, "Pacific Atlantic Water Flow"), (322, "Coin Change"),
+                   (300, "Longest Increasing Subsequence")],
+    "2026-11-10": [(139, "Word Break"), (33, "Search in Rotated Sorted Array"), (56, "Merge Intervals"),
+                   (57, "Insert Interval"), (295, "Find Median from Data Stream"), (53, "Maximum Subarray")],
 }
 # The rest of Blind 75 (premium-only ones left out), 1–2 per weekday after the sprint.
 BLIND_AFTER = [
-    [(121, "Best Time to Buy and Sell Stock")], [(152, "Maximum Product Subarray")],
-    [(153, "Find Minimum in Rotated Sorted Array")], [(55, "Jump Game")],
+    [(121, "Best Time to Buy and Sell Stock")],
+    [(152, "Maximum Product Subarray"), (153, "Find Minimum in Rotated Sorted Array")], [(55, "Jump Game")],
     [(73, "Set Matrix Zeroes")], [(54, "Spiral Matrix")], [(48, "Rotate Image")],
     [(242, "Valid Anagram"), (49, "Group Anagrams")], [(125, "Valid Palindrome")],
     [(424, "Longest Repeating Character Replacement")], [(5, "Longest Palindromic Substring")],
     [(647, "Palindromic Substrings")],
     [(191, "Number of 1 Bits"), (190, "Reverse Bits")], [(268, "Missing Number"), (371, "Sum of Two Integers")],
-    [(70, "Climbing Stairs")], [(213, "House Robber II")], [(91, "Decode Ways")], [(377, "Combination Sum IV")],
+    [(70, "Climbing Stairs"), (213, "House Robber II")], [(91, "Decode Ways")], [(377, "Combination Sum IV")],
     [(141, "Linked List Cycle"), (21, "Merge Two Sorted Lists")], [(19, "Remove Nth Node From End of List")],
     [(143, "Reorder List")],
     [(100, "Same Tree"), (226, "Invert Binary Tree")], [(102, "Binary Tree Level Order Traversal")],
     [(572, "Subtree of Another Tree")], [(105, "Construct Binary Tree from Preorder and Inorder Traversal")],
-    [(230, "Kth Smallest Element in a BST")], [(235, "Lowest Common Ancestor of a Binary Search Tree")],
+    [(230, "Kth Smallest Element in a BST"), (235, "Lowest Common Ancestor of a Binary Search Tree")],
     [(124, "Binary Tree Maximum Path Sum")],
     [(211, "Design Add and Search Words Data Structure")], [(79, "Word Search")], [(212, "Word Search II")],
 ]
@@ -198,14 +204,14 @@ BLIND_AFTER = [
 # Stanford Algorithms 1 (Roughgarden), first video of each section. Optional/Advanced videos skipped.
 PLAYLIST = "PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"
 LECTURES = {
-    # Sections 1–5 were done early, on Oct 26 (see log.yaml).
-    "2026-10-27": [("Sec 8 · Linear-time selection", "nFw6x7DoYbs"),
+    # Sections 1–5 were done early, on Oct 26 (see log.yaml). Every other day from here.
+    "2026-10-28": [("Sec 8 · Linear-time selection", "nFw6x7DoYbs"),
                    ("Sec 9 · Graphs and minimum cuts", "4Ih3UhVuEtw")],
-    "2026-10-28": [("Sec 10 · Graph search: BFS, DFS, topological sort, SCCs", "SW6jwg7WS48")],
-    "2026-10-29": [("Sec 11 · Dijkstra's shortest paths", "jRlNVmRjdRk"),
+    "2026-10-30": [("Sec 10 · Graph search: BFS, DFS, topological sort, SCCs", "SW6jwg7WS48")],
+    "2026-11-01": [("Sec 11 · Dijkstra's shortest paths", "jRlNVmRjdRk"),
                    ("Sec 12 · Heaps", "cMrQxxrKg8I")],
-    "2026-10-30": [("Sec 13 · Balanced search trees", "IbNZ-x1I2IM")],
-    "2026-10-31": [("Sec 14 · Hash tables", "Qu183GFHbZQ"),
+    "2026-11-03": [("Sec 13 · Balanced search trees", "IbNZ-x1I2IM")],
+    "2026-11-05": [("Sec 14 · Hash tables", "Qu183GFHbZQ"),
                    ("Sec 15 · Universal hashing", "MWq8BvRR950"),
                    ("Sec 16 · Bloom filters", "zYlxP7F3Z3c")],
 }
@@ -214,30 +220,30 @@ BREAKSCALE = "https://breakscale.tech"
 HANDBOOK = "https://handbook.modular.com"
 GENAI_SDI = "https://bytebytego.com/courses/genai-system-design-interview"
 VIDUR = "https://github.com/microsoft/vidur"
+# Sundays off. The GenAI SDI book arrives Fri 10/30.
 SD_LAB = {
-    "2026-10-27": [("Breakscale: rebuild Xu Ch 1 (LB, app, cache, DB + replica); push load until p99 breaks, note the numbers", BREAKSCALE)],
-    "2026-10-28": [("LLM Inference Handbook · foundations: prefill vs decode, TTFT, tokens/sec, KV cache", HANDBOOK)],
-    "2026-10-29": [("Lab: llama.cpp/Ollama server on the box; load test at 1, 4, 16 concurrent users; chart TTFT and tokens/sec", None)],
-    "2026-10-30": [("LLM Inference Handbook · batching (static vs continuous), PagedAttention", HANDBOOK),
+    "2026-10-28": [("Breakscale: rebuild Xu Ch 1 (LB, app, cache, DB + replica); push load until p99 breaks, note the numbers", BREAKSCALE)],
+    "2026-10-29": [("LLM Inference Handbook · foundations: prefill vs decode, TTFT, tokens/sec, KV cache", HANDBOOK)],
+    "2026-10-30": [("Lab: llama.cpp/Ollama server on the box; load test at 1, 4, 16 concurrent users; chart TTFT and tokens/sec", None)],
+    "2026-10-31": [("GenAI System Design Interview Ch 1 · the framework", GENAI_SDI)],
+    "2026-11-02": [("LLM Inference Handbook · batching (static vs continuous), PagedAttention", HANDBOOK),
                    ("Design: an LLM inference API (streaming, rate limits, multi-tenant)", None)],
-    # The GenAI SDI book arrives Fri 10/30.
-    "2026-10-31": [("GenAI System Design Interview Ch 1 · the framework", GENAI_SDI),
-                   ("Breakscale: retry storms, circuit breakers, backpressure, applied to an LLM gateway", BREAKSCALE)],
-    "2026-11-01": [("GenAI System Design Interview · the chatbot chapter; then design it yourself in 45 min", GENAI_SDI)],
-    "2026-11-02": [("GenAI System Design Interview · the RAG chapter", GENAI_SDI),
-                   ("Lab: small RAG service on the server with pgvector; retrieval vs generation latency", None)],
-    "2026-11-03": [("Vidur: estimate a serving setup by hand, then find the cheapest config that meets a latency SLO", VIDUR)],
-    "2026-11-04": [("Mock: URL shortener, 45 min, written up", None),
+    "2026-11-03": [("Breakscale: retry storms, circuit breakers, backpressure, applied to an LLM gateway", BREAKSCALE)],
+    "2026-11-04": [("GenAI System Design Interview · the chatbot chapter; then design it yourself in 45 min", GENAI_SDI)],
+    "2026-11-05": [("GenAI System Design Interview · the RAG chapter", GENAI_SDI)],
+    "2026-11-06": [("Lab: small RAG service on the server with pgvector; retrieval vs generation latency", None)],
+    "2026-11-07": [("Vidur: estimate a serving setup by hand, then find the cheapest config that meets a latency SLO", VIDUR)],
+    "2026-11-09": [("Mock: URL shortener, 45 min, written up", None),
                    ("Mock: an LLM-powered support agent, 45 min, written up", None)],
-    "2026-11-05": [("Mock: RAG over company docs, 45 min", None),
+    "2026-11-10": [("Mock: RAG over company docs, 45 min", None),
                    ("Mock: an inference batching system for a single GPU, 45 min", None)],
 }
 
-# Daily during the sprint, then back to Tue/Thu.
+# Daily during the sprint (Sundays off), then back to Tue/Thu.
 AGENTS = [
     "Server: inventory the machine (CPU, RAM, disk, GPU?); install Ubuntu Server 24.04 LTS, SSH keys only",
     "Server: DHCP reservation; harden it (ufw, unattended-upgrades, no password SSH); add Tailscale",
-    "Server: Docker + compose; Ollama + a small model (today's lab uses it)",
+    "Server: Docker + compose; Ollama + a small model (tomorrow's lab uses it)",
     "Server: a hello service you can reach from your phone over Tailscale; Claude API key in place",
     "Agent: a minimal agent loop on the server against the Claude API, one tool",
     "WhatsApp: run scripts/setup-whatsapp.sh so the tracker bot is live",
@@ -254,9 +260,11 @@ AGENTS = [
 
 # One-off additions on top of the generated days.
 EXTRA = {
+    "2026-10-28": {"ddia": [("Carried over from Tue: Transactions · isolation, durability; "
+                             "single- vs multi-object operations", None)]},
     "2026-10-30": {"blogs-papers": [("Carried over from Sun: Attention Is All You Need (Vaswani et al., 2017)",
                                      "https://arxiv.org/abs/1706.03762")]},
-    "2026-11-06": {"agent-harnesses": [("Carried over from Sat 10/24: Study how agent harnesses work "
+    "2026-11-11": {"agent-harnesses": [("Carried over from Sat 10/24: Study how agent harnesses work "
                                         "(agent loop, tools, permissions); sketch your design", None)]},
 }
 
@@ -266,7 +274,7 @@ WEEKLY = {
     "agents": {1, 3}, "agent-harnesses": {5}, "experiments": {6},
 }
 # Reading keeps its rhythm through the sprint; these change during it.
-SPRINT_DAILY = {"agents"}
+SPRINT_DAILY = {"agents"}  # except Sundays, and from Oct 28 (Oct 27's moved a day)
 SPRINT_PAUSED = {"agent-harnesses", "experiments"}
 
 
@@ -284,12 +292,16 @@ def problem(n, title):
 
 
 def leetcode_plan():
-    """date -> items. LC75 by LC75_DAYS, Blind 75 in the sprint's last days, then 1–2 a weekday."""
-    days, i = {}, 0
+    """date -> items. LC75 by LC75_DONE/LC75_DAYS, Blind 75 in the sprint's last days, then 1–2 a weekday."""
+    by_number = dict(LC75)
+    days = {d: [problem(n, by_number[n]) for n in ns] for d, ns in LC75_DONE.items()}
+    done = {n for ns in LC75_DONE.values() for n in ns}
+    left = [p for p in LC75 if p[0] not in done]
+    i = 0
     for d, count in LC75_DAYS.items():
-        days[d] = [problem(*p) for p in LC75[i:i + count]]
+        days[d] = [problem(*p) for p in left[i:i + count]]
         i += count
-    assert i == len(LC75), f"LC75_DAYS covers {i} of {len(LC75)}"
+    assert i == len(left), f"LC75_DAYS covers {i} of {len(left)}"
     for d, problems in BLIND_SPRINT.items():
         days[d] = [item(*REDO)] + [problem(*p) for p in problems] + [item(*MOCK)]
     rest = list(BLIND_AFTER)
@@ -332,9 +344,9 @@ def main():
 
     def scheduled(task, d):
         if task == "system-design-xu" and XU_DAILY[0] <= d <= XU_DAILY[1]:
-            return True
+            return d.weekday() != 6
         if in_sprint(d) and task in SPRINT_DAILY:
-            return True
+            return d.weekday() != 6 and d > SPRINT_START
         if in_sprint(d) and task in SPRINT_PAUSED:
             return False
         return d.weekday() in WEEKLY[task]
