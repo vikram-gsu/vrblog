@@ -19,13 +19,13 @@ groups:
         detail: Martin Kleppmann · from Transactions, Tue/Thu
       - id: system-design-xu
         label: System Design Interview
-        detail: Alex Xu · Vol 1, a chapter a day (Sundays off) until Nov 10, then Saturday reviews
+        detail: Alex Xu · Vol 1, most days until Nov 14 (every other day while on call), then Saturday reviews
       - id: blogs-papers
         label: Blogs & research papers
         detail: One a week, swapped as things come up
       - id: algorithms-lectures
         label: Stanford Algorithms 1 (lectures)
-        detail: Tim Roughgarden · a re-watch at 2×, Optional videos skipped, every other day until Nov 5
+        detail: Tim Roughgarden · a re-watch at 2×, Optional videos skipped, done by Nov 12, paused while on call
         link: https://www.youtube.com/playlist?list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V
 
   - id: execution
@@ -33,17 +33,17 @@ groups:
     tasks:
       - id: leetcode
         label: LeetCode
-        detail: LeetCode 75 by Nov 6, Blind 75 extras + mocks Nov 7–10, then 1–2 a weekday
+        detail: LeetCode 75 by Nov 12 (3 a day while on call), Blind 75 extras + mocks Nov 13–15, then 1–2 a weekday
         link: https://leetcode.com/studyplan/leetcode-75/
       - id: system-design-lab
         label: System design lab
-        detail: Breakscale, LLM inference, GenAI system design mocks · Oct 28–Nov 10, Sundays off
+        detail: Breakscale, LLM inference, GenAI system design mocks · until Nov 15, Sundays and on-call week off
       - id: agents
         label: Building agents
         detail: Home server first, then a movie-ticket agent with WhatsApp approvals
       - id: agent-harnesses
         label: Building agent harnesses
-        detail: An agent loop, tools, permissions and evals, from scratch · paused until Nov 11
+        detail: An agent loop, tools, permissions and evals, from scratch · paused until Nov 21
       - id: experiments
         label: Other experiments
         detail: Catch-up buffer · paused for the sprint
