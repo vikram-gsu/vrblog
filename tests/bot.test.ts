@@ -102,15 +102,52 @@ test("undo removes the last entry, and empties back to []", () => {
   assert.equal(removeLastEntry(empty).removed, undefined);
 });
 
-test("renders the day's checklist", () => {
+const QUEUE = {
+  "llm-from-scratch": [{ id: "llm-1", title: "Ch 1", hours: 2 }],
+  leetcode: [
+    { id: "lc-1", title: "1768", hours: 1 },
+    { id: "lc-2", title: "1071", hours: 1 },
+    { id: "lc-3", title: "1431", hours: 1 },
+  ],
+};
+const SCHEDULE = {
+  templates: {
+    day: [
+      { time: "10–12", hours: 2, label: "LeetCode", tasks: ["leetcode"] },
+      { time: "1–3", hours: 2, label: "Reading", tasks: ["llm-from-scratch"] },
+    ],
+  },
+  week: { fri: "day", sat: "day" },
+  days: {},
+};
+
+test("renders the day's blocks, ticking what's done", () => {
   const tasks = [
     { id: "llm-from-scratch", label: "LLM" },
     { id: "leetcode", label: "LeetCode" },
   ];
-  const agenda = { [TODAY]: { "llm-from-scratch": [{ title: "Ch 1" }], leetcode: [{ title: "1768" }, { title: "1071" }] } };
-  const text = renderDay(TODAY, tasks, agenda, [{ date: TODAY, task: "leetcode" }]);
-  assert.equal(text, "Fri, Oct 23 · 1/2 done\n⬜ LLM: Ch 1\n✅ LeetCode: 1768; 1071");
-  assert.match(renderDay("2026-10-24", tasks, agenda, []), /Rest day/);
+  const log = [{ date: TODAY, task: "leetcode", done: ["lc-1"] }];
+  assert.equal(
+    renderDay(TODAY, TODAY, tasks, QUEUE, SCHEDULE, log),
+    "Fri, Oct 23 · 1/3 done\n10–12 LeetCode (LeetCode)\n✅ 1768\n⬜ 1071\n1–3 Reading (LLM)\n⬜ Ch 1"
+  );
+  // Tomorrow assumes today goes as planned.
+  assert.match(renderDay("2026-10-24", TODAY, tasks, QUEUE, SCHEDULE, log), /• 1431\n.*\n• nothing left/);
+  assert.match(renderDay("2026-10-25", TODAY, tasks, QUEUE, SCHEDULE, log), /Day off/);
+  assert.equal(renderDay("2026-10-22", TODAY, tasks, QUEUE, SCHEDULE, log), "Thu, Oct 22: nothing logged.");
+});
+
+test("done finishes the next items", () => {
+  assert.deepEqual(parseMessage("lc 1h done 2 tricky", TODAY, IDS), [
+    { kind: "log", entry: { date: TODAY, task: "leetcode", minutes: 60, note: "tricky" }, doneNext: 2 },
+  ]);
+  assert.deepEqual(parseMessage("llm done", TODAY, IDS), [
+    { kind: "log", entry: { date: TODAY, task: "llm-from-scratch" }, doneNext: 1 },
+  ]);
+  // "done" later in the note is just a note.
+  assert.deepEqual(parseMessage("llm 50 ch1 done", TODAY, IDS), [
+    { kind: "log", entry: { date: TODAY, task: "llm-from-scratch", minutes: 50, note: "ch1 done" } },
+  ]);
 });
 
 test("today follows the configured time zone", () => {

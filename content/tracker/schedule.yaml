@@ -1,0 +1,59 @@
+# The day in blocks of time. Each block works through its first track that still has
+# items left (queue.yaml), as many items as fit in its hours. Nothing is tied to a date:
+# unfinished work is simply still next tomorrow.
+#
+# templates: named lists of blocks, {time, hours, label, tasks}
+# week:      which template each weekday uses
+# days:      per-date changes, {template, note}; an empty template means a day off
+templates:
+  weekday-mwf:
+    - { time: "10–12", hours: 2, label: LeetCode, tasks: [leetcode] }
+    - { time: "1–3", hours: 2, label: Reading, tasks: [llm-from-scratch, ddia] }
+    - { time: "3–5", hours: 2, label: System design, tasks: [system-design-xu, system-design-lab] }
+    - { time: "5–7", hours: 2, label: Hands-on, tasks: [system-design-lab, agents] }
+    - { time: "9–10:30", hours: 1.5, label: LeetCode, tasks: [leetcode] }
+    - { time: "10:30–12", hours: 1.5, label: Light, tasks: [algorithms-lectures, blogs-papers] }
+  weekday-tt:
+    - { time: "10–12", hours: 2, label: LeetCode, tasks: [leetcode] }
+    - { time: "1–3", hours: 2, label: Reading, tasks: [ddia, llm-from-scratch] }
+    - { time: "3–5", hours: 2, label: System design, tasks: [system-design-xu, system-design-lab] }
+    - { time: "5–7", hours: 2, label: Hands-on, tasks: [agents, system-design-lab] }
+    - { time: "9–10:30", hours: 1.5, label: LeetCode, tasks: [leetcode] }
+    - { time: "10:30–12", hours: 1.5, label: Light, tasks: [algorithms-lectures, blogs-papers] }
+  # Half the day goes to hikes and errands.
+  saturday:
+    - { time: "3–5", hours: 2, label: System design, tasks: [system-design-xu, system-design-lab] }
+    - { time: "5–7", hours: 2, label: Hands-on, tasks: [agents, system-design-lab] }
+    - { time: "9–10:30", hours: 1.5, label: LeetCode, tasks: [leetcode] }
+    - { time: "10:30–12", hours: 1.5, label: Light, tasks: [algorithms-lectures, blogs-papers] }
+  sunday:
+    - { time: "3–5", hours: 2, label: Hands-on, tasks: [system-design-lab, agents] }
+    - { time: "5–7", hours: 2, label: System design, tasks: [system-design-xu, system-design-lab] }
+    - { time: "9–10:30", hours: 1.5, label: LeetCode, tasks: [leetcode] }
+    - { time: "10:30–12", hours: 1.5, label: Light, tasks: [blogs-papers, algorithms-lectures] }
+  # A first guess; adjust once the on-call load is known.
+  on-call-mwf:
+    - { time: "9–10:30", hours: 1.5, label: LeetCode, tasks: [leetcode] }
+    - { time: "10:30–12", hours: 1.5, label: Reading, tasks: [llm-from-scratch, ddia] }
+  on-call-tt:
+    - { time: "9–10:30", hours: 1.5, label: LeetCode, tasks: [leetcode] }
+    - { time: "10:30–12", hours: 1.5, label: Reading, tasks: [ddia, llm-from-scratch] }
+  off: []
+
+week:
+  mon: weekday-mwf
+  tue: weekday-tt
+  wed: weekday-mwf
+  thu: weekday-tt
+  fri: weekday-mwf
+  sat: saturday
+  sun: sunday
+
+days:
+  "2026-11-03": { template: on-call-tt, note: On call }
+  "2026-11-04": { template: on-call-mwf, note: On call }
+  "2026-11-05": { template: on-call-tt, note: On call }
+  "2026-11-06": { template: on-call-mwf, note: On call }
+  "2026-11-07": { template: on-call-mwf, note: On call }
+  "2026-11-08": { template: on-call-mwf, note: On call }
+  "2026-11-09": { template: on-call-mwf, note: On call }

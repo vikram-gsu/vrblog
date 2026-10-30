@@ -1,6 +1,7 @@
 // Pure logic for the WhatsApp tracker bot: parse messages, edit log.yaml, write replies.
 // No I/O here, so it can be tested with `npm test`.
 import { parse as parseYaml, parseDocument, YAMLSeq } from "yaml";
+import { blocksFor, project, type Queue, type Schedule } from "../../src/lib/schedule.js";
 
 export interface Task {
   id: string;
@@ -12,16 +13,17 @@ export interface Entry {
   task: string;
   minutes?: number;
   note?: string;
+  /** Ids of queue.yaml items finished. */
+  done?: string[];
 }
 
 export type Command =
-  | { kind: "log"; entry: Entry }
+  // doneNext: finish the task's next N items (resolved against the log when it's written).
+  | { kind: "log"; entry: Entry; doneNext?: number }
   | { kind: "today"; date: string }
   | { kind: "undo" }
   | { kind: "help" }
   | { kind: "unknown"; text: string };
-
-type Agenda = Record<string, Record<string, { title: string }[]>>;
 
 // Short names you can type instead of a task id.
 const ALIASES: Record<string, string> = {
@@ -64,6 +66,7 @@ export const HELP = [
   "  lc 1h two problems",
   "  yesterday llm 90 ch2",
   "  10/22 xu 2h",
+  "Finish the next item: llm 2h done (lc 1h done 2 for two)",
   "",
   "Tasks: llm, ddia, xu, papers, algo, lc, sd, agents (or server), harness, exp",
   "Time: 45, 45m, 1h, 1h30, 1.5h (optional)",
@@ -141,9 +144,15 @@ export function parseLine(line: string, today: string, taskIds: Set<string>): Co
     entry.minutes = minutes;
     tokens.shift();
   }
+  let doneNext: number | undefined;
+  if (tokens[0]?.toLowerCase() === "done") {
+    tokens.shift();
+    const n = /^\d{1,2}$/.test(tokens[0] ?? "") ? Number(tokens.shift()) : 1;
+    if (n > 0) doneNext = n;
+  }
   const note = tokens.join(" ").trim();
   if (note) entry.note = note;
-  return { kind: "log", entry };
+  return doneNext ? { kind: "log", entry, doneNext } : { kind: "log", entry };
 }
 
 export function parseMessage(body: string, today: string, taskIds: Set<string>): Command[] {
@@ -198,35 +207,57 @@ function labelOf(tasks: Task[], id: string): string {
   return tasks.find((t) => t.id === id)?.label ?? id;
 }
 
-export function describeEntry(entry: Entry, tasks: Task[]): string {
+export function describeEntry(entry: Entry, tasks: Task[], titles: Map<string, string> = new Map()): string {
   return [
     labelOf(tasks, entry.task),
     entry.minutes ? `${entry.minutes} min` : null,
+    entry.done?.length ? `done: ${entry.done.map((id) => titles.get(id) ?? id).join("; ")}` : null,
     entry.note ? `"${entry.note}"` : null,
   ]
     .filter(Boolean)
     .join(" · ");
 }
 
-/** The day's assignments with a check for each task that has a log entry. */
-export function renderDay(date: string, tasks: Task[], agenda: Agenda, entries: Entry[]): string {
-  const assigned = agenda[date] || {};
-  const done = new Set(entries.filter((e) => e.date === date).map((e) => e.task));
-  const ids = tasks.map((t) => t.id).filter((id) => assigned[id]?.length);
-  if (ids.length === 0) return `${prettyDate(date)}: nothing scheduled. Rest day.`;
-
-  const lines = ids.map((id) => {
-    const titles = assigned[id].map((i) => i.title).join("; ");
-    return `${done.has(id) ? "✅" : "⬜"} ${labelOf(tasks, id)}: ${titles}`;
-  });
-  const count = ids.filter((id) => done.has(id)).length;
-  return [`${prettyDate(date)} · ${count}/${ids.length} done`, ...lines].join("\n");
+export function itemTitles(queue: Queue): Map<string, string> {
+  return new Map(Object.values(queue).flat().map((i) => [i.id, i.title]));
 }
 
-export function dayProgress(date: string, agenda: Agenda, entries: Entry[]): string {
-  const assigned = Object.keys(agenda[date] || {});
-  if (assigned.length === 0) return "";
-  const done = new Set(entries.filter((e) => e.date === date).map((e) => e.task));
-  const count = assigned.filter((id) => done.has(id)).length;
-  return `${prettyDate(date)}: ${count}/${assigned.length} done`;
+/**
+ * A day's blocks and their items. Today ticks finished items; later days are a projection;
+ * earlier days list what was logged.
+ */
+export function renderDay(
+  date: string,
+  today: string,
+  tasks: Task[],
+  queue: Queue,
+  schedule: Schedule,
+  entries: Entry[]
+): string {
+  if (date < today) {
+    const logged = entries.filter((e) => e.date === date);
+    if (!logged.length) return `${prettyDate(date)}: nothing logged.`;
+    const titles = itemTitles(queue);
+    return [`${prettyDate(date)} · ${logged.length} logged`, ...logged.map((e) => `✅ ${describeEntry(e, tasks, titles)}`)].join("\n");
+  }
+  const day = project(queue, schedule, entries, today, date).days.at(-1)!;
+  const note = day.note ? ` · ${day.note}` : "";
+  if (!day.blocks.length) return `${prettyDate(date)}${note}: no blocks planned. Day off.`;
+
+  const items = day.blocks.flatMap((b) => b.items);
+  const count = date === today ? ` · ${items.filter((i) => i.done).length}/${items.length} done` : "";
+  const lines = day.blocks.flatMap((b) => [
+    `${b.time} ${b.label}${b.task ? ` (${labelOf(tasks, b.task)})` : ""}`,
+    ...(b.items.length ? b.items : [null]).map((i) =>
+      i ? `${date === today ? (i.done ? "✅" : "⬜") : "•"} ${i.item.title}` : "• nothing left"
+    ),
+  ]);
+  return [`${prettyDate(date)}${note}${count}`, ...lines].join("\n");
+}
+
+/** "Fri, Oct 30: 3/12 done" for today's planned items, or "" on a day off. */
+export function dayProgress(date: string, queue: Queue, schedule: Schedule, entries: Entry[]): string {
+  if (!blocksFor(schedule, date).blocks.length) return "";
+  const items = project(queue, schedule, entries, date, date).days[0].blocks.flatMap((b) => b.items);
+  return `${prettyDate(date)}: ${items.filter((i) => i.done).length}/${items.length} done`;
 }

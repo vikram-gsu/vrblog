@@ -124,6 +124,8 @@ collections:
                   - { label: "Building agents", value: agents }
                   - { label: "Agent harnesses", value: agent-harnesses }
                   - { label: "Experiments", value: experiments }
+                  - { label: "Stanford Algorithms lectures", value: algorithms-lectures }
+                  - { label: "System design lab", value: system-design-lab }
               - label: Minutes
                 name: minutes
                 widget: number
@@ -132,4 +134,8 @@ collections:
               - label: Note
                 name: note
                 widget: string
+                required: false
+              - label: Finished items (ids from queue.yaml)
+                name: done
+                widget: list
                 required: false

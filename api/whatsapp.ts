@@ -8,6 +8,7 @@ import {
   appendEntries,
   dayProgress,
   describeEntry,
+  itemTitles,
   parseMessage,
   readEntries,
   removeLastEntry,
@@ -16,6 +17,7 @@ import {
   type Entry,
   type Task,
 } from "./_lib/bot.js";
+import { nextItems, readQueue, readSchedule, type Queue, type Schedule } from "../src/lib/schedule.js";
 
 const env = (name: string) => process.env[name] ?? "";
 const REPO = () => env("GITHUB_REPO") || "vikram-gsu/vrblog";
@@ -120,15 +122,17 @@ function messagesIn(payload: unknown): IncomingMessage[] {
 
 // --- Commands -------------------------------------------------------------
 
-async function loadPlan(): Promise<{ tasks: Task[]; agenda: Record<string, Record<string, { title: string }[]>> }> {
-  const [plan, agenda] = await Promise.all([
+async function loadPlan(): Promise<{ tasks: Task[]; queue: Queue; schedule: Schedule }> {
+  const [plan, queue, schedule] = await Promise.all([
     readFile("content/tracker/plan.yaml"),
-    readFile("content/tracker/agenda.yaml"),
+    readFile("content/tracker/queue.yaml"),
+    readFile("content/tracker/schedule.yaml"),
   ]);
   const groups = (parseYaml(plan.text)?.groups ?? []) as { tasks: Task[] }[];
   return {
     tasks: groups.flatMap((g) => g.tasks.map((t) => ({ id: t.id, label: t.label }))),
-    agenda: parseYaml(agenda.text)?.days ?? {},
+    queue: readQueue(parseYaml(queue.text)),
+    schedule: readSchedule(parseYaml(schedule.text)),
   };
 }
 
@@ -136,7 +140,8 @@ async function handle(msg: IncomingMessage): Promise<string> {
   if (msg.type !== "text" || !msg.text) return "I only understand text messages.\n\n" + HELP;
 
   const today = todayIn(env("TRACKER_TZ") || "America/New_York");
-  const { tasks, agenda } = await loadPlan();
+  const { tasks, queue, schedule } = await loadPlan();
+  const titles = itemTitles(queue);
   const commands = parseMessage(msg.text.body, today, new Set(tasks.map((t) => t.id)));
   if (commands.length === 0) return HELP;
 
@@ -145,7 +150,7 @@ async function handle(msg: IncomingMessage): Promise<string> {
 
   if (commands.some((c) => c.kind === "help")) return HELP;
 
-  const toLog = commands.flatMap((c) => (c.kind === "log" ? [c.entry] : []));
+  const toLog = commands.flatMap((c) => (c.kind === "log" ? [c] : []));
   const replies: string[] = [];
 
   if (commands.some((c) => c.kind === "undo")) {
@@ -155,25 +160,32 @@ async function handle(msg: IncomingMessage): Promise<string> {
       removed = result.removed;
       return result.removed ? result.yaml : null;
     }, `tracker: undo via WhatsApp (${msg.id})`);
-    replies.push(removed ? `Removed: ${removed.date} · ${describeEntry(removed, tasks)}` : "Nothing to undo.");
+    replies.push(removed ? `Removed: ${removed.date} · ${describeEntry(removed, tasks, titles)}` : "Nothing to undo.");
   }
 
   if (toLog.length) {
-    const summary = toLog.map((e) => describeEntry(e, tasks)).join(", ");
-    await updateLog(
-      (yaml) => appendEntries(yaml, toLog),
-      `tracker: log ${summary} (${msg.id})`
-    );
-    const logged = toLog.map((e) => `✅ ${e.date === today ? "" : `${e.date} · `}${describeEntry(e, tasks)}`);
+    let logged: Entry[] = [];
+    await updateLog((yaml) => {
+      // "done" finishes the next unfinished items, counting earlier lines of this message.
+      const log = readEntries(yaml);
+      logged = toLog.map(({ entry, doneNext }) => {
+        const e = doneNext ? { ...entry, done: nextItems(queue, log, entry.task, doneNext).map((i) => i.id) } : entry;
+        if (e.done && !e.done.length) delete e.done;
+        log.push(e);
+        return e;
+      });
+      return appendEntries(yaml, logged);
+    }, `tracker: log ${toLog.map((c) => describeEntry(c.entry, tasks)).join(", ")} (${msg.id})`);
+    const lines = logged.map((e) => `✅ ${e.date === today ? "" : `${e.date} · `}${describeEntry(e, tasks, titles)}`);
     const entries = readEntries((await readFile(LOG_PATH)).text);
-    const progress = dayProgress(today, agenda, entries);
-    replies.push([...logged, progress && `\n${progress}`, "Site updates in about a minute."].filter(Boolean).join("\n"));
+    const progress = dayProgress(today, queue, schedule, entries);
+    replies.push([...lines, progress && `\n${progress}`, "Site updates in about a minute."].filter(Boolean).join("\n"));
   }
 
   for (const c of commands) {
     if (c.kind === "today") {
       const entries = readEntries((await readFile(LOG_PATH)).text);
-      replies.push(renderDay(c.date, tasks, agenda, entries));
+      replies.push(renderDay(c.date, today, tasks, queue, schedule, entries));
     }
   }
 
