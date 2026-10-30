@@ -66,7 +66,9 @@ ddia 1h30 isolation      time: 45, 45m, 1h, 1h30, 1.5h (optional)
 yesterday xu 2h          or a date: 10/22 xu 2h
 llm 50
 lc 35                    several lines = several entries
-today   (or ?)           today's checklist; yesterday? for yesterday
+today   (or ?)           today's blocks and items; yesterday? for yesterday
+llm 2h done              finishes the next LLM item (it leaves the plan)
+lc 1h done 3             finishes the next 3 LeetCode problems
 undo                     remove the last entry
 help
 ```

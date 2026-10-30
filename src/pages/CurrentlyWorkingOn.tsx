@@ -9,26 +9,19 @@ import {
   buildOverallDays,
   buildTaskDays,
   computeStats,
-  getAgenda,
   getLog,
   getPlan,
-  isScheduled,
+  getQueue,
+  getSchedule,
   todayIso,
-  weekdayOf,
-  type Agenda,
+  type LogEntry,
   type TrackerStats,
   type TrackerTask,
-  type Weekday,
 } from "@/lib/tracker";
+import { project, type Projection, type Queue, type QueueItem } from "@/lib/schedule";
 
-const DAY_ORDER: Weekday[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
-const DAY_SHORT: Record<Weekday, string> = {
-  mon: "M", tue: "T", wed: "W", thu: "T", fri: "F", sat: "S", sun: "S",
-};
-
-function adherence(stats: TrackerStats) {
-  if (stats.scheduledSoFar === 0) return "—";
-  return `${Math.round((stats.scheduledDone / stats.scheduledSoFar) * 100)}%`;
+function hoursText(minutes: number) {
+  return minutes ? (minutes / 60).toFixed(1) : 0;
 }
 
 const Stat = ({ label, value }: { label: string; value: string | number }) => (
@@ -40,72 +33,75 @@ const Stat = ({ label, value }: { label: string; value: string | number }) => (
   </div>
 );
 
-/** Which days of the current Mon–Sun week the agenda schedules this task. */
-function thisWeek(agenda: Agenda, taskId: string, today: string): Weekday[] {
-  const monday = addDays(today, -DAY_ORDER.indexOf(weekdayOf(today)));
-  return DAY_ORDER.filter((_, i) => isScheduled(agenda, taskId, addDays(monday, i)));
+interface Progress {
+  done: number;
+  total: number;
+  next?: QueueItem;
+  /** Hours of blocks this task gets over the next 7 days. */
+  weekHours: number;
+  finish?: string;
 }
 
-const Schedule = ({ days }: { days: Weekday[] }) => (
-  <div
-    className="flex gap-1"
-    title="This week"
-    aria-label={days.length ? `This week: ${days.join(", ")}` : "Nothing this week"}
-  >
-    {DAY_ORDER.map((d, i) => (
-      <span
-        key={i}
-        className={cn(
-          "w-5 h-5 text-[10px] rounded-full flex items-center justify-center",
-          days.includes(d)
-            ? "bg-primary/15 text-primary font-semibold"
-            : "text-muted-foreground/60"
-        )}
-      >
-        {DAY_SHORT[d]}
-      </span>
-    ))}
-  </div>
-);
+function progressFor(task: string, queue: Queue, log: LogEntry[], projection: Projection, today: string): Progress {
+  const items = queue[task] ?? [];
+  const doneIds = new Set(log.flatMap((e) => e.done ?? []));
+  const weekEnd = addDays(today, 6);
+  const weekHours = projection.days
+    .filter((d) => d.date <= weekEnd)
+    .flatMap((d) => d.blocks)
+    .filter((b) => b.task === task && b.items.length)
+    .reduce((sum, b) => sum + b.hours, 0);
+  return {
+    done: items.filter((i) => doneIds.has(i.id)).length,
+    total: items.length,
+    next: items.find((i) => !doneIds.has(i.id)),
+    weekHours,
+    finish: projection.finish[task],
+  };
+}
+
+function finishText(p: Progress) {
+  if (p.total && p.done === p.total) return "Done";
+  if (p.finish) return format(parseISO(p.finish), "MMM d");
+  return p.weekHours ? "Later" : "—";
+}
 
 const TaskTracker = ({
   task,
   days,
-  week,
   stats,
+  progress,
 }: {
   task: TrackerTask;
   days: ReturnType<typeof buildTaskDays>;
-  week: Weekday[];
   stats: TrackerStats;
+  progress: Progress;
 }) => (
   <div className="bg-card border border-border rounded-lg p-6">
-    <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
-      <div>
-        <h3 className="text-xl font-heading">
-          {task.link ? (
-            <a href={task.link} target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">
-              {task.label}
-            </a>
-          ) : (
-            task.label
-          )}
-        </h3>
-        {task.detail && (
-          <p className="text-sm text-muted-foreground mt-1">{task.detail}</p>
+    <div className="mb-5">
+      <h3 className="text-xl font-heading">
+        {task.link ? (
+          <a href={task.link} target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">
+            {task.label}
+          </a>
+        ) : (
+          task.label
         )}
-      </div>
-      <Schedule days={week} />
+      </h3>
+      {task.detail && <p className="text-sm text-muted-foreground mt-1">{task.detail}</p>}
+      <p className="text-sm mt-3">
+        <span className="text-muted-foreground">
+          {progress.next ? (progress.weekHours ? "Next: " : "Paused · next: ") : ""}
+        </span>
+        {progress.next?.title ?? (progress.total ? "All done" : "Nothing queued")}
+      </p>
     </div>
     <Heatmap days={days} size="sm" />
     <div className="grid grid-cols-4 gap-4 mt-5">
-      <Stat label="Streak" value={stats.currentStreak} />
-      <Stat label="Best" value={stats.longestStreak} />
-      <Stat label="On plan" value={adherence(stats)} />
-      <Stat
-        label="Hours"
-        value={stats.minutes ? (stats.minutes / 60).toFixed(1) : 0}
-      />
+      <Stat label="Done" value={progress.total ? `${progress.done}/${progress.total}` : "—"} />
+      <Stat label="Hours" value={hoursText(stats.minutes)} />
+      <Stat label="Next 7 days" value={`${Number(progress.weekHours.toFixed(1))} h`} />
+      <Stat label="Est. finish" value={finishText(progress)} />
     </div>
   </div>
 );
@@ -123,42 +119,43 @@ const Legend = () => (
       More
     </span>
     <span className="flex items-center gap-1.5">
-      <span className={cn("w-3 h-3 rounded-[3px]", cellClass({ status: "missed", level: 0 }))} />
-      Missed
-    </span>
-    <span className="flex items-center gap-1.5">
       <span className={cn("w-3 h-3 rounded-[3px]", cellClass({ status: "upcoming", level: 0 }))} />
-      Scheduled
+      Planned
     </span>
     <span className="flex items-center gap-1.5">
       <span className={cn("w-3 h-3 rounded-[3px]", cellClass({ status: "rest", level: 0 }))} />
-      Rest
+      Nothing logged
     </span>
   </div>
 );
 
 const CurrentlyWorkingOn = () => {
   const today = todayIso();
-  const { plan, agenda, log, overall, overallStats, groups } = useMemo(() => {
+  const { plan, queue, log, projection, overall, overallStats, itemsDone, groups } = useMemo(() => {
     const plan = getPlan();
-    const agenda = getAgenda();
+    const queue = getQueue();
     const log = getLog();
-    const overall = buildOverallDays(plan, agenda, log, today);
+    // Far enough past the plan's end to estimate when long tracks finish.
+    const projection = project(queue, getSchedule(), log, today, addDays(plan.end, 180));
+    const overall = buildOverallDays(plan, projection, log, today);
+    const known = new Set(Object.values(queue).flat().map((i) => i.id));
     return {
       plan,
-      agenda,
+      queue,
       log,
+      projection,
       overall,
       overallStats: computeStats(overall, today),
+      itemsDone: new Set(log.flatMap((e) => e.done ?? []).filter((id) => known.has(id))).size,
       groups: plan.groups.map((group) => ({
         ...group,
         trackers: group.tasks.map((task) => {
-          const days = buildTaskDays(plan, agenda, task, log, today);
+          const days = buildTaskDays(plan, projection, task, log, today);
           return {
             task,
             days,
-            week: thisWeek(agenda, task.id, today),
             stats: computeStats(days, today),
+            progress: progressFor(task.id, queue, log, projection, today),
           };
         }),
       })),
@@ -182,8 +179,9 @@ const CurrentlyWorkingOn = () => {
             {plan.title}: a bounded routine from{" "}
             {format(parseISO(plan.start), "MMM d")} to{" "}
             {format(parseISO(plan.end), "MMM d, yyyy")}. The goal isn't to
-            finish everything. It's to show up on the days I said I would, in
-            public.
+            hit dates. It's blocks of time each day, each one working through
+            the next thing on its list, in public. Estimated finishes move with
+            the actual pace.
           </p>
           <p className="text-sm uppercase tracking-wide text-muted-foreground mb-12">
             {elapsed === 0
@@ -191,7 +189,7 @@ const CurrentlyWorkingOn = () => {
               : `Day ${elapsed} of ${totalDays}`}
           </p>
 
-          <TodayPanel plan={plan} agenda={agenda} log={log} today={today} />
+          <TodayPanel plan={plan} queue={queue} projection={projection} log={log} today={today} />
 
           <section className="bg-card border border-border rounded-lg p-6 md:p-8 mb-16">
             <div className="flex flex-wrap items-baseline justify-between gap-4 mb-6">
@@ -199,14 +197,10 @@ const CurrentlyWorkingOn = () => {
               <Legend />
             </div>
             <Heatmap days={overall} unit="tasks" />
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-6 max-w-xl">
-              <Stat label="Day streak" value={overallStats.currentStreak} />
-              <Stat label="Best streak" value={overallStats.longestStreak} />
-              <Stat label="Active days" value={overallStats.daysDone} />
-              <Stat
-                label="Hours"
-                value={overallStats.minutes ? (overallStats.minutes / 60).toFixed(1) : 0}
-              />
+            <div className="grid grid-cols-3 gap-6 mt-6 max-w-md">
+              <Stat label="Active days" value={overallStats.activeDays} />
+              <Stat label="Items done" value={itemsDone} />
+              <Stat label="Hours" value={hoursText(overallStats.minutes)} />
             </div>
           </section>
 
@@ -214,8 +208,8 @@ const CurrentlyWorkingOn = () => {
             <section key={group.id} className="mb-16">
               <h2 className="text-3xl md:text-4xl font-heading mb-8">{group.label}</h2>
               <div className="grid lg:grid-cols-2 gap-6">
-                {group.trackers.map(({ task, days, week, stats }) => (
-                  <TaskTracker key={task.id} task={task} days={days} week={week} stats={stats} />
+                {group.trackers.map(({ task, days, stats, progress }) => (
+                  <TaskTracker key={task.id} task={task} days={days} stats={stats} progress={progress} />
                 ))}
               </div>
             </section>

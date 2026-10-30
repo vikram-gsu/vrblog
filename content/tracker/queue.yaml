@@ -1,0 +1,278 @@
+# Each track's work, in order. The schedule (schedule.yaml) gives each track blocks of time;
+# a block shows the track's next unfinished items, by their estimated hours.
+# An item is finished when a log entry lists its id under `done`.
+#   hours: the track's default estimate per item; an item can override it.
+# Edit freely: reorder, insert (any new unique id), or drop items.
+tracks:
+  llm-from-scratch:
+    hours: 2
+    items:
+      - {"id": "llm-ch1", "title": "Ch 1 · Understanding large language models"}
+      - {"id": "llm-a1-4", "title": "Appendix A · A.1–A.4 PyTorch tensors and autograd"}
+      - {"id": "llm-a5-9", "title": "Appendix A · A.5–A.9 Multilayer nets, data loaders, training loop, GPU"}
+      - {"id": "llm-2a", "title": "Ch 2 · 2.1–2.4 Word embeddings, tokenizing, token IDs, special tokens"}
+      - {"id": "llm-2b", "title": "Ch 2 · 2.5–2.8 Byte pair encoding, sliding-window sampling, token + positional embeddings"}
+      - {"id": "llm-3a", "title": "Ch 3 · 3.1–3.4 Why attention; simple self-attention; trainable weights"}
+      - {"id": "llm-3b", "title": "Ch 3 · 3.5–3.6 Causal attention, dropout, multi-head attention"}
+      - {"id": "llm-4a", "title": "Ch 4 · 4.1–4.3 GPT architecture, layer norm, GELU feed-forward"}
+      - {"id": "llm-4b", "title": "Ch 4 · 4.4–4.7 Shortcut connections, transformer block, assemble GPT, generate text"}
+      - {"id": "llm-kv", "title": "Bonus · Add a KV cache to your GPT model", "link": "https://github.com/rasbt/LLMs-from-scratch/tree/main/ch04/03_kv-cache"}
+      - {"id": "llm-5-1", "title": "Ch 5 · 5.1 Evaluating generative models (loss, perplexity)"}
+      - {"id": "llm-5-2", "title": "Ch 5 · 5.2 Training the LLM"}
+      - {"id": "llm-5-3", "title": "Ch 5 · 5.3 Decoding: temperature and top-k sampling"}
+      - {"id": "llm-5-4", "title": "Ch 5 · 5.4–5.5 Save/load weights, load OpenAI GPT-2 weights"}
+      - {"id": "llm-6a", "title": "Ch 6 · 6.1–6.4 Classification fine-tuning: dataset, loaders, init"}
+      - {"id": "llm-6b", "title": "Ch 6 · 6.5–6.8 Classification head, loss/accuracy, train, spam classifier"}
+      - {"id": "llm-7a", "title": "Ch 7 · 7.1–7.4 Instruction data, batching, data loaders"}
+      - {"id": "llm-7b", "title": "Ch 7 · 7.5–7.6 Load pretrained model, instruction fine-tune"}
+      - {"id": "llm-7c", "title": "Ch 7 · 7.7–7.9 Extract responses, evaluate with an LLM judge"}
+      - {"id": "llm-d", "title": "Appendix D · LR warmup, cosine decay, gradient clipping"}
+      - {"id": "llm-e", "title": "Appendix E · Parameter-efficient fine-tuning with LoRA"}
+  ddia:
+    hours: 2
+    items:
+      - {"id": "ddia-1", "title": "Transactions · the rest of ACID: isolation, durability; single- vs multi-object operations", "hours": 1}
+      - {"id": "ddia-2", "title": "Transactions · Weak isolation: read committed, snapshot isolation, lost updates"}
+      - {"id": "ddia-3", "title": "Transactions · Write skew, phantoms; serializability (serial, 2PL, SSI)"}
+      - {"id": "ddia-4", "title": "Trouble with Distributed Systems · Faults, partial failures, unreliable networks"}
+      - {"id": "ddia-5", "title": "Trouble with Distributed Systems · Unreliable clocks"}
+      - {"id": "ddia-6", "title": "Trouble with Distributed Systems · Knowledge, truth and lies (quorums, fencing)"}
+      - {"id": "ddia-7", "title": "Consistency & Consensus · Consistency guarantees, linearizability"}
+      - {"id": "ddia-8", "title": "Consistency & Consensus · Ordering guarantees, total order broadcast"}
+      - {"id": "ddia-9", "title": "Consistency & Consensus · Distributed transactions, 2PC"}
+      - {"id": "ddia-10", "title": "Consistency & Consensus · Fault-tolerant consensus, coordination services"}
+      - {"id": "ddia-11", "title": "Batch Processing · Unix tools, MapReduce and distributed filesystems"}
+      - {"id": "ddia-12", "title": "Batch Processing · Beyond MapReduce: dataflow engines, graphs"}
+      - {"id": "ddia-13", "title": "Stream Processing · Transmitting event streams (brokers, logs)"}
+      - {"id": "ddia-14", "title": "Stream Processing · Databases and streams (CDC, event sourcing), processing"}
+      - {"id": "ddia-15", "title": "Future of Data Systems · Data integration, unbundling databases; aiming for correctness"}
+  system-design-xu:
+    hours: 2
+    items:
+      - {"id": "xu-1-2", "title": "Ch 1 · Scale from zero to millions of users; Ch 2 · Back-of-the-envelope estimation"}
+      - {"id": "xu-3", "title": "Ch 3 · A framework for system design interviews"}
+      - {"id": "xu-4", "title": "Ch 4 · Design a rate limiter"}
+      - {"id": "xu-5", "title": "Ch 5 · Design consistent hashing"}
+      - {"id": "xu-6", "title": "Ch 6 · Design a key-value store"}
+      - {"id": "xu-7-8", "title": "Ch 7 · Design a unique ID generator; Ch 8 · Design a URL shortener"}
+      - {"id": "xu-9", "title": "Ch 9 · Design a web crawler"}
+      - {"id": "xu-10", "title": "Ch 10 · Design a notification system"}
+      - {"id": "xu-11", "title": "Ch 11 · Design a news feed system"}
+      - {"id": "xu-12", "title": "Ch 12 · Design a chat system"}
+      - {"id": "xu-13", "title": "Ch 13 · Design a search autocomplete system"}
+      - {"id": "xu-14", "title": "Ch 14 · Design YouTube"}
+      - {"id": "xu-15-16", "title": "Ch 15 · Design Google Drive; Ch 16 · The learning continues"}
+  blogs-papers:
+    hours: 1.5
+    items:
+      - {"id": "paper-attention", "title": "Attention Is All You Need (Vaswani et al., 2017)", "link": "https://arxiv.org/abs/1706.03762"}
+      - {"id": "paper-effective-agents", "title": "Building effective agents (Anthropic, 2024)", "link": "https://www.anthropic.com/engineering/building-effective-agents"}
+      - {"id": "paper-react", "title": "ReAct: Synergizing Reasoning and Acting in LMs (Yao et al., 2022)", "link": "https://arxiv.org/abs/2210.03629"}
+      - {"id": "paper-gpt2", "title": "GPT-2: Language Models are Unsupervised Multitask Learners (Radford et al., 2019)", "link": "https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf"}
+      - {"id": "paper-raft", "title": "Raft: In Search of an Understandable Consensus Algorithm (Ongaro & Ousterhout, 2014)", "link": "https://raft.github.io/raft.pdf"}
+      - {"id": "paper-instructgpt", "title": "InstructGPT: Training LMs to follow instructions (Ouyang et al., 2022)", "link": "https://arxiv.org/abs/2203.02155"}
+      - {"id": "paper-context-engineering", "title": "Effective context engineering for AI agents (Anthropic, 2025)", "link": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"}
+      - {"id": "paper-lora", "title": "LoRA: Low-Rank Adaptation of LLMs (Hu et al., 2021)", "link": "https://arxiv.org/abs/2106.09685"}
+  algorithms-lectures:
+    # At 2×, Optional videos skipped.
+    hours: 0.75
+    items:
+      - {"id": "algo-1-5", "title": "Sec 1–5 · intro through quicksort", "hours": 3}
+      - {"id": "algo-8", "title": "Sec 8 · Linear-time selection", "link": "https://www.youtube.com/watch?v=nFw6x7DoYbs&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-9", "title": "Sec 9 · Graphs and minimum cuts", "link": "https://www.youtube.com/watch?v=4Ih3UhVuEtw&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-10", "title": "Sec 10 · Graph search: BFS, DFS, topological sort, SCCs", "link": "https://www.youtube.com/watch?v=SW6jwg7WS48&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-11", "title": "Sec 11 · Dijkstra's shortest paths", "link": "https://www.youtube.com/watch?v=jRlNVmRjdRk&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-12", "title": "Sec 12 · Heaps", "link": "https://www.youtube.com/watch?v=cMrQxxrKg8I&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-13", "title": "Sec 13 · Balanced search trees", "link": "https://www.youtube.com/watch?v=IbNZ-x1I2IM&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-14", "title": "Sec 14 · Hash tables", "link": "https://www.youtube.com/watch?v=Qu183GFHbZQ&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-15", "title": "Sec 15 · Universal hashing", "link": "https://www.youtube.com/watch?v=MWq8BvRR950&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-16", "title": "Sec 16 · Bloom filters", "link": "https://www.youtube.com/watch?v=zYlxP7F3Z3c&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+  leetcode:
+    # LeetCode 75 in study-plan order, then the Blind 75 problems it skips.
+    hours: 0.5
+    items:
+      - {"id": "lc-1768", "title": "1768. Merge Strings Alternately", "link": "https://leetcode.com/problems/merge-strings-alternately/"}
+      - {"id": "lc-1071", "title": "1071. Greatest Common Divisor of Strings", "link": "https://leetcode.com/problems/greatest-common-divisor-of-strings/"}
+      - {"id": "lc-1431", "title": "1431. Kids With the Greatest Number of Candies", "link": "https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/"}
+      - {"id": "lc-605", "title": "605. Can Place Flowers", "link": "https://leetcode.com/problems/can-place-flowers/"}
+      - {"id": "lc-345", "title": "345. Reverse Vowels of a String", "link": "https://leetcode.com/problems/reverse-vowels-of-a-string/"}
+      - {"id": "lc-151", "title": "151. Reverse Words in a String", "link": "https://leetcode.com/problems/reverse-words-in-a-string/"}
+      - {"id": "lc-238", "title": "238. Product of Array Except Self", "link": "https://leetcode.com/problems/product-of-array-except-self/"}
+      - {"id": "lc-334", "title": "334. Increasing Triplet Subsequence", "link": "https://leetcode.com/problems/increasing-triplet-subsequence/"}
+      - {"id": "lc-443", "title": "443. String Compression", "link": "https://leetcode.com/problems/string-compression/"}
+      - {"id": "lc-283", "title": "283. Move Zeroes", "link": "https://leetcode.com/problems/move-zeroes/"}
+      - {"id": "lc-392", "title": "392. Is Subsequence", "link": "https://leetcode.com/problems/is-subsequence/"}
+      - {"id": "lc-11", "title": "11. Container With Most Water", "link": "https://leetcode.com/problems/container-with-most-water/"}
+      - {"id": "lc-1679", "title": "1679. Max Number of K-Sum Pairs", "link": "https://leetcode.com/problems/max-number-of-k-sum-pairs/"}
+      - {"id": "lc-643", "title": "643. Maximum Average Subarray I", "link": "https://leetcode.com/problems/maximum-average-subarray-i/"}
+      - {"id": "lc-1456", "title": "1456. Maximum Number of Vowels in a Substring of Given Length", "link": "https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/"}
+      - {"id": "lc-1004", "title": "1004. Max Consecutive Ones III", "link": "https://leetcode.com/problems/max-consecutive-ones-iii/"}
+      - {"id": "lc-1493", "title": "1493. Longest Subarray of 1's After Deleting One Element", "link": "https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/"}
+      - {"id": "lc-1732", "title": "1732. Find the Highest Altitude", "link": "https://leetcode.com/problems/find-the-highest-altitude/"}
+      - {"id": "lc-724", "title": "724. Find Pivot Index", "link": "https://leetcode.com/problems/find-pivot-index/"}
+      - {"id": "lc-2215", "title": "2215. Find the Difference of Two Arrays", "link": "https://leetcode.com/problems/find-the-difference-of-two-arrays/"}
+      - {"id": "lc-1207", "title": "1207. Unique Number of Occurrences", "link": "https://leetcode.com/problems/unique-number-of-occurrences/"}
+      - {"id": "lc-1657", "title": "1657. Determine if Two Strings Are Close", "link": "https://leetcode.com/problems/determine-if-two-strings-are-close/"}
+      - {"id": "lc-2352", "title": "2352. Equal Row and Column Pairs", "link": "https://leetcode.com/problems/equal-row-and-column-pairs/"}
+      - {"id": "lc-2390", "title": "2390. Removing Stars From a String", "link": "https://leetcode.com/problems/removing-stars-from-a-string/"}
+      - {"id": "lc-735", "title": "735. Asteroid Collision", "link": "https://leetcode.com/problems/asteroid-collision/"}
+      - {"id": "lc-394", "title": "394. Decode String", "link": "https://leetcode.com/problems/decode-string/"}
+      - {"id": "lc-933", "title": "933. Number of Recent Calls", "link": "https://leetcode.com/problems/number-of-recent-calls/"}
+      - {"id": "lc-649", "title": "649. Dota2 Senate", "link": "https://leetcode.com/problems/dota2-senate/"}
+      - {"id": "lc-2095", "title": "2095. Delete the Middle Node of a Linked List", "link": "https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/"}
+      - {"id": "lc-328", "title": "328. Odd Even Linked List", "link": "https://leetcode.com/problems/odd-even-linked-list/"}
+      - {"id": "lc-206", "title": "206. Reverse Linked List", "link": "https://leetcode.com/problems/reverse-linked-list/"}
+      - {"id": "lc-2130", "title": "2130. Maximum Twin Sum of a Linked List", "link": "https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/"}
+      - {"id": "lc-104", "title": "104. Maximum Depth of Binary Tree", "link": "https://leetcode.com/problems/maximum-depth-of-binary-tree/"}
+      - {"id": "lc-872", "title": "872. Leaf-Similar Trees", "link": "https://leetcode.com/problems/leaf-similar-trees/"}
+      - {"id": "lc-1448", "title": "1448. Count Good Nodes in Binary Tree", "link": "https://leetcode.com/problems/count-good-nodes-in-binary-tree/"}
+      - {"id": "lc-437", "title": "437. Path Sum III", "link": "https://leetcode.com/problems/path-sum-iii/"}
+      - {"id": "lc-1372", "title": "1372. Longest ZigZag Path in a Binary Tree", "link": "https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/"}
+      - {"id": "lc-236", "title": "236. Lowest Common Ancestor of a Binary Tree", "link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/"}
+      - {"id": "lc-199", "title": "199. Binary Tree Right Side View", "link": "https://leetcode.com/problems/binary-tree-right-side-view/"}
+      - {"id": "lc-1161", "title": "1161. Maximum Level Sum of a Binary Tree", "link": "https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/"}
+      - {"id": "lc-700", "title": "700. Search in a Binary Search Tree", "link": "https://leetcode.com/problems/search-in-a-binary-search-tree/"}
+      - {"id": "lc-450", "title": "450. Delete Node in a BST", "link": "https://leetcode.com/problems/delete-node-in-a-bst/"}
+      - {"id": "lc-841", "title": "841. Keys and Rooms", "link": "https://leetcode.com/problems/keys-and-rooms/"}
+      - {"id": "lc-547", "title": "547. Number of Provinces", "link": "https://leetcode.com/problems/number-of-provinces/"}
+      - {"id": "lc-1466", "title": "1466. Reorder Routes to Make All Paths Lead to the City Zero", "link": "https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/"}
+      - {"id": "lc-399", "title": "399. Evaluate Division", "link": "https://leetcode.com/problems/evaluate-division/"}
+      - {"id": "lc-1926", "title": "1926. Nearest Exit from Entrance in Maze", "link": "https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/"}
+      - {"id": "lc-994", "title": "994. Rotting Oranges", "link": "https://leetcode.com/problems/rotting-oranges/"}
+      - {"id": "lc-215", "title": "215. Kth Largest Element in an Array", "link": "https://leetcode.com/problems/kth-largest-element-in-an-array/"}
+      - {"id": "lc-2336", "title": "2336. Smallest Number in Infinite Set", "link": "https://leetcode.com/problems/smallest-number-in-infinite-set/"}
+      - {"id": "lc-2542", "title": "2542. Maximum Subsequence Score", "link": "https://leetcode.com/problems/maximum-subsequence-score/"}
+      - {"id": "lc-2462", "title": "2462. Total Cost to Hire K Workers", "link": "https://leetcode.com/problems/total-cost-to-hire-k-workers/"}
+      - {"id": "lc-374", "title": "374. Guess Number Higher or Lower", "link": "https://leetcode.com/problems/guess-number-higher-or-lower/"}
+      - {"id": "lc-2300", "title": "2300. Successful Pairs of Spells and Potions", "link": "https://leetcode.com/problems/successful-pairs-of-spells-and-potions/"}
+      - {"id": "lc-162", "title": "162. Find Peak Element", "link": "https://leetcode.com/problems/find-peak-element/"}
+      - {"id": "lc-875", "title": "875. Koko Eating Bananas", "link": "https://leetcode.com/problems/koko-eating-bananas/"}
+      - {"id": "lc-17", "title": "17. Letter Combinations of a Phone Number", "link": "https://leetcode.com/problems/letter-combinations-of-a-phone-number/"}
+      - {"id": "lc-216", "title": "216. Combination Sum III", "link": "https://leetcode.com/problems/combination-sum-iii/"}
+      - {"id": "lc-1137", "title": "1137. N-th Tribonacci Number", "link": "https://leetcode.com/problems/n-th-tribonacci-number/"}
+      - {"id": "lc-746", "title": "746. Min Cost Climbing Stairs", "link": "https://leetcode.com/problems/min-cost-climbing-stairs/"}
+      - {"id": "lc-198", "title": "198. House Robber", "link": "https://leetcode.com/problems/house-robber/"}
+      - {"id": "lc-790", "title": "790. Domino and Tromino Tiling", "link": "https://leetcode.com/problems/domino-and-tromino-tiling/"}
+      - {"id": "lc-62", "title": "62. Unique Paths", "link": "https://leetcode.com/problems/unique-paths/"}
+      - {"id": "lc-1143", "title": "1143. Longest Common Subsequence", "link": "https://leetcode.com/problems/longest-common-subsequence/"}
+      - {"id": "lc-714", "title": "714. Best Time to Buy and Sell Stock with Transaction Fee", "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/"}
+      - {"id": "lc-72", "title": "72. Edit Distance", "link": "https://leetcode.com/problems/edit-distance/"}
+      - {"id": "lc-338", "title": "338. Counting Bits", "link": "https://leetcode.com/problems/counting-bits/"}
+      - {"id": "lc-136", "title": "136. Single Number", "link": "https://leetcode.com/problems/single-number/"}
+      - {"id": "lc-1318", "title": "1318. Minimum Flips to Make a OR b Equal to c", "link": "https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/"}
+      - {"id": "lc-208", "title": "208. Implement Trie (Prefix Tree)", "link": "https://leetcode.com/problems/implement-trie-prefix-tree/"}
+      - {"id": "lc-1268", "title": "1268. Search Suggestions System", "link": "https://leetcode.com/problems/search-suggestions-system/"}
+      - {"id": "lc-435", "title": "435. Non-overlapping Intervals", "link": "https://leetcode.com/problems/non-overlapping-intervals/"}
+      - {"id": "lc-452", "title": "452. Minimum Number of Arrows to Burst Balloons", "link": "https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/"}
+      - {"id": "lc-739", "title": "739. Daily Temperatures", "link": "https://leetcode.com/problems/daily-temperatures/"}
+      - {"id": "lc-901", "title": "901. Online Stock Span", "link": "https://leetcode.com/problems/online-stock-span/"}
+      - {"id": "lc-1", "title": "1. Two Sum", "link": "https://leetcode.com/problems/two-sum/"}
+      - {"id": "lc-217", "title": "217. Contains Duplicate", "link": "https://leetcode.com/problems/contains-duplicate/"}
+      - {"id": "lc-347", "title": "347. Top K Frequent Elements", "link": "https://leetcode.com/problems/top-k-frequent-elements/"}
+      - {"id": "lc-128", "title": "128. Longest Consecutive Sequence", "link": "https://leetcode.com/problems/longest-consecutive-sequence/"}
+      - {"id": "lc-15", "title": "15. 3Sum", "link": "https://leetcode.com/problems/3sum/"}
+      - {"id": "lc-3", "title": "3. Longest Substring Without Repeating Characters", "link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/"}
+      - {"id": "lc-76", "title": "76. Minimum Window Substring", "link": "https://leetcode.com/problems/minimum-window-substring/"}
+      - {"id": "lc-20", "title": "20. Valid Parentheses", "link": "https://leetcode.com/problems/valid-parentheses/"}
+      - {"id": "lc-23", "title": "23. Merge k Sorted Lists", "link": "https://leetcode.com/problems/merge-k-sorted-lists/"}
+      - {"id": "lc-146", "title": "146. LRU Cache", "link": "https://leetcode.com/problems/lru-cache/"}
+      - {"id": "lc-297", "title": "297. Serialize and Deserialize Binary Tree", "link": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/"}
+      - {"id": "lc-98", "title": "98. Validate Binary Search Tree", "link": "https://leetcode.com/problems/validate-binary-search-tree/"}
+      - {"id": "lc-200", "title": "200. Number of Islands", "link": "https://leetcode.com/problems/number-of-islands/"}
+      - {"id": "lc-207", "title": "207. Course Schedule", "link": "https://leetcode.com/problems/course-schedule/"}
+      - {"id": "lc-133", "title": "133. Clone Graph", "link": "https://leetcode.com/problems/clone-graph/"}
+      - {"id": "lc-417", "title": "417. Pacific Atlantic Water Flow", "link": "https://leetcode.com/problems/pacific-atlantic-water-flow/"}
+      - {"id": "lc-322", "title": "322. Coin Change", "link": "https://leetcode.com/problems/coin-change/"}
+      - {"id": "lc-300", "title": "300. Longest Increasing Subsequence", "link": "https://leetcode.com/problems/longest-increasing-subsequence/"}
+      - {"id": "lc-139", "title": "139. Word Break", "link": "https://leetcode.com/problems/word-break/"}
+      - {"id": "lc-33", "title": "33. Search in Rotated Sorted Array", "link": "https://leetcode.com/problems/search-in-rotated-sorted-array/"}
+      - {"id": "lc-56", "title": "56. Merge Intervals", "link": "https://leetcode.com/problems/merge-intervals/"}
+      - {"id": "lc-57", "title": "57. Insert Interval", "link": "https://leetcode.com/problems/insert-interval/"}
+      - {"id": "lc-295", "title": "295. Find Median from Data Stream", "link": "https://leetcode.com/problems/find-median-from-data-stream/"}
+      - {"id": "lc-53", "title": "53. Maximum Subarray", "link": "https://leetcode.com/problems/maximum-subarray/"}
+      - {"id": "lc-121", "title": "121. Best Time to Buy and Sell Stock", "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"}
+      - {"id": "lc-152", "title": "152. Maximum Product Subarray", "link": "https://leetcode.com/problems/maximum-product-subarray/"}
+      - {"id": "lc-153", "title": "153. Find Minimum in Rotated Sorted Array", "link": "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/"}
+      - {"id": "lc-55", "title": "55. Jump Game", "link": "https://leetcode.com/problems/jump-game/"}
+      - {"id": "lc-73", "title": "73. Set Matrix Zeroes", "link": "https://leetcode.com/problems/set-matrix-zeroes/"}
+      - {"id": "lc-54", "title": "54. Spiral Matrix", "link": "https://leetcode.com/problems/spiral-matrix/"}
+      - {"id": "lc-48", "title": "48. Rotate Image", "link": "https://leetcode.com/problems/rotate-image/"}
+      - {"id": "lc-242", "title": "242. Valid Anagram", "link": "https://leetcode.com/problems/valid-anagram/"}
+      - {"id": "lc-49", "title": "49. Group Anagrams", "link": "https://leetcode.com/problems/group-anagrams/"}
+      - {"id": "lc-125", "title": "125. Valid Palindrome", "link": "https://leetcode.com/problems/valid-palindrome/"}
+      - {"id": "lc-424", "title": "424. Longest Repeating Character Replacement", "link": "https://leetcode.com/problems/longest-repeating-character-replacement/"}
+      - {"id": "lc-5", "title": "5. Longest Palindromic Substring", "link": "https://leetcode.com/problems/longest-palindromic-substring/"}
+      - {"id": "lc-647", "title": "647. Palindromic Substrings", "link": "https://leetcode.com/problems/palindromic-substrings/"}
+      - {"id": "lc-191", "title": "191. Number of 1 Bits", "link": "https://leetcode.com/problems/number-of-1-bits/"}
+      - {"id": "lc-190", "title": "190. Reverse Bits", "link": "https://leetcode.com/problems/reverse-bits/"}
+      - {"id": "lc-268", "title": "268. Missing Number", "link": "https://leetcode.com/problems/missing-number/"}
+      - {"id": "lc-371", "title": "371. Sum of Two Integers", "link": "https://leetcode.com/problems/sum-of-two-integers/"}
+      - {"id": "lc-70", "title": "70. Climbing Stairs", "link": "https://leetcode.com/problems/climbing-stairs/"}
+      - {"id": "lc-213", "title": "213. House Robber II", "link": "https://leetcode.com/problems/house-robber-ii/"}
+      - {"id": "lc-91", "title": "91. Decode Ways", "link": "https://leetcode.com/problems/decode-ways/"}
+      - {"id": "lc-377", "title": "377. Combination Sum IV", "link": "https://leetcode.com/problems/combination-sum-iv/"}
+      - {"id": "lc-141", "title": "141. Linked List Cycle", "link": "https://leetcode.com/problems/linked-list-cycle/"}
+      - {"id": "lc-21", "title": "21. Merge Two Sorted Lists", "link": "https://leetcode.com/problems/merge-two-sorted-lists/"}
+      - {"id": "lc-19", "title": "19. Remove Nth Node From End of List", "link": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/"}
+      - {"id": "lc-143", "title": "143. Reorder List", "link": "https://leetcode.com/problems/reorder-list/"}
+      - {"id": "lc-100", "title": "100. Same Tree", "link": "https://leetcode.com/problems/same-tree/"}
+      - {"id": "lc-226", "title": "226. Invert Binary Tree", "link": "https://leetcode.com/problems/invert-binary-tree/"}
+      - {"id": "lc-102", "title": "102. Binary Tree Level Order Traversal", "link": "https://leetcode.com/problems/binary-tree-level-order-traversal/"}
+      - {"id": "lc-572", "title": "572. Subtree of Another Tree", "link": "https://leetcode.com/problems/subtree-of-another-tree/"}
+      - {"id": "lc-105", "title": "105. Construct Binary Tree from Preorder and Inorder Traversal", "link": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/"}
+      - {"id": "lc-230", "title": "230. Kth Smallest Element in a BST", "link": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/"}
+      - {"id": "lc-235", "title": "235. Lowest Common Ancestor of a Binary Search Tree", "link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/"}
+      - {"id": "lc-124", "title": "124. Binary Tree Maximum Path Sum", "link": "https://leetcode.com/problems/binary-tree-maximum-path-sum/"}
+      - {"id": "lc-211", "title": "211. Design Add and Search Words Data Structure", "link": "https://leetcode.com/problems/design-add-and-search-words-data-structure/"}
+      - {"id": "lc-79", "title": "79. Word Search", "link": "https://leetcode.com/problems/word-search/"}
+      - {"id": "lc-212", "title": "212. Word Search II", "link": "https://leetcode.com/problems/word-search-ii/"}
+  system-design-lab:
+    # Breakscale, LLM inference, the GenAI System Design Interview book, labs on the server, mocks.
+    hours: 2
+    items:
+      - {"id": "lab-1", "title": "Breakscale: rebuild Xu Ch 1 (LB, app, cache, DB + replica); push load until p99 breaks, note the numbers", "link": "https://breakscale.tech"}
+      - {"id": "lab-2", "title": "GenAI System Design Interview Ch 1 · the framework", "link": "https://bytebytego.com/courses/genai-system-design-interview"}
+      - {"id": "lab-3", "title": "LLM Inference Handbook · foundations: prefill vs decode, TTFT, tokens/sec, KV cache", "link": "https://handbook.modular.com"}
+      - {"id": "lab-4", "title": "GenAI System Design Interview · the chatbot chapter (read only; you'll design it in a mock)", "link": "https://bytebytego.com/courses/genai-system-design-interview"}
+      - {"id": "lab-5", "title": "LLM Inference Handbook · batching (static vs continuous), PagedAttention", "link": "https://handbook.modular.com"}
+      - {"id": "lab-6", "title": "Design: an LLM inference API (streaming, rate limits, multi-tenant)"}
+      - {"id": "lab-7", "title": "Lab: Ollama on the server; load test at 1, 4, 16 concurrent users; chart TTFT and tokens/sec"}
+      - {"id": "lab-8", "title": "GenAI System Design Interview · the RAG chapter", "link": "https://bytebytego.com/courses/genai-system-design-interview"}
+      - {"id": "lab-9", "title": "Lab: small RAG service on the server with pgvector; retrieval vs generation latency"}
+      - {"id": "lab-14", "title": "Breakscale: retry storms, circuit breakers, backpressure, applied to an LLM gateway", "link": "https://breakscale.tech"}
+      - {"id": "lab-15", "title": "Vidur: estimate a serving setup by hand, then find the cheapest config that meets a latency SLO", "link": "https://github.com/microsoft/vidur"}
+      - {"id": "lab-10", "title": "Mock: URL shortener, 45 min, written up", "hours": 1}
+      - {"id": "lab-11", "title": "Mock: an LLM-powered support chatbot, 45 min, written up", "hours": 1}
+      - {"id": "lab-12", "title": "Mock: RAG over company docs, 45 min", "hours": 1}
+      - {"id": "lab-13", "title": "Mock: an inference batching system for a single GPU, 45 min", "hours": 1}
+  agents:
+    # Home server first, then the movie agent.
+    hours: 2
+    items:
+      - {"id": "agents-1", "title": "Server: inventory the machine (CPU, RAM, disk, GPU?); install Ubuntu Server 24.04 LTS, SSH keys only"}
+      - {"id": "agents-2", "title": "Server: DHCP reservation; harden it (ufw, unattended-upgrades, no password SSH); add Tailscale"}
+      - {"id": "agents-3", "title": "Server: Docker + compose; Ollama + a small model (the load-test lab uses it)"}
+      - {"id": "agents-4", "title": "Server: a hello service you can reach from your phone over Tailscale; Claude API key in place"}
+      - {"id": "agents-5", "title": "Agent: a minimal agent loop on the server against the Claude API, one tool"}
+      - {"id": "agents-6", "title": "WhatsApp: run scripts/setup-whatsapp.sh so the tracker bot is live"}
+      - {"id": "agents-7", "title": "WhatsApp: receive webhooks on the server via Tailscale Funnel"}
+      - {"id": "agents-8", "title": "Approvals: agent asks yes/no on WhatsApp before a gated tool call"}
+      - {"id": "agents-9", "title": "Browser: Playwright on the server; headless navigate a showtimes page"}
+      - {"id": "agents-10", "title": "Movie agent v0: find showtimes for a movie + theater (read-only)"}
+      - {"id": "agents-11", "title": "Movie agent: look up coupons and card offers, compare total price"}
+      - {"id": "agents-12", "title": "Movie agent: propose a booking plan and ask for approval on WhatsApp"}
+      - {"id": "agents-13", "title": "Movie agent: drive checkout up to the payment page, stop there (dry run)"}
+      - {"id": "agents-14", "title": "Reliability: retries, timeouts, structured logs for every run"}
+      - {"id": "agents-15", "title": "Demo + write-up: blog post on what worked and what didn't"}
+  agent-harnesses:
+    hours: 2
+    items:
+      - {"id": "harness-1", "title": "Study: how agent harnesses work (agent loop, tools, permissions); sketch your design"}
+      - {"id": "harness-2", "title": "Agent loop from scratch: messages, tool calls, stop conditions, no framework"}
+      - {"id": "harness-3", "title": "Tool registry: JSON schemas, validation, sandboxed execution in Docker"}
+      - {"id": "harness-4", "title": "Permission layer: allow / deny / ask, with 'ask' routed to WhatsApp"}
+      - {"id": "harness-5", "title": "Memory and observability: persist and compact conversations; trace every step to JSONL"}
+      - {"id": "harness-6", "title": "Evals: a handful of scripted tasks, run and score them; refactor and publish the repo"}
+  experiments:
+    hours: 2
+    items: []

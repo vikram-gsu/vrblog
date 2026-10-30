@@ -1,9 +1,12 @@
 import { parse as parseYaml } from "yaml";
 import planFile from "/content/tracker/plan.yaml?raw";
 import logFile from "/content/tracker/log.yaml?raw";
-import agendaFile from "/content/tracker/agenda.yaml?raw";
+import queueFile from "/content/tracker/queue.yaml?raw";
+import scheduleFile from "/content/tracker/schedule.yaml?raw";
+import { readQueue, readSchedule, type Projection, type Queue, type Schedule, type Weekday } from "./schedule";
 
-export type Weekday = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+export type { Weekday };
+export { weekdayOf } from "./schedule";
 
 export interface TrackerTask {
   id: string;
@@ -30,36 +33,23 @@ export interface LogEntry {
   task: string;
   minutes?: number;
   note?: string;
+  /** Ids of queue.yaml items this session finished. */
+  done?: string[];
 }
 
-export interface AgendaItem {
-  title: string;
-  link?: string;
-}
-
-/** date -> task id -> what to do that day */
-export type Agenda = Record<string, Record<string, AgendaItem[]>>;
-
-export type DayStatus = "done" | "missed" | "upcoming" | "rest";
+export type DayStatus = "done" | "upcoming" | "rest";
 
 export interface TrackerDay {
   date: string;
   level: 0 | 1 | 2 | 3 | 4;
   status: DayStatus;
-  scheduled: boolean;
   entries: LogEntry[];
 }
 
 export interface TrackerStats {
-  daysDone: number;
-  scheduledSoFar: number;
-  scheduledDone: number;
-  currentStreak: number;
-  longestStreak: number;
+  activeDays: number;
   minutes: number;
 }
-
-const WEEKDAYS: Weekday[] = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
 // Dates are handled as YYYY-MM-DD strings and stepped in UTC so DST never skips a day.
 function toDate(iso: string): Date {
@@ -74,10 +64,6 @@ export function addDays(iso: string, n: number): string {
   const d = toDate(iso);
   d.setUTCDate(d.getUTCDate() + n);
   return toIso(d);
-}
-
-export function weekdayOf(iso: string): Weekday {
-  return WEEKDAYS[toDate(iso).getUTCDay()];
 }
 
 export function todayIso(): string {
@@ -117,9 +103,12 @@ export function getLog(): LogEntry[] {
     .map((e) => ({ ...e, date: normalizeDate(e.date) }));
 }
 
-export function getAgenda(): Agenda {
-  const data = (parseYaml(agendaFile) || {}) as { days?: Agenda };
-  return data.days || {};
+export function getQueue(): Queue {
+  return readQueue(parseYaml(queueFile));
+}
+
+export function getSchedule(): Schedule {
+  return readSchedule(parseYaml(scheduleFile));
 }
 
 function levelFor(minutes: number, hasEntry: boolean): TrackerDay["level"] {
@@ -131,114 +120,68 @@ function levelFor(minutes: number, hasEntry: boolean): TrackerDay["level"] {
   return 4;
 }
 
-function statusFor(
-  hasEntry: boolean,
-  scheduled: boolean,
-  date: string,
-  today: string
-): DayStatus {
+/** Days from today on that the projection gives this task (or any task) time. */
+function plannedDays(projection: Projection, taskId?: string): Set<string> {
+  return new Set(
+    projection.days
+      .filter((d) => d.blocks.some((b) => b.items.length && (!taskId || b.task === taskId)))
+      .map((d) => d.date)
+  );
+}
+
+function statusFor(hasEntry: boolean, planned: boolean, date: string, today: string): DayStatus {
   if (hasEntry) return "done";
-  if (!scheduled) return "rest";
-  return date < today ? "missed" : "upcoming";
+  return planned && date >= today ? "upcoming" : "rest";
 }
 
-/** A task is scheduled on a day exactly when the agenda gives it something to do. */
-export function isScheduled(agenda: Agenda, taskId: string, date: string): boolean {
-  return (agenda[date]?.[taskId]?.length ?? 0) > 0;
-}
-
-/** Builds the per-day cells for one task across the plan window. */
+/** Builds the per-day cells for one task across the plan window. Nothing counts as missed. */
 export function buildTaskDays(
   plan: TrackerPlan,
-  agenda: Agenda,
+  projection: Projection,
   task: TrackerTask,
   log: LogEntry[],
   today: string
 ): TrackerDay[] {
-  const byDate = new Map<string, LogEntry[]>();
-  for (const e of log) {
-    if (e.task !== task.id) continue;
-    byDate.set(e.date, [...(byDate.get(e.date) || []), e]);
-  }
-
+  const planned = plannedDays(projection, task.id);
   return dateRange(plan.start, plan.end).map((date) => {
-    const entries = byDate.get(date) || [];
+    const entries = log.filter((e) => e.task === task.id && e.date === date);
     const minutes = entries.reduce((sum, e) => sum + (Number(e.minutes) || 0), 0);
-    const scheduled = isScheduled(agenda, task.id, date);
     return {
       date,
       level: levelFor(minutes, entries.length > 0),
-      status: statusFor(entries.length > 0, scheduled, date, today),
-      scheduled,
+      status: statusFor(entries.length > 0, planned.has(date), date, today),
       entries,
     };
   });
 }
 
-/** Builds the combined "did I show up at all" cells: shade = number of tasks done that day. */
+/** The combined grid: shade = hours logged that day (or tasks touched, without durations). */
 export function buildOverallDays(
   plan: TrackerPlan,
-  agenda: Agenda,
+  projection: Projection,
   log: LogEntry[],
   today: string
 ): TrackerDay[] {
-  const tasks = plan.groups.flatMap((g) => g.tasks);
-  const known = new Set(tasks.map((t) => t.id));
-  const byDate = new Map<string, LogEntry[]>();
-  for (const e of log) {
-    if (!known.has(e.task)) continue;
-    byDate.set(e.date, [...(byDate.get(e.date) || []), e]);
-  }
-
+  const known = new Set(plan.groups.flatMap((g) => g.tasks.map((t) => t.id)));
+  const planned = plannedDays(projection);
   return dateRange(plan.start, plan.end).map((date) => {
-    const entries = byDate.get(date) || [];
+    const entries = log.filter((e) => known.has(e.task) && e.date === date);
+    const minutes = entries.reduce((sum, e) => sum + (Number(e.minutes) || 0), 0);
     const distinct = new Set(entries.map((e) => e.task)).size;
-    const scheduled = tasks.some((t) => isScheduled(agenda, t.id, date));
-    const level = Math.min(distinct, 4) as TrackerDay["level"];
+    const level = (minutes ? levelFor(minutes / 3, true) : Math.min(distinct, 4)) as TrackerDay["level"];
     return {
       date,
       level,
-      status: statusFor(distinct > 0, scheduled, date, today),
-      scheduled,
+      status: statusFor(entries.length > 0, planned.has(date), date, today),
       entries,
     };
   });
 }
 
-/**
- * Streaks count consecutive scheduled days that were done. Unscheduled days
- * neither break nor extend a streak, and an unfinished today doesn't break it yet.
- */
 export function computeStats(days: TrackerDay[], today: string): TrackerStats {
-  let run = 0;
-  let longest = 0;
-  let scheduledSoFar = 0;
-  let scheduledDone = 0;
-  let minutes = 0;
-  let daysDone = 0;
-
-  for (const day of days) {
-    if (day.date > today) break;
-    minutes += day.entries.reduce((sum, e) => sum + (Number(e.minutes) || 0), 0);
-    if (day.status === "done") daysDone++;
-    if (!day.scheduled) continue;
-    if (day.status === "done") {
-      scheduledSoFar++;
-      scheduledDone++;
-      run++;
-      longest = Math.max(longest, run);
-    } else if (day.date < today) {
-      scheduledSoFar++;
-      run = 0;
-    }
-  }
-
+  const past = days.filter((d) => d.date <= today);
   return {
-    daysDone,
-    scheduledSoFar,
-    scheduledDone,
-    currentStreak: run,
-    longestStreak: longest,
-    minutes,
+    activeDays: past.filter((d) => d.status === "done").length,
+    minutes: past.reduce((sum, d) => sum + d.entries.reduce((m, e) => m + (Number(e.minutes) || 0), 0), 0),
   };
 }

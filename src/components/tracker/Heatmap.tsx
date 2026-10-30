@@ -17,8 +17,6 @@ export function cellClass(day: Pick<TrackerDay, "status" | "level">) {
   switch (day.status) {
     case "done":
       return LEVEL_CLASSES[day.level];
-    case "missed":
-      return "bg-secondary/60 ring-1 ring-inset ring-destructive/50";
     case "upcoming":
       return "border border-dashed border-foreground/30";
     default:
@@ -38,9 +36,8 @@ function describe(day: TrackerDay, unit: "minutes" | "tasks") {
       .filter(Boolean);
     return [date, ...notes].join("\n");
   }
-  if (day.status === "missed") return `${date}\nScheduled, missed`;
-  if (day.status === "upcoming") return `${date}\nScheduled`;
-  return `${date}\nRest day`;
+  if (day.status === "upcoming") return `${date}\nPlanned`;
+  return date;
 }
 
 interface HeatmapProps {
