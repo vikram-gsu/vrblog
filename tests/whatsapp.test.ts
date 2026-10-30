@@ -122,7 +122,8 @@ test("undo and today", async () => {
   assert.match(replies.at(-1)!.body, /Removed: .*Build a Large Language Model/);
 
   await POST(webhook("?"));
-  assert.match(replies.at(-1)!.body, /done/);
+  // Today may be a rest day in the real agenda.
+  assert.match(replies.at(-1)!.body, /done|nothing scheduled/);
 });
 
 test("unknown input gets help and logs nothing", async () => {
