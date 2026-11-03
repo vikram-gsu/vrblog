@@ -1,12 +1,16 @@
 import { parse as parseYaml } from "yaml";
 import planFile from "/content/tracker/plan.yaml?raw";
 import logFile from "/content/tracker/log.yaml?raw";
+import phasesFile from "/content/tracker/phases.yaml?raw";
 import queueFile from "/content/tracker/queue.yaml?raw";
-import scheduleFile from "/content/tracker/schedule.yaml?raw";
-import { readQueue, readSchedule, type Projection, type Queue, type Schedule, type Weekday } from "./schedule";
+import { readPhases, readQueue, type Phases, type Tracks } from "./plan";
 
-export type { Weekday };
-export { weekdayOf } from "./schedule";
+export type Weekday = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+const WEEKDAYS: Weekday[] = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+
+export function weekdayOf(iso: string): Weekday {
+  return WEEKDAYS[new Date(`${iso}T00:00:00Z`).getUTCDay()];
+}
 
 export interface TrackerTask {
   id: string;
@@ -33,11 +37,11 @@ export interface LogEntry {
   task: string;
   minutes?: number;
   note?: string;
-  /** Ids of queue.yaml items this session finished. */
+  /** Ids of phases.yaml / queue.yaml items this session finished. */
   done?: string[];
 }
 
-export type DayStatus = "done" | "upcoming" | "rest";
+export type DayStatus = "done" | "rest";
 
 export interface TrackerDay {
   date: string;
@@ -103,12 +107,12 @@ export function getLog(): LogEntry[] {
     .map((e) => ({ ...e, date: normalizeDate(e.date) }));
 }
 
-export function getQueue(): Queue {
-  return readQueue(parseYaml(queueFile));
+export function getPhases(): Phases {
+  return readPhases(parseYaml(phasesFile));
 }
 
-export function getSchedule(): Schedule {
-  return readSchedule(parseYaml(scheduleFile));
+export function getQueue(): Tracks {
+  return readQueue(parseYaml(queueFile));
 }
 
 function levelFor(minutes: number, hasEntry: boolean): TrackerDay["level"] {
@@ -120,36 +124,19 @@ function levelFor(minutes: number, hasEntry: boolean): TrackerDay["level"] {
   return 4;
 }
 
-/** Days from today on that the projection gives this task (or any task) time. */
-function plannedDays(projection: Projection, taskId?: string): Set<string> {
-  return new Set(
-    projection.days
-      .filter((d) => d.blocks.some((b) => b.items.length && (!taskId || b.task === taskId)))
-      .map((d) => d.date)
-  );
-}
-
-function statusFor(hasEntry: boolean, planned: boolean, date: string, today: string): DayStatus {
-  if (hasEntry) return "done";
-  return planned && date >= today ? "upcoming" : "rest";
-}
-
 /** Builds the per-day cells for one task across the plan window. Nothing counts as missed. */
 export function buildTaskDays(
   plan: TrackerPlan,
-  projection: Projection,
   task: TrackerTask,
-  log: LogEntry[],
-  today: string
+  log: LogEntry[]
 ): TrackerDay[] {
-  const planned = plannedDays(projection, task.id);
   return dateRange(plan.start, plan.end).map((date) => {
     const entries = log.filter((e) => e.task === task.id && e.date === date);
     const minutes = entries.reduce((sum, e) => sum + (Number(e.minutes) || 0), 0);
     return {
       date,
       level: levelFor(minutes, entries.length > 0),
-      status: statusFor(entries.length > 0, planned.has(date), date, today),
+      status: entries.length ? "done" : "rest",
       entries,
     };
   });
@@ -158,12 +145,9 @@ export function buildTaskDays(
 /** The combined grid: shade = hours logged that day (or tasks touched, without durations). */
 export function buildOverallDays(
   plan: TrackerPlan,
-  projection: Projection,
-  log: LogEntry[],
-  today: string
+  log: LogEntry[]
 ): TrackerDay[] {
   const known = new Set(plan.groups.flatMap((g) => g.tasks.map((t) => t.id)));
-  const planned = plannedDays(projection);
   return dateRange(plan.start, plan.end).map((date) => {
     const entries = log.filter((e) => known.has(e.task) && e.date === date);
     const minutes = entries.reduce((sum, e) => sum + (Number(e.minutes) || 0), 0);
@@ -172,7 +156,7 @@ export function buildOverallDays(
     return {
       date,
       level,
-      status: statusFor(entries.length > 0, planned.has(date), date, today),
+      status: entries.length ? "done" : "rest",
       entries,
     };
   });

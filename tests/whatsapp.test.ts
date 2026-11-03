@@ -18,7 +18,7 @@ beforeEach(() => {
   files = {
     "content/tracker/plan.yaml": read("content/tracker/plan.yaml"),
     "content/tracker/queue.yaml": read("content/tracker/queue.yaml"),
-    "content/tracker/schedule.yaml": read("content/tracker/schedule.yaml"),
+    "content/tracker/phases.yaml": read("content/tracker/phases.yaml"),
     // A fresh empty log, so real entries in the repo don't leak into tests.
     "content/tracker/log.yaml": "# One entry per task per session.\nentries: []\n",
   };
@@ -120,17 +120,17 @@ test("undo and today", async () => {
   await POST(webhook("lc 30\nllm 1h"));
   await POST(webhook("undo"));
   assert.deepEqual(log().map((e) => e.task), ["leetcode"]);
-  assert.match(replies.at(-1)!.body, /Removed: .*Build a Large Language Model/);
+  assert.match(replies.at(-1)!.body, /Removed: .*Track B/);
 
   await POST(webhook("?"));
-  // Today may be a day off in the real schedule.
-  assert.match(replies.at(-1)!.body, /done|Day off/);
+  assert.match(replies.at(-1)!.body, /Next · Instrument and start\n• Track A · Applied AI systems: Have Claude Code log/);
 });
 
 test("done marks the next unfinished items, line by line", async () => {
   await POST(webhook("lc 1h done 2\nlc done"));
   assert.deepEqual(log().map((e) => e.done), [["lc-1768", "lc-1071"], ["lc-1431"]]);
   assert.match(replies[0].body, /done: 1768\. Merge Strings Alternately; 1071\./);
+  assert.match(replies[0].body, /Next · LeetCode: 605\./);
 });
 
 test("unknown input gets help and logs nothing", async () => {

@@ -1,37 +1,10 @@
-# Each track's work, in order. The schedule (schedule.yaml) gives each track blocks of time;
-# a block shows the track's next unfinished items, by their estimated hours.
+# Interview prep, kept alongside the learning plan (phases.yaml): each track's work, in order.
 # An item is finished when a log entry lists its id under `done`.
-#   hours: the track's default estimate per item; an item can override it.
 # Edit freely: reorder, insert (any new unique id), or drop items.
 tracks:
-  llm-from-scratch:
-    hours: 2
-    items:
-      - {"id": "llm-ch1", "title": "Ch 1 · Understanding large language models"}
-      - {"id": "llm-a1-4", "title": "Appendix A · A.1–A.4 PyTorch tensors and autograd"}
-      - {"id": "llm-a5-9", "title": "Appendix A · A.5–A.9 Multilayer nets, data loaders, training loop, GPU"}
-      - {"id": "llm-2a", "title": "Ch 2 · 2.1–2.4 Word embeddings, tokenizing, token IDs, special tokens"}
-      - {"id": "llm-2b", "title": "Ch 2 · 2.5–2.8 Byte pair encoding, sliding-window sampling, token + positional embeddings"}
-      - {"id": "llm-3a", "title": "Ch 3 · 3.1–3.4 Why attention; simple self-attention; trainable weights"}
-      - {"id": "llm-3b", "title": "Ch 3 · 3.5–3.6 Causal attention, dropout, multi-head attention"}
-      - {"id": "llm-4a", "title": "Ch 4 · 4.1–4.3 GPT architecture, layer norm, GELU feed-forward"}
-      - {"id": "llm-4b", "title": "Ch 4 · 4.4–4.7 Shortcut connections, transformer block, assemble GPT, generate text"}
-      - {"id": "llm-kv", "title": "Bonus · Add a KV cache to your GPT model", "link": "https://github.com/rasbt/LLMs-from-scratch/tree/main/ch04/03_kv-cache"}
-      - {"id": "llm-5-1", "title": "Ch 5 · 5.1 Evaluating generative models (loss, perplexity)"}
-      - {"id": "llm-5-2", "title": "Ch 5 · 5.2 Training the LLM"}
-      - {"id": "llm-5-3", "title": "Ch 5 · 5.3 Decoding: temperature and top-k sampling"}
-      - {"id": "llm-5-4", "title": "Ch 5 · 5.4–5.5 Save/load weights, load OpenAI GPT-2 weights"}
-      - {"id": "llm-6a", "title": "Ch 6 · 6.1–6.4 Classification fine-tuning: dataset, loaders, init"}
-      - {"id": "llm-6b", "title": "Ch 6 · 6.5–6.8 Classification head, loss/accuracy, train, spam classifier"}
-      - {"id": "llm-7a", "title": "Ch 7 · 7.1–7.4 Instruction data, batching, data loaders"}
-      - {"id": "llm-7b", "title": "Ch 7 · 7.5–7.6 Load pretrained model, instruction fine-tune"}
-      - {"id": "llm-7c", "title": "Ch 7 · 7.7–7.9 Extract responses, evaluate with an LLM judge"}
-      - {"id": "llm-d", "title": "Appendix D · LR warmup, cosine decay, gradient clipping"}
-      - {"id": "llm-e", "title": "Appendix E · Parameter-efficient fine-tuning with LoRA"}
   ddia:
-    hours: 2
     items:
-      - {"id": "ddia-1", "title": "Transactions · the rest of ACID: isolation, durability; single- vs multi-object operations", "hours": 1}
+      - {"id": "ddia-1", "title": "Transactions · the rest of ACID: isolation, durability; single- vs multi-object operations"}
       - {"id": "ddia-2", "title": "Transactions · Weak isolation: read committed, snapshot isolation, lost updates"}
       - {"id": "ddia-3", "title": "Transactions · Write skew, phantoms; serializability (serial, 2PL, SSI)"}
       - {"id": "ddia-4", "title": "Trouble with Distributed Systems · Faults, partial failures, unreliable networks"}
@@ -47,7 +20,6 @@ tracks:
       - {"id": "ddia-14", "title": "Stream Processing · Databases and streams (CDC, event sourcing), processing"}
       - {"id": "ddia-15", "title": "Future of Data Systems · Data integration, unbundling databases; aiming for correctness"}
   system-design-xu:
-    hours: 2
     items:
       - {"id": "xu-1-2", "title": "Ch 1 · Scale from zero to millions of users; Ch 2 · Back-of-the-envelope estimation"}
       - {"id": "xu-3", "title": "Ch 3 · A framework for system design interviews"}
@@ -62,34 +34,8 @@ tracks:
       - {"id": "xu-13", "title": "Ch 13 · Design a search autocomplete system"}
       - {"id": "xu-14", "title": "Ch 14 · Design YouTube"}
       - {"id": "xu-15-16", "title": "Ch 15 · Design Google Drive; Ch 16 · The learning continues"}
-  blogs-papers:
-    hours: 1.5
-    items:
-      - {"id": "paper-attention", "title": "Attention Is All You Need (Vaswani et al., 2017)", "link": "https://arxiv.org/abs/1706.03762"}
-      - {"id": "paper-effective-agents", "title": "Building effective agents (Anthropic, 2024)", "link": "https://www.anthropic.com/engineering/building-effective-agents"}
-      - {"id": "paper-react", "title": "ReAct: Synergizing Reasoning and Acting in LMs (Yao et al., 2022)", "link": "https://arxiv.org/abs/2210.03629"}
-      - {"id": "paper-gpt2", "title": "GPT-2: Language Models are Unsupervised Multitask Learners (Radford et al., 2019)", "link": "https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf"}
-      - {"id": "paper-raft", "title": "Raft: In Search of an Understandable Consensus Algorithm (Ongaro & Ousterhout, 2014)", "link": "https://raft.github.io/raft.pdf"}
-      - {"id": "paper-instructgpt", "title": "InstructGPT: Training LMs to follow instructions (Ouyang et al., 2022)", "link": "https://arxiv.org/abs/2203.02155"}
-      - {"id": "paper-context-engineering", "title": "Effective context engineering for AI agents (Anthropic, 2025)", "link": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"}
-      - {"id": "paper-lora", "title": "LoRA: Low-Rank Adaptation of LLMs (Hu et al., 2021)", "link": "https://arxiv.org/abs/2106.09685"}
-  algorithms-lectures:
-    # At 2×, Optional videos skipped.
-    hours: 0.75
-    items:
-      - {"id": "algo-1-5", "title": "Sec 1–5 · intro through quicksort", "hours": 3}
-      - {"id": "algo-8", "title": "Sec 8 · Linear-time selection", "link": "https://www.youtube.com/watch?v=nFw6x7DoYbs&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"id": "algo-9", "title": "Sec 9 · Graphs and minimum cuts", "link": "https://www.youtube.com/watch?v=4Ih3UhVuEtw&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"id": "algo-10", "title": "Sec 10 · Graph search: BFS, DFS, topological sort, SCCs", "link": "https://www.youtube.com/watch?v=SW6jwg7WS48&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"id": "algo-11", "title": "Sec 11 · Dijkstra's shortest paths", "link": "https://www.youtube.com/watch?v=jRlNVmRjdRk&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"id": "algo-12", "title": "Sec 12 · Heaps", "link": "https://www.youtube.com/watch?v=cMrQxxrKg8I&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"id": "algo-13", "title": "Sec 13 · Balanced search trees", "link": "https://www.youtube.com/watch?v=IbNZ-x1I2IM&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"id": "algo-14", "title": "Sec 14 · Hash tables", "link": "https://www.youtube.com/watch?v=Qu183GFHbZQ&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"id": "algo-15", "title": "Sec 15 · Universal hashing", "link": "https://www.youtube.com/watch?v=MWq8BvRR950&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
-      - {"id": "algo-16", "title": "Sec 16 · Bloom filters", "link": "https://www.youtube.com/watch?v=zYlxP7F3Z3c&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
   leetcode:
     # LeetCode 75 in study-plan order, then the Blind 75 problems it skips.
-    hours: 0.5
     items:
       - {"id": "lc-1768", "title": "1768. Merge Strings Alternately", "link": "https://leetcode.com/problems/merge-strings-alternately/"}
       - {"id": "lc-1071", "title": "1071. Greatest Common Divisor of Strings", "link": "https://leetcode.com/problems/greatest-common-divisor-of-strings/"}
@@ -228,7 +174,6 @@ tracks:
       - {"id": "lc-212", "title": "212. Word Search II", "link": "https://leetcode.com/problems/word-search-ii/"}
   system-design-lab:
     # Breakscale, LLM inference, the GenAI System Design Interview book, labs on the server, mocks.
-    hours: 2
     items:
       - {"id": "lab-1", "title": "Breakscale: rebuild Xu Ch 1 (LB, app, cache, DB + replica); push load until p99 breaks, note the numbers", "link": "https://breakscale.tech"}
       - {"id": "lab-2", "title": "GenAI System Design Interview Ch 1 · the framework", "link": "https://bytebytego.com/courses/genai-system-design-interview"}
@@ -241,38 +186,7 @@ tracks:
       - {"id": "lab-9", "title": "Lab: small RAG service on the server with pgvector; retrieval vs generation latency"}
       - {"id": "lab-14", "title": "Breakscale: retry storms, circuit breakers, backpressure, applied to an LLM gateway", "link": "https://breakscale.tech"}
       - {"id": "lab-15", "title": "Vidur: estimate a serving setup by hand, then find the cheapest config that meets a latency SLO", "link": "https://github.com/microsoft/vidur"}
-      - {"id": "lab-10", "title": "Mock: URL shortener, 45 min, written up", "hours": 1}
-      - {"id": "lab-11", "title": "Mock: an LLM-powered support chatbot, 45 min, written up", "hours": 1}
-      - {"id": "lab-12", "title": "Mock: RAG over company docs, 45 min", "hours": 1}
-      - {"id": "lab-13", "title": "Mock: an inference batching system for a single GPU, 45 min", "hours": 1}
-  agents:
-    # Home server first, then the movie agent.
-    hours: 2
-    items:
-      - {"id": "agents-1", "title": "Server: inventory the machine (CPU, RAM, disk, GPU?); install Ubuntu Server 24.04 LTS, SSH keys only"}
-      - {"id": "agents-2", "title": "Server: DHCP reservation; harden it (ufw, unattended-upgrades, no password SSH); add Tailscale"}
-      - {"id": "agents-3", "title": "Server: Docker + compose; Ollama + a small model (the load-test lab uses it)"}
-      - {"id": "agents-4", "title": "Server: a hello service you can reach from your phone over Tailscale; Claude API key in place"}
-      - {"id": "agents-5", "title": "Agent: a minimal agent loop on the server against the Claude API, one tool"}
-      - {"id": "agents-6", "title": "WhatsApp: run scripts/setup-whatsapp.sh so the tracker bot is live"}
-      - {"id": "agents-7", "title": "WhatsApp: receive webhooks on the server via Tailscale Funnel"}
-      - {"id": "agents-8", "title": "Approvals: agent asks yes/no on WhatsApp before a gated tool call"}
-      - {"id": "agents-9", "title": "Browser: Playwright on the server; headless navigate a showtimes page"}
-      - {"id": "agents-10", "title": "Movie agent v0: find showtimes for a movie + theater (read-only)"}
-      - {"id": "agents-11", "title": "Movie agent: look up coupons and card offers, compare total price"}
-      - {"id": "agents-12", "title": "Movie agent: propose a booking plan and ask for approval on WhatsApp"}
-      - {"id": "agents-13", "title": "Movie agent: drive checkout up to the payment page, stop there (dry run)"}
-      - {"id": "agents-14", "title": "Reliability: retries, timeouts, structured logs for every run"}
-      - {"id": "agents-15", "title": "Demo + write-up: blog post on what worked and what didn't"}
-  agent-harnesses:
-    hours: 2
-    items:
-      - {"id": "harness-1", "title": "Study: how agent harnesses work (agent loop, tools, permissions); sketch your design"}
-      - {"id": "harness-2", "title": "Agent loop from scratch: messages, tool calls, stop conditions, no framework"}
-      - {"id": "harness-3", "title": "Tool registry: JSON schemas, validation, sandboxed execution in Docker"}
-      - {"id": "harness-4", "title": "Permission layer: allow / deny / ask, with 'ask' routed to WhatsApp"}
-      - {"id": "harness-5", "title": "Memory and observability: persist and compact conversations; trace every step to JSONL"}
-      - {"id": "harness-6", "title": "Evals: a handful of scripted tasks, run and score them; refactor and publish the repo"}
-  experiments:
-    hours: 2
-    items: []
+      - {"id": "lab-10", "title": "Mock: URL shortener, 45 min, written up"}
+      - {"id": "lab-11", "title": "Mock: an LLM-powered support chatbot, 45 min, written up"}
+      - {"id": "lab-12", "title": "Mock: RAG over company docs, 45 min"}
+      - {"id": "lab-13", "title": "Mock: an inference batching system for a single GPU, 45 min"}

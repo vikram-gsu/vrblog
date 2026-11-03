@@ -1,7 +1,7 @@
 // Pure logic for the WhatsApp tracker bot: parse messages, edit log.yaml, write replies.
 // No I/O here, so it can be tested with `npm test`.
 import { parse as parseYaml, parseDocument, YAMLSeq } from "yaml";
-import { blocksFor, project, type Queue, type Schedule } from "../../src/lib/schedule.js";
+import { currentPhase, doneIds, nextFor, type Phases, type Tracks } from "../../src/lib/plan.js";
 
 export interface Task {
   id: string;
@@ -13,7 +13,7 @@ export interface Entry {
   task: string;
   minutes?: number;
   note?: string;
-  /** Ids of queue.yaml items finished. */
+  /** Ids of phases.yaml / queue.yaml items finished. */
   done?: string[];
 }
 
@@ -27,37 +27,34 @@ export type Command =
 
 // Short names you can type instead of a task id.
 const ALIASES: Record<string, string> = {
-  llm: "llm-from-scratch",
-  raschka: "llm-from-scratch",
-  ddia: "ddia",
-  kleppmann: "ddia",
-  xu: "system-design-xu",
-  sdi: "system-design-xu",
-  paper: "blogs-papers",
-  papers: "blogs-papers",
-  blog: "blogs-papers",
-  blogs: "blogs-papers",
+  a: "applied-ai",
+  ai: "applied-ai",
+  evals: "applied-ai",
+  rag: "applied-ai",
+  timer: "applied-ai",
+  b: "foundations",
+  found: "foundations",
+  llm: "foundations",
+  raschka: "foundations",
+  karpathy: "foundations",
+  algo: "foundations",
+  algos: "foundations",
+  lecture: "foundations",
+  lectures: "foundations",
+  c: "robotics-rl",
+  rl: "robotics-rl",
+  robot: "robotics-rl",
+  robotics: "robotics-rl",
   lc: "leetcode",
   leet: "leetcode",
   leetcode: "leetcode",
-  agent: "agents",
-  agents: "agents",
-  harness: "agent-harnesses",
-  harnesses: "agent-harnesses",
-  exp: "experiments",
-  experiment: "experiments",
-  experiments: "experiments",
-  buffer: "experiments",
-  algo: "algorithms-lectures",
-  algos: "algorithms-lectures",
-  lecture: "algorithms-lectures",
-  lectures: "algorithms-lectures",
-  video: "algorithms-lectures",
-  videos: "algorithms-lectures",
+  xu: "system-design-xu",
+  sdi: "system-design-xu",
+  ddia: "ddia",
+  kleppmann: "ddia",
   sd: "system-design-lab",
   lab: "system-design-lab",
   sdlab: "system-design-lab",
-  server: "agents",
 };
 
 export const HELP = [
@@ -66,12 +63,12 @@ export const HELP = [
   "  lc 1h two problems",
   "  yesterday llm 90 ch2",
   "  10/22 xu 2h",
-  "Finish the next item: llm 2h done (lc 1h done 2 for two)",
+  "Finish the next item: ai 2h done (lc 1h done 2 for two)",
   "",
-  "Tasks: llm, ddia, xu, papers, algo, lc, sd, agents (or server), harness, exp",
+  "Tasks: ai (track A), b (track B; llm, algo work too), rl (track C), lc, xu, ddia, sd",
   "Time: 45, 45m, 1h, 1h30, 1.5h (optional)",
   "",
-  "Other: today (or ?), yesterday?, undo, help",
+  "Other: today (or ?) for what's next, yesterday?, undo, help",
 ].join("\n");
 
 export function addDays(iso: string, n: number): string {
@@ -218,46 +215,44 @@ export function describeEntry(entry: Entry, tasks: Task[], titles: Map<string, s
     .join(" · ");
 }
 
-export function itemTitles(queue: Queue): Map<string, string> {
-  return new Map(Object.values(queue).flat().map((i) => [i.id, i.title]));
+export function itemTitles(tracks: Tracks): Map<string, string> {
+  return new Map(Object.values(tracks).flat().map((i) => [i.id, i.title]));
+}
+
+/** The task's next item, or why there isn't one. */
+export function nextLine(task: string, tasks: Task[], tracks: Tracks, entries: Entry[]): string {
+  const { item, waitingOn } = nextFor(tracks, task, doneIds(entries));
+  const label = labelOf(tasks, task);
+  if (!item) return `${label}: all done`;
+  return `${label}: ${waitingOn ? `${waitingOn.title} (first, then: ${item.title})` : item.title}`;
 }
 
 /**
- * A day's blocks and their items. Today ticks finished items; later days are a projection;
- * earlier days list what was logged.
+ * "today": what was logged that day, then (for today) the next item in each of the current
+ * phase's tracks and in each prep track. No dates in the plan, so other days only show logs.
  */
 export function renderDay(
   date: string,
   today: string,
   tasks: Task[],
-  queue: Queue,
-  schedule: Schedule,
+  phases: Phases,
+  tracks: Tracks,
   entries: Entry[]
 ): string {
-  if (date < today) {
-    const logged = entries.filter((e) => e.date === date);
-    if (!logged.length) return `${prettyDate(date)}: nothing logged.`;
-    const titles = itemTitles(queue);
-    return [`${prettyDate(date)} · ${logged.length} logged`, ...logged.map((e) => `✅ ${describeEntry(e, tasks, titles)}`)].join("\n");
-  }
-  const day = project(queue, schedule, entries, today, date).days.at(-1)!;
-  const note = day.note ? ` · ${day.note}` : "";
-  if (!day.blocks.length) return `${prettyDate(date)}${note}: no blocks planned. Day off.`;
+  const titles = itemTitles(tracks);
+  const logged = entries.filter((e) => e.date === date).map((e) => `✅ ${describeEntry(e, tasks, titles)}`);
+  if (date !== today) return [`${prettyDate(date)}: ${logged.length ? "" : "nothing logged."}`.trim(), ...logged].join("\n");
 
-  const items = day.blocks.flatMap((b) => b.items);
-  const count = date === today ? ` · ${items.filter((i) => i.done).length}/${items.length} done` : "";
-  const lines = day.blocks.flatMap((b) => [
-    `${b.time} ${b.label}${b.task ? ` (${labelOf(tasks, b.task)})` : ""}`,
-    ...(b.items.length ? b.items : [null]).map((i) =>
-      i ? `${date === today ? (i.done ? "✅" : "⬜") : "•"} ${i.item.title}` : "• nothing left"
-    ),
-  ]);
-  return [`${prettyDate(date)}${note}${count}`, ...lines].join("\n");
-}
-
-/** "Fri, Oct 30: 3/12 done" for today's planned items, or "" on a day off. */
-export function dayProgress(date: string, queue: Queue, schedule: Schedule, entries: Entry[]): string {
-  if (!blocksFor(schedule, date).blocks.length) return "";
-  const items = project(queue, schedule, entries, date, date).days[0].blocks.flatMap((b) => b.items);
-  return `${prettyDate(date)}: ${items.filter((i) => i.done).length}/${items.length} done`;
+  const phase = currentPhase(phases, doneIds(entries));
+  const learning = new Set(phases.phases.flatMap((p) => p.tracks));
+  const prep = tasks.map((t) => t.id).filter((id) => !learning.has(id) && tracks[id]);
+  return [
+    `${prettyDate(date)}${logged.length ? ` · ${logged.length} logged` : ""}`,
+    ...logged,
+    "",
+    phase ? `Next · ${phase.label}` : "Every phase is done.",
+    ...(phase?.tracks ?? []).map((t) => `• ${nextLine(t, tasks, tracks, entries)}`),
+    "Interview prep",
+    ...prep.map((t) => `• ${nextLine(t, tasks, tracks, entries)}`),
+  ].join("\n");
 }
