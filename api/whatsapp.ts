@@ -6,9 +6,9 @@ import { parse as parseYaml } from "yaml";
 import {
   HELP,
   appendEntries,
-  dayProgress,
   describeEntry,
   itemTitles,
+  nextLine,
   parseMessage,
   readEntries,
   removeLastEntry,
@@ -17,7 +17,7 @@ import {
   type Entry,
   type Task,
 } from "./_lib/bot.js";
-import { nextItems, readQueue, readSchedule, type Queue, type Schedule } from "../src/lib/schedule.js";
+import { allTracks, nextItems, readPhases, readQueue, type Phases, type Tracks } from "../src/lib/plan.js";
 
 const env = (name: string) => process.env[name] ?? "";
 const REPO = () => env("GITHUB_REPO") || "vikram-gsu/vrblog";
@@ -122,17 +122,18 @@ function messagesIn(payload: unknown): IncomingMessage[] {
 
 // --- Commands -------------------------------------------------------------
 
-async function loadPlan(): Promise<{ tasks: Task[]; queue: Queue; schedule: Schedule }> {
-  const [plan, queue, schedule] = await Promise.all([
+async function loadPlan(): Promise<{ tasks: Task[]; phases: Phases; tracks: Tracks }> {
+  const [plan, phases, queue] = await Promise.all([
     readFile("content/tracker/plan.yaml"),
+    readFile("content/tracker/phases.yaml"),
     readFile("content/tracker/queue.yaml"),
-    readFile("content/tracker/schedule.yaml"),
   ]);
   const groups = (parseYaml(plan.text)?.groups ?? []) as { tasks: Task[] }[];
+  const parsed = readPhases(parseYaml(phases.text));
   return {
     tasks: groups.flatMap((g) => g.tasks.map((t) => ({ id: t.id, label: t.label }))),
-    queue: readQueue(parseYaml(queue.text)),
-    schedule: readSchedule(parseYaml(schedule.text)),
+    phases: parsed,
+    tracks: allTracks(parsed, readQueue(parseYaml(queue.text))),
   };
 }
 
@@ -140,8 +141,8 @@ async function handle(msg: IncomingMessage): Promise<string> {
   if (msg.type !== "text" || !msg.text) return "I only understand text messages.\n\n" + HELP;
 
   const today = todayIn(env("TRACKER_TZ") || "America/New_York");
-  const { tasks, queue, schedule } = await loadPlan();
-  const titles = itemTitles(queue);
+  const { tasks, phases, tracks } = await loadPlan();
+  const titles = itemTitles(tracks);
   const commands = parseMessage(msg.text.body, today, new Set(tasks.map((t) => t.id)));
   if (commands.length === 0) return HELP;
 
@@ -169,7 +170,7 @@ async function handle(msg: IncomingMessage): Promise<string> {
       // "done" finishes the next unfinished items, counting earlier lines of this message.
       const log = readEntries(yaml);
       logged = toLog.map(({ entry, doneNext }) => {
-        const e = doneNext ? { ...entry, done: nextItems(queue, log, entry.task, doneNext).map((i) => i.id) } : entry;
+        const e = doneNext ? { ...entry, done: nextItems(tracks, log, entry.task, doneNext).map((i) => i.id) } : entry;
         if (e.done && !e.done.length) delete e.done;
         log.push(e);
         return e;
@@ -178,14 +179,14 @@ async function handle(msg: IncomingMessage): Promise<string> {
     }, `tracker: log ${toLog.map((c) => describeEntry(c.entry, tasks)).join(", ")} (${msg.id})`);
     const lines = logged.map((e) => `✅ ${e.date === today ? "" : `${e.date} · `}${describeEntry(e, tasks, titles)}`);
     const entries = readEntries((await readFile(LOG_PATH)).text);
-    const progress = dayProgress(today, queue, schedule, entries);
-    replies.push([...lines, progress && `\n${progress}`, "Site updates in about a minute."].filter(Boolean).join("\n"));
+    const next = [...new Set(logged.map((e) => e.task))].map((t) => `Next · ${nextLine(t, tasks, tracks, entries)}`);
+    replies.push([...lines, "", ...next, "Site updates in about a minute."].join("\n"));
   }
 
   for (const c of commands) {
     if (c.kind === "today") {
       const entries = readEntries((await readFile(LOG_PATH)).text);
-      replies.push(renderDay(c.date, today, tasks, queue, schedule, entries));
+      replies.push(renderDay(c.date, today, tasks, phases, tracks, entries));
     }
   }
 

@@ -1,48 +1,37 @@
-# The two-month routine shown on /currently-working-on.
-# Each tracker's work, in order, is in queue.yaml; the day's blocks of time are in schedule.yaml.
-# Nothing is tied to a date, and nothing shows as missed: unfinished work is still next.
-title: "Two months of showing up"
+# The plan shown on /currently-working-on. Order, not dates: the learning plan's phases and
+# items are in phases.yaml, interview prep's lists in queue.yaml. `end` is the goal for
+# getting through it, not a deadline per item.
+title: "Two months, in order"
 start: "2026-10-23"
-end: "2026-12-20"
+end: "2026-12-31"
 
 groups:
-  - id: reading
-    label: Reading
+  - id: learning
+    label: Learning plan
     tasks:
-      - id: llm-from-scratch
-        label: Build a Large Language Model (From Scratch)
-        detail: Sebastian Raschka · read, run the code, do the exercises · weekday reading block, Mon/Wed/Fri
-        link: https://github.com/rasbt/LLMs-from-scratch
-      - id: ddia
-        label: Designing Data-Intensive Applications
-        detail: Martin Kleppmann · from Transactions · weekday reading block, Tue/Thu
-      - id: system-design-xu
-        label: System Design Interview
-        detail: Alex Xu · Vol 1, a chapter per system design block
-      - id: blogs-papers
-        label: Blogs & research papers
-        detail: Late-evening block, Sundays first
-      - id: algorithms-lectures
-        label: Stanford Algorithms 1 (lectures)
-        detail: Tim Roughgarden · a re-watch at 2×, Optional videos skipped · late-evening block
-        link: https://www.youtube.com/playlist?list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V
+      - id: applied-ai
+        label: "Track A · Applied AI systems"
+        detail: Evals and retrieval, applied to my iOS timer app's on-device agent
+      - id: foundations
+        label: "Track B · Foundations"
+        detail: Stanford Algorithms, Karpathy's Zero to Hero, Raschka's LLM from scratch
+      - id: robotics-rl
+        label: "Track C · Robotics & RL"
+        detail: Hugging Face Deep RL and Robotics courses, an SO-101 arm, CS 285
 
-  - id: execution
-    label: Execution
+  - id: prep
+    label: Interview prep
     tasks:
       - id: leetcode
         label: LeetCode
-        detail: LeetCode 75, then the Blind 75 problems it skips · 10–12 and 9–10:30
+        detail: LeetCode 75, then the Blind 75 problems it skips
         link: https://leetcode.com/studyplan/leetcode-75/
+      - id: system-design-xu
+        label: System Design Interview
+        detail: Alex Xu · Vol 1
+      - id: ddia
+        label: Designing Data-Intensive Applications
+        detail: Martin Kleppmann · from Transactions
       - id: system-design-lab
         label: System design lab
-        detail: Breakscale, LLM inference, the GenAI SDI book, labs and mocks · 5–7, and 3–5 once Xu is done
-      - id: agents
-        label: Building agents
-        detail: Home server first, then a movie-ticket agent with WhatsApp approvals · 5–7 Tue/Thu/Sat
-      - id: agent-harnesses
-        label: Building agent harnesses
-        detail: An agent loop, tools, permissions and evals, from scratch · paused, no block yet
-      - id: experiments
-        label: Other experiments
-        detail: No block yet
+        detail: Breakscale, the LLM Inference Handbook, GenAI system design, mocks

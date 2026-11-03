@@ -124,11 +124,11 @@ Example: `content/blog/my-new-post.md`
 3. Add numbered posts (`01-title.md`, `02-title.md`)
 
 ### Trackers (/currently-working-on)
-- `content/tracker/plan.yaml` defines the window (`start`/`end`), groups and tasks (label, detail, link).
-- `content/tracker/queue.yaml` holds each task's work as an ordered list of items `{id, title, link?, hours?}` (a track-level `hours` is the default estimate). Edit it directly: reorder, insert with any new unique id, drop.
-- `content/tracker/schedule.yaml` is the day in blocks of time: `templates` of `{time, hours, label, tasks}`, `week` (template per weekday) and `days` (per-date `{template, note}`, e.g. on call or a day off). A block works on the first of its `tasks` that has items left, as many as fit its hours.
-- `content/tracker/log.yaml` holds `entries` of `{date, task, minutes?, note?, done?}`; `done` lists the queue item ids that session finished. Append one per session (also editable in Decap under "Tracker").
-- Planning is by hours, not dates: `src/lib/schedule.ts` (`project`) fills each day's blocks from the unfinished items, so unfinished work is simply still next, and estimates finish dates. Nothing shows as missed. It has no imports so `api/` shares it.
+- `content/tracker/plan.yaml` defines the window (`start`, and `end` as the goal for getting through it), groups and tasks (label, detail, link). Group `learning` holds the three phase tracks (applied-ai, foundations, robotics-rl); `prep` holds interview prep.
+- `content/tracker/phases.yaml` is the learning plan, in order: phases `{id, label, tracks, exit, background?, items}` with items `{id, task, title, link?, optional?, after?}`, plus a `cut` line. The current phase is the first with unfinished required items; at most its two tracks are active.
+- `content/tracker/queue.yaml` holds interview prep, each track an ordered list of `{id, title, link?}`.
+- `content/tracker/log.yaml` holds `entries` of `{date, task, minutes?, note?, done?}`; `done` lists the item ids that session finished. Append one per session (also editable in Decap under "Tracker").
+- Order, not dates: nothing has a date except the overall goal, nothing shows as missed, and each track's next item is its first unfinished one (`src/lib/plan.ts`, no imports so `api/` shares it).
 - WhatsApp logging: `api/whatsapp.ts` (Vercel function, Meta WhatsApp Cloud API webhook) commits to `log.yaml` via the GitHub API. Parsing/YAML logic lives in `api/_lib/bot.ts` (`<task> [time] done [n]` finishes the next n items); `npm test` runs `tests/*.test.ts` with Node's test runner. Env vars: `WHATSAPP_VERIFY_TOKEN`, `WHATSAPP_APP_SECRET`, `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ALLOWED_FROM`, `GITHUB_TOKEN` (optional: `GITHUB_REPO`, `GITHUB_BRANCH`, `TRACKER_TZ`, `WHATSAPP_GRAPH_VERSION`). Setup notes and troubleshooting: `docs/whatsapp-setup.md`; guided setup: `scripts/setup-whatsapp.sh`.
 
 ### Photos

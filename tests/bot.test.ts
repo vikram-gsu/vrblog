@@ -11,9 +11,8 @@ import {
 } from "../api/_lib/bot.ts";
 
 const IDS = new Set([
-  "llm-from-scratch", "ddia", "system-design-xu", "blogs-papers",
-  "leetcode", "agents", "agent-harnesses", "experiments",
-  "algorithms-lectures", "system-design-lab",
+  "applied-ai", "foundations", "robotics-rl",
+  "leetcode", "system-design-xu", "ddia", "system-design-lab",
 ]);
 const TODAY = "2026-10-23";
 
@@ -37,21 +36,21 @@ test("time and note are optional; aliases are case-insensitive", () => {
   assert.deepEqual(parseMessage("LC", TODAY, IDS), [
     { kind: "log", entry: { date: TODAY, task: "leetcode" } },
   ]);
-  assert.deepEqual(parseMessage("harness two tools wired", TODAY, IDS), [
-    { kind: "log", entry: { date: TODAY, task: "agent-harnesses", note: "two tools wired" } },
+  assert.deepEqual(parseMessage("Evals two failure types", TODAY, IDS), [
+    { kind: "log", entry: { date: TODAY, task: "applied-ai", note: "two failure types" } },
   ]);
 });
 
-test("sprint tracks have short names", () => {
+test("every track has short names", () => {
   const tasks = (body: string) => parseMessage(body, TODAY, IDS).map((c) => c.kind === "log" && c.entry.task);
-  assert.deepEqual(tasks("algo 1h sec 1-3\nsd 90 breakscale\nserver tailscale"), [
-    "algorithms-lectures", "system-design-lab", "agents",
+  assert.deepEqual(tasks("a 1h\nalgo 1h sec 8\nllm ch 2\nrl unit 1\nsd 90 breakscale\nxu\nddia"), [
+    "applied-ai", "foundations", "foundations", "robotics-rl", "system-design-lab", "system-design-xu", "ddia",
   ]);
 });
 
 test("date prefixes", () => {
   const [y] = parseMessage("yesterday llm 90", TODAY, IDS);
-  assert.deepEqual(y, { kind: "log", entry: { date: "2026-10-22", task: "llm-from-scratch", minutes: 90 } });
+  assert.deepEqual(y, { kind: "log", entry: { date: "2026-10-22", task: "foundations", minutes: 90 } });
   const [d] = parseMessage("10/20 xu 2h", TODAY, IDS);
   assert.deepEqual(d, { kind: "log", entry: { date: "2026-10-20", task: "system-design-xu", minutes: 120 } });
   const [past] = parseMessage("12/30 xu", "2027-01-02", IDS);
@@ -86,8 +85,8 @@ test("append to an empty log keeps comments and parses back", () => {
 
 test("append works on block-style logs as Decap CMS writes them", () => {
   const decap = "entries:\n  - date: 2026-10-22\n    task: ddia\n    minutes: 30\n";
-  const out = appendEntries(decap, [{ date: TODAY, task: "agents", minutes: 60 }]);
-  assert.deepEqual(readEntries(out).map((e) => e.task), ["ddia", "agents"]);
+  const out = appendEntries(decap, [{ date: TODAY, task: "leetcode", minutes: 60 }]);
+  assert.deepEqual(readEntries(out).map((e) => e.task), ["ddia", "leetcode"]);
   assert.equal(readEntries(out)[0].date, "2026-10-22");
 });
 
@@ -102,39 +101,46 @@ test("undo removes the last entry, and empties back to []", () => {
   assert.equal(removeLastEntry(empty).removed, undefined);
 });
 
-const QUEUE = {
-  "llm-from-scratch": [{ id: "llm-1", title: "Ch 1", hours: 2 }],
-  leetcode: [
-    { id: "lc-1", title: "1768", hours: 1 },
-    { id: "lc-2", title: "1071", hours: 1 },
-    { id: "lc-3", title: "1431", hours: 1 },
+const PHASES = {
+  phases: [
+    {
+      id: "p1", label: "Start", tracks: ["applied-ai", "foundations"], exit: "x",
+      items: [
+        { id: "a1", task: "applied-ai", title: "Log sessions" },
+        { id: "b1", task: "foundations", title: "Course 1" },
+      ],
+    },
+    {
+      id: "p2", label: "Retrieval", tracks: ["applied-ai", "foundations"], exit: "y",
+      items: [
+        { id: "a2", task: "applied-ai", title: "RAG 3", after: "b2" },
+        { id: "b2", task: "foundations", title: "Course 2" },
+      ],
+    },
   ],
 };
-const SCHEDULE = {
-  templates: {
-    day: [
-      { time: "10–12", hours: 2, label: "LeetCode", tasks: ["leetcode"] },
-      { time: "1–3", hours: 2, label: "Reading", tasks: ["llm-from-scratch"] },
-    ],
-  },
-  week: { fri: "day", sat: "day" },
-  days: {},
+const TRACKS = {
+  "applied-ai": PHASES.phases.flatMap((p) => p.items).filter((i) => i.task === "applied-ai"),
+  foundations: PHASES.phases.flatMap((p) => p.items).filter((i) => i.task === "foundations"),
+  leetcode: [{ id: "lc-1", task: "leetcode", title: "1768" }],
 };
+const TASKS = [
+  { id: "applied-ai", label: "Track A" },
+  { id: "foundations", label: "Track B" },
+  { id: "leetcode", label: "LeetCode" },
+];
 
-test("renders the day's blocks, ticking what's done", () => {
-  const tasks = [
-    { id: "llm-from-scratch", label: "LLM" },
-    { id: "leetcode", label: "LeetCode" },
+test("today shows what was logged and what's next", () => {
+  const log = [
+    { date: "2026-10-20", task: "applied-ai", done: ["a1"] },
+    { date: TODAY, task: "foundations", minutes: 30, done: ["b1"] },
   ];
-  const log = [{ date: TODAY, task: "leetcode", done: ["lc-1"] }];
   assert.equal(
-    renderDay(TODAY, TODAY, tasks, QUEUE, SCHEDULE, log),
-    "Fri, Oct 23 · 1/3 done\n10–12 LeetCode (LeetCode)\n✅ 1768\n⬜ 1071\n1–3 Reading (LLM)\n⬜ Ch 1"
+    renderDay(TODAY, TODAY, TASKS, PHASES, TRACKS, log),
+    "Fri, Oct 23 · 1 logged\n✅ Track B · 30 min · done: Course 1\n\n" +
+      "Next · Retrieval\n• Track A: Course 2 (first, then: RAG 3)\n• Track B: Course 2\nInterview prep\n• LeetCode: 1768"
   );
-  // Tomorrow assumes today goes as planned.
-  assert.match(renderDay("2026-10-24", TODAY, tasks, QUEUE, SCHEDULE, log), /• 1431\n.*\n• nothing left/);
-  assert.match(renderDay("2026-10-25", TODAY, tasks, QUEUE, SCHEDULE, log), /Day off/);
-  assert.equal(renderDay("2026-10-22", TODAY, tasks, QUEUE, SCHEDULE, log), "Thu, Oct 22: nothing logged.");
+  assert.equal(renderDay("2026-10-22", TODAY, TASKS, PHASES, TRACKS, log), "Thu, Oct 22: nothing logged.");
 });
 
 test("done finishes the next items", () => {
@@ -142,11 +148,11 @@ test("done finishes the next items", () => {
     { kind: "log", entry: { date: TODAY, task: "leetcode", minutes: 60, note: "tricky" }, doneNext: 2 },
   ]);
   assert.deepEqual(parseMessage("llm done", TODAY, IDS), [
-    { kind: "log", entry: { date: TODAY, task: "llm-from-scratch" }, doneNext: 1 },
+    { kind: "log", entry: { date: TODAY, task: "foundations" }, doneNext: 1 },
   ]);
   // "done" later in the note is just a note.
   assert.deepEqual(parseMessage("llm 50 ch1 done", TODAY, IDS), [
-    { kind: "log", entry: { date: TODAY, task: "llm-from-scratch", minutes: 50, note: "ch1 done" } },
+    { kind: "log", entry: { date: TODAY, task: "foundations", minutes: 50, note: "ch1 done" } },
   ]);
 });
 

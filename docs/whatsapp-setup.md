@@ -60,20 +60,20 @@ The endpoint rejects everything until `WHATSAPP_APP_SECRET` is set. Environment 
 ## Messages
 
 ```
-llm 50 ch1 done          log 50 min on the LLM book, with a note
+b 50 karpathy lesson 1   log 50 min on track B, with a note
 lc 35                    LeetCode, 35 min
 ddia 1h30 isolation      time: 45, 45m, 1h, 1h30, 1.5h (optional)
 yesterday xu 2h          or a date: 10/22 xu 2h
 llm 50
 lc 35                    several lines = several entries
-today   (or ?)           today's blocks and items; yesterday? for yesterday
-llm 2h done              finishes the next LLM item (it leaves the plan)
+today   (or ?)           what's logged today and what's next; yesterday? for yesterday
+ai 2h done               finishes track A's next item
 lc 1h done 3             finishes the next 3 LeetCode problems
 undo                     remove the last entry
 help
 ```
 
-Short names: `llm`, `ddia`, `xu`, `papers`, `algo`, `lc`, `sd`, `agents` (or `server`), `harness`, `exp` (full task ids from `plan.yaml` work too).
+Short names: `ai` (track A), `b` (track B; `llm`, `algo` work too), `rl` (track C), `lc`, `xu`, `ddia`, `sd` (full task ids from `plan.yaml` work too).
 
 ## Troubleshooting (Vercel → Logs → `/api/whatsapp`)
 

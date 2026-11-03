@@ -17,8 +17,6 @@ export function cellClass(day: Pick<TrackerDay, "status" | "level">) {
   switch (day.status) {
     case "done":
       return LEVEL_CLASSES[day.level];
-    case "upcoming":
-      return "border border-dashed border-foreground/30";
     default:
       return "bg-secondary/40";
   }
@@ -36,7 +34,6 @@ function describe(day: TrackerDay, unit: "minutes" | "tasks") {
       .filter(Boolean);
     return [date, ...notes].join("\n");
   }
-  if (day.status === "upcoming") return `${date}\nPlanned`;
   return date;
 }
 

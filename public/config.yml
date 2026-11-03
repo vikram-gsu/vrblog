@@ -116,15 +116,12 @@ collections:
                 name: task
                 widget: select
                 options:
-                  - { label: "LLM From Scratch (Raschka)", value: llm-from-scratch }
-                  - { label: "DDIA", value: ddia }
-                  - { label: "System Design Interview (Xu)", value: system-design-xu }
-                  - { label: "Blogs & papers", value: blogs-papers }
+                  - { label: "Track A · Applied AI systems", value: applied-ai }
+                  - { label: "Track B · Foundations", value: foundations }
+                  - { label: "Track C · Robotics & RL", value: robotics-rl }
                   - { label: "LeetCode", value: leetcode }
-                  - { label: "Building agents", value: agents }
-                  - { label: "Agent harnesses", value: agent-harnesses }
-                  - { label: "Experiments", value: experiments }
-                  - { label: "Stanford Algorithms lectures", value: algorithms-lectures }
+                  - { label: "System Design Interview (Xu)", value: system-design-xu }
+                  - { label: "DDIA", value: ddia }
                   - { label: "System design lab", value: system-design-lab }
               - label: Minutes
                 name: minutes
@@ -135,7 +132,7 @@ collections:
                 name: note
                 widget: string
                 required: false
-              - label: Finished items (ids from queue.yaml)
+              - label: Finished items (ids from phases.yaml or queue.yaml)
                 name: done
                 widget: list
                 required: false

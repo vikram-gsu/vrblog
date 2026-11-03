@@ -1,0 +1,83 @@
+# The learning plan, in order. No dates: each track works through its items in this order,
+# at most two tracks at once (the current phase's). The current phase is the first one with
+# unfinished items (optional ones don't count).
+#   item: {id, task, title, link?, optional?, after?: an item id that must be done first}
+# An item is finished when a log entry lists its id under `done`.
+phases:
+  - id: phase-1
+    label: "Instrument and start"
+    tracks: [applied-ai, foundations]
+    exit: "I can name the timer agent's top 3 failure types, with counts."
+    items:
+      - {"id": "timer-logging", "task": "applied-ai", "title": "Have Claude Code log every timer-agent session (request, tool calls, reply) to a file"}
+      - {"id": "timer-tests", "task": "applied-ai", "title": "Write 30–50 test requests, weighted toward edge cases"}
+      - {"id": "evals-book-start", "task": "applied-ai", "title": "Evals for AI Engineers (Shankar & Husain, O'Reilly): read in order, applying each part to the timer transcripts"}
+      - {"id": "algo-1-5", "task": "foundations", "title": "Stanford Algorithms Course 1 · Sec 1–5 · intro through quicksort"}
+      - {"id": "algo-8", "task": "foundations", "title": "Stanford Algorithms Course 1 · Sec 8 · Linear-time selection", "link": "https://www.youtube.com/watch?v=nFw6x7DoYbs&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-9", "task": "foundations", "title": "Stanford Algorithms Course 1 · Sec 9 · Graphs and minimum cuts", "link": "https://www.youtube.com/watch?v=4Ih3UhVuEtw&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+  - id: phase-2
+    label: "Retrieval"
+    tracks: [applied-ai, foundations]
+    exit: "BEIR capstone: keyword (BM25) vs. embedding vs. hybrid retrieval on one BEIR dataset, recall@10 for each, and I can explain which won and why."
+    items:
+      - {"id": "rag-1-2", "task": "applied-ai", "title": "DeepLearning.AI RAG course (Zain Hasan) · Modules 1–2", "link": "https://www.deeplearning.ai/courses/retrieval-augmented-generation-rag/"}
+      - {"id": "ir-videos", "task": "applied-ai", "title": "Dwaipayan Roy's IR playlist · video 15 (BM25), 17.1–17.6 (evaluation)", "optional": true}
+      - {"id": "algo-10", "task": "foundations", "title": "Stanford Algorithms Course 2 · Sec 10 · Graph search: BFS, DFS, topological sort, SCCs", "link": "https://www.youtube.com/watch?v=SW6jwg7WS48&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-11", "task": "foundations", "title": "Stanford Algorithms Course 2 · Sec 11 · Dijkstra's shortest paths", "link": "https://www.youtube.com/watch?v=jRlNVmRjdRk&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-12", "task": "foundations", "title": "Stanford Algorithms Course 2 · Sec 12 · Heaps", "link": "https://www.youtube.com/watch?v=cMrQxxrKg8I&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-13", "task": "foundations", "title": "Stanford Algorithms Course 2 · Sec 13 · Balanced search trees", "link": "https://www.youtube.com/watch?v=IbNZ-x1I2IM&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-14", "task": "foundations", "title": "Stanford Algorithms Course 2 · Sec 14 · Hash tables", "link": "https://www.youtube.com/watch?v=Qu183GFHbZQ&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-15", "task": "foundations", "title": "Stanford Algorithms Course 2 · Sec 15 · Universal hashing", "link": "https://www.youtube.com/watch?v=MWq8BvRR950&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "algo-16", "task": "foundations", "title": "Stanford Algorithms Course 2 · Sec 16 · Bloom filters", "link": "https://www.youtube.com/watch?v=zYlxP7F3Z3c&list=PLXFMmlk03Dt7Q0xr1PIAriY5623cKiH7V"}
+      - {"id": "rag-3", "task": "applied-ai", "title": "RAG course · Module 3 (vector databases)", "link": "https://www.deeplearning.ai/courses/retrieval-augmented-generation-rag/", "after": "algo-16"}
+      - {"id": "rag-4-5", "task": "applied-ai", "title": "RAG course · Modules 4–5", "link": "https://www.deeplearning.ai/courses/retrieval-augmented-generation-rag/"}
+      - {"id": "evaluating-agents", "task": "applied-ai", "title": "DeepLearning.AI · Evaluating AI Agents (Arize)", "link": "https://www.deeplearning.ai/short-courses/evaluating-ai-agents/"}
+      - {"id": "evals-book-finish", "task": "applied-ai", "title": "Evals for AI Engineers: finish the book"}
+      - {"id": "beir-capstone", "task": "applied-ai", "title": "Capstone: BM25 vs. embedding vs. hybrid on one BEIR dataset", "link": "https://github.com/beir-cellar/beir"}
+  - id: phase-3
+    label: "Inside the model"
+    tracks: [foundations]
+    exit: "My hand-written attention matches PyTorch's F.scaled_dot_product_attention (torch.allclose), and my NumPy backprop passes a numerical gradient check."
+    background: "In the background: rerun the timer-agent evals after every Claude Code change."
+    items:
+      - {"id": "karpathy-1", "task": "foundations", "title": "Karpathy Zero to Hero · 1. micrograd", "link": "https://karpathy.ai/zero-to-hero.html"}
+      - {"id": "karpathy-2", "task": "foundations", "title": "Karpathy Zero to Hero · 2. makemore: bigrams", "link": "https://karpathy.ai/zero-to-hero.html"}
+      - {"id": "karpathy-3", "task": "foundations", "title": "Karpathy Zero to Hero · 3. makemore: MLP", "link": "https://karpathy.ai/zero-to-hero.html"}
+      - {"id": "karpathy-4", "task": "foundations", "title": "Karpathy Zero to Hero · 4. activations, gradients, BatchNorm", "link": "https://karpathy.ai/zero-to-hero.html"}
+      - {"id": "karpathy-5", "task": "foundations", "title": "Karpathy Zero to Hero · 5. becoming a backprop ninja", "link": "https://karpathy.ai/zero-to-hero.html"}
+      - {"id": "llm-ch1", "task": "foundations", "title": "Raschka Ch 1 · Understanding large language models"}
+      - {"id": "llm-a1-4", "task": "foundations", "title": "Raschka Appendix A · A.1–A.4 PyTorch tensors and autograd"}
+      - {"id": "llm-a5-9", "task": "foundations", "title": "Raschka Appendix A · A.5–A.9 Multilayer nets, data loaders, training loop, GPU"}
+      - {"id": "llm-2a", "task": "foundations", "title": "Raschka Ch 2 · 2.1–2.4 Word embeddings, tokenizing, token IDs, special tokens"}
+      - {"id": "llm-2b", "task": "foundations", "title": "Raschka Ch 2 · 2.5–2.8 Byte pair encoding, sliding-window sampling, token + positional embeddings"}
+      - {"id": "statquest-attention", "task": "foundations", "title": "StatQuest · Attention in Transformers (DeepLearning.AI), right before Ch 3", "link": "https://www.deeplearning.ai/short-courses/attention-in-transformers-concepts-and-code-in-pytorch/"}
+      - {"id": "llm-3a", "task": "foundations", "title": "Raschka Ch 3 · 3.1–3.4 Why attention; simple self-attention; trainable weights"}
+      - {"id": "llm-3b", "task": "foundations", "title": "Raschka Ch 3 · 3.5–3.6 Causal attention, dropout, multi-head attention"}
+      - {"id": "llm-4a", "task": "foundations", "title": "Raschka Ch 4 · 4.1–4.3 GPT architecture, layer norm, GELU feed-forward"}
+      - {"id": "llm-4b", "task": "foundations", "title": "Raschka Ch 4 · 4.4–4.7 Shortcut connections, transformer block, assemble GPT, generate text"}
+      - {"id": "llm-kv", "task": "foundations", "title": "Raschka Bonus · Add a KV cache to your GPT model", "link": "https://github.com/rasbt/LLMs-from-scratch/tree/main/ch04/03_kv-cache"}
+      - {"id": "llm-5-1", "task": "foundations", "title": "Raschka Ch 5 · 5.1 Evaluating generative models (loss, perplexity)"}
+      - {"id": "llm-5-2", "task": "foundations", "title": "Raschka Ch 5 · 5.2 Training the LLM"}
+      - {"id": "llm-5-3", "task": "foundations", "title": "Raschka Ch 5 · 5.3 Decoding: temperature and top-k sampling"}
+      - {"id": "llm-5-4", "task": "foundations", "title": "Raschka Ch 5 · 5.4–5.5 Save/load weights, load OpenAI GPT-2 weights"}
+      - {"id": "llm-6a", "task": "foundations", "title": "Raschka Ch 6 · 6.1–6.4 Classification fine-tuning: dataset, loaders, init"}
+      - {"id": "llm-6b", "task": "foundations", "title": "Raschka Ch 6 · 6.5–6.8 Classification head, loss/accuracy, train, spam classifier"}
+      - {"id": "llm-7a", "task": "foundations", "title": "Raschka Ch 7 · 7.1–7.4 Instruction data, batching, data loaders"}
+      - {"id": "llm-7b", "task": "foundations", "title": "Raschka Ch 7 · 7.5–7.6 Load pretrained model, instruction fine-tune"}
+      - {"id": "llm-7c", "task": "foundations", "title": "Raschka Ch 7 · 7.7–7.9 Extract responses, evaluate with an LLM judge"}
+      - {"id": "llm-d", "task": "foundations", "title": "Raschka Appendix D · LR warmup, cosine decay, gradient clipping"}
+      - {"id": "llm-e", "task": "foundations", "title": "Raschka Appendix E · Parameter-efficient fine-tuning with LoRA"}
+      - {"id": "gpt2-capstone", "task": "foundations", "title": "Capstone: Karpathy, Let's reproduce GPT-2 (124M)", "link": "https://www.youtube.com/watch?v=l8pRSuU81PU"}
+  - id: phase-4
+    label: "Robotics & RL"
+    tracks: [robotics-rl]
+    exit: "A measured success rate on one pick-and-place task over 20 tries."
+    items:
+      - {"id": "hf-deep-rl", "task": "robotics-rl", "title": "Hugging Face Deep RL course (simulation)", "link": "https://huggingface.co/learn/deep-rl-course/unit0/introduction"}
+      - {"id": "hf-robotics", "task": "robotics-rl", "title": "Hugging Face Robotics course", "link": "https://huggingface.co/learn/robotics-course"}
+      - {"id": "so101", "task": "robotics-rl", "title": "SO-101 arm: 3D-print and build the leader + follower arms, add a USB webcam", "link": "https://huggingface.co/docs/lerobot/so101"}
+      - {"id": "cs285", "task": "robotics-rl", "title": "Berkeley CS 285 (Sergey Levine) · SAC, IQL, world models", "link": "https://rail.eecs.berkeley.edu/deeprlcourse/"}
+      - {"id": "pick-and-place", "task": "robotics-rl", "title": "Exit run: one pick-and-place task, 20 tries, success rate"}
+
+# Slack work, the first thing dropped.
+cut: "Stanford Algorithms Courses 3–4 (optional)"
